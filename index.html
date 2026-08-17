@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>จำจีน · รากศัพท์ภาษาจีน (JumJeen) - จำศัพท์จีนจากผังรากศัพท์ & Mindmap</title>
+  <meta name="description" content="จำจีน (JumJeen) - แอปพลิเคชันมือถือช่วยจำคำศัพท์ภาษาจีนจากรากศัพท์และ Mindmap พร้อมเรื่องราวดั้งเดิม การออกเสียง และเกมผสมตัวอักษร">
+
+  <!-- PWA / App Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#d33828">
+
+  <!-- iOS Home Screen / Status Bar -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="จำจีน">
+  <link rel="apple-touch-icon" href="icons/icon-192.webp">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="icons/favicon.png">
+  <link rel="icon" type="image/webp" sizes="192x192" href="icons/icon-192.webp">
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/design-tokens.css?v=4.0">
+  <link rel="stylesheet" href="css/app.css?v=4.0">
+  <link rel="stylesheet" href="css/mindmap.css?v=4.0">
+  <link rel="stylesheet" href="css/practice.css?v=4.0">
+  <link rel="stylesheet" href="css/srs.css?v=4.0">
+</head>
+<body>
+
+  <!-- Desktop Preview Wrapper -->
+  <div class="desktop-preview-container">
+    
+    <!-- Top Global Demo Control Bar -->
+    <div class="global-demo-bar">
+      <div class="brand-badge">
+        <span class="logo-char">จำ</span>
+        <span>จำจีน · รากศัพท์ภาษาจีน</span>
+      </div>
+      <div class="demo-controls">
+        <button id="btn-frame-toggle" class="ctrl-btn" title="สลับมุมมอง">📱 มุมมองมือถือ</button>
+        <button id="btn-theme-toggle" class="ctrl-btn" title="เปลี่ยนธีม">🌙</button>
+      </div>
+    </div>
+
+    <!-- Mobile Device Frame Mockup -->
+    <div class="app-viewport-wrapper" id="app-viewport-wrapper">
+      
+      <!-- iPhone Dynamic Island / Notch -->
+      <div class="mobile-notch">
+        <div class="notch-camera"></div>
+        <div class="notch-speaker"></div>
+      </div>
+
+      <!-- Mobile Status Bar -->
+      <div class="mobile-status-bar">
+        <div class="status-time">09:41</div>
+        <div class="status-right">
+          <span>5G</span>
+          <span>📶</span>
+          <span>100% 🔋</span>
+        </div>
+      </div>
+
+      <!-- App Header -->
+      <header class="app-header">
+        <div class="header-top-row">
+          <div class="app-title-group">
+            <h1>จำจีน · รากศัพท์</h1>
+            <span class="sub-thai">เรียนศัพท์จีนจากผังรากศัพท์ & เรื่องราวดั้งเดิม</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content Container with Tab Sections -->
+      <main class="app-content-area">
+        
+        <!-- Tab 1: Interactive Radical Mindmap -->
+        <section class="view-section active" id="section-mindmap">
+          
+          <!-- Universal Search Bar (เฉพาะในหน้าผังรากศัพท์) -->
+          <div class="app-search-bar">
+            <div class="search-input-wrapper">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="app-search-input" placeholder="ค้นหาตัวอักษร, พินอิน (hao), หรือความหมาย (ดี, แม่)..." autocomplete="off">
+            </div>
+            <div class="search-results-dropdown" id="search-results-dropdown"></div>
+          </div>
+
+          <!-- Radical Selector Bar (เฉพาะในหน้าผังรากศัพท์) -->
+          <div class="radical-selector-bar">
+            <span class="rad-scroll-label">รากศัพท์:</span>
+            <div class="radical-pill-list" id="radical-pill-list">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <div class="mindmap-wrapper" id="mindmap-container">
+            <!-- Rendered by js/mindmap.js -->
+          </div>
+
+          <!-- Quick Character Inspector Trigger Bar -->
+          <div class="mindmap-quick-inspect-bar" id="mindmap-quick-inspect-bar">
+            <div class="quick-inspect-left" onclick="window.App.switchTab('etymology')">
+              <span class="quick-hanzi" id="quick-inspect-hanzi">好</span>
+              <div class="quick-text-col">
+                <span class="quick-pinyin" id="quick-inspect-pinyin">hǎo</span>
+                <span class="quick-thai" id="quick-inspect-thai">ดี / ตกลง</span>
+              </div>
+            </div>
+            <div class="quick-actions-group">
+              <button class="quick-action-btn story-btn" onclick="window.App.switchTab('etymology')">
+                <span>📖 เรื่องราว</span>
+              </button>
+              <button class="quick-action-btn voice-btn" onclick="window.App.switchTab('pronunciation')">
+                <span>🗣️ ออกเสียง</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab 2: Etymology & Mnemonic Story -->
+        <section class="view-section" id="section-etymology">
+          <div class="etymology-scroll-view">
+
+            <!-- Top Return Header to Mindmap -->
+            <div class="view-return-bar" onclick="window.App.switchTab('mindmap')">
+              <span class="return-arrow">◀</span>
+              <span>กลับสู่ผังรากศัพท์</span>
+            </div>
+
+            <!-- Sub-tab navigation: splits a long page into short focused panes -->
+            <div class="etym-subtab-bar" id="etym-subtab-bar">
+              <button class="etym-subtab-btn active" data-etym-tab="char">🈶 ตัวอักษร</button>
+              <button class="etym-subtab-btn" data-etym-tab="radical">🧩 รากศัพท์</button>
+              <button class="etym-subtab-btn" data-etym-tab="story">📜 ที่มา</button>
+              <button class="etym-subtab-btn" data-etym-tab="vocab">🌿 คำศัพท์</button>
+            </div>
+
+            <!-- Pane 1: Character Hero + Stroke Order Studio -->
+            <div class="etym-pane active" id="etym-pane-char">
+              <div id="etymology-hero-card"><!-- Populated by js/app.js --></div>
+
+              <div class="stroke-studio-card">
+                <div class="box-title">
+                  <span class="icon">✍️</span>
+                  <span>แอนิเมชันลำดับการเขียนขีด (Stroke Order & Anatomy)</span>
+                </div>
+
+                <div class="stroke-canvas-box">
+                  <canvas id="stroke-canvas" width="220" height="220"></canvas>
+                </div>
+
+                <div class="stroke-step-label" id="stroke-step-label">
+                  แตะปุ่มเริ่มเพื่อดูลำดับขีดทีละเส้น
+                </div>
+
+                <div class="stroke-controls-row">
+                  <button class="btn-ctrl primary" id="btn-stroke-play">▶ เล่นแอนิเมชัน</button>
+                  <button class="btn-ctrl" id="btn-stroke-prev">◀ ก่อนหน้า</button>
+                  <button class="btn-ctrl" id="btn-stroke-next">ถัดไป ▶</button>
+                  <button class="btn-ctrl" id="btn-stroke-reset">⟲ รีเซ็ต</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pane 2: Component Breakdown Formula -->
+            <div class="etym-pane" id="etym-pane-radical">
+              <div id="etymology-components-card"><!-- Populated by js/app.js --></div>
+            </div>
+
+            <!-- Pane 3: Origin Story + Mnemonic Hook -->
+            <div class="etym-pane" id="etym-pane-story">
+              <div id="etymology-story-card"><!-- Populated by js/app.js --></div>
+            </div>
+
+            <!-- Pane 4: Compound Words + Example Sentences -->
+            <div class="etym-pane" id="etym-pane-vocab">
+              <div id="etymology-vocab-card"><!-- Populated by js/app.js --></div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Tab 3: Pronunciation & Tone Studio -->
+        <section class="view-section" id="section-pronunciation">
+          <div class="pronunciation-scroll-view" id="pronunciation-studio-content">
+            <!-- Top Return Header to Mindmap -->
+            <div class="view-return-bar" onclick="window.App.switchTab('mindmap')">
+              <span class="return-arrow">◀</span>
+              <span>กลับสู่ผังรากศัพท์</span>
+            </div>
+            <!-- Populated by js/app.js -->
+          </div>
+        </section>
+
+        <!-- Tab 4: Spaced Repetition (SRS) Flashcards -->
+        <section class="view-section" id="section-srs">
+          <div id="srs-container">
+            <!-- Populated by js/srs-engine.js -->
+          </div>
+        </section>
+
+        <!-- Tab 5: Radical Fusion Workshop -->
+        <section class="view-section" id="section-fusion">
+          <div id="fusion-container">
+            <!-- Populated by js/radical-fusion.js -->
+          </div>
+        </section>
+
+        <!-- Tab 6: 214 Radicals Library Index -->
+        <section class="view-section" id="section-radicals">
+          <div class="radicals-library-view" id="radicals-library-content">
+            <!-- Populated by js/app.js -->
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Bottom Tab Bar Navigation (4 Core Pillars) -->
+      <nav class="app-tab-bar">
+        <button class="tab-nav-btn active" data-tab="mindmap">
+          <span class="tab-icon">🌿</span>
+          <span class="tab-label">ผังรากศัพท์</span>
+        </button>
+        <button class="tab-nav-btn" data-tab="srs">
+          <span class="tab-icon">🧠</span>
+          <span class="tab-label">ทบทวน</span>
+        </button>
+        <button class="tab-nav-btn" data-tab="fusion">
+          <span class="tab-icon">⚗️</span>
+          <span class="tab-label">ปรุงอักษร</span>
+        </button>
+        <button class="tab-nav-btn" data-tab="radicals">
+          <span class="tab-icon">📚</span>
+          <span class="tab-label">214 ราก</span>
+        </button>
+      </nav>
+
+    </div>
+  </div>
+
+  <!-- JavaScript Engines & Datasets -->
+  <script src="js/data/radicals_catalog.js?v=4.4"></script>
+  <script src="js/data/radicals.js?v=4.4"></script>
+  <script src="js/data/characters.js?v=4.4"></script>
+  <script src="js/data/hanzi-lexicon.js?v=4.4"></script>
+  <script src="js/data/premium-config.js?v=4.4"></script>
+  <script src="js/db/database.js?v=4.4"></script>
+  <script src="js/srs-engine.js?v=4.4"></script>
+  <script src="js/audio-pronounce.js?v=4.4"></script>
+  <script src="js/stroke-animator.js?v=4.4"></script>
+  <script src="js/mindmap.js?v=4.4"></script>
+  <script src="js/radical-fusion.js?v=4.4"></script>
+  <script src="js/paywall.js?v=4.4"></script>
+  <script src="js/app.js?v=4.4"></script>
+</body>
+</html>

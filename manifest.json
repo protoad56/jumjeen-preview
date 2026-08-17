@@ -1,0 +1,25 @@
+{
+  "name": "จำจีน · รากศัพท์ภาษาจีน (JumJeen)",
+  "short_name": "จำจีน",
+  "description": "เรียนรู้และจดจำคำศัพท์ภาษาจีนจากผังรากศัพท์ Mindmap 214 คังซี พร้อมเรื่องราวดั้งเดิม การออกเสียง และระบบทบทวน SM-2",
+  "start_url": "./index.html",
+  "id": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fcf9f2",
+  "theme_color": "#d33828",
+  "lang": "th",
+  "dir": "ltr",
+  "categories": ["education", "reference"],
+  "icons": [
+    { "src": "icons/icon-48.webp", "sizes": "48x48", "type": "image/webp" },
+    { "src": "icons/icon-72.webp", "sizes": "72x72", "type": "image/webp" },
+    { "src": "icons/icon-96.webp", "sizes": "96x96", "type": "image/webp" },
+    { "src": "icons/icon-128.webp", "sizes": "128x128", "type": "image/webp" },
+    { "src": "icons/icon-192.webp", "sizes": "192x192", "type": "image/webp", "purpose": "any" },
+    { "src": "icons/icon-192.webp", "sizes": "192x192", "type": "image/webp", "purpose": "maskable" },
+    { "src": "icons/icon-256.webp", "sizes": "256x256", "type": "image/webp" },
+    { "src": "icons/icon-512.webp", "sizes": "512x512", "type": "image/webp", "purpose": "any" },
+    { "src": "icons/icon-512.webp", "sizes": "512x512", "type": "image/webp", "purpose": "maskable" }
+  ]
+}

@@ -1,0 +1,443 @@
+/* Interactive Dynamic Radical Mindmap Styles (On-Canvas Non-Overlapping Leaf Branching) */
+
+/* Must be gated on .active: an ID selector alone would outrank
+   .view-section.active's display:block and force this section to stay
+   visible even when a different tab is active. */
+#section-mindmap.active {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+
+.mindmap-wrapper {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 480px;
+  overflow: hidden;
+  background-color: var(--bg-parchment);
+  background-image: radial-gradient(var(--ink-border-light) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+  user-select: none;
+  cursor: grab;
+}
+
+.mindmap-wrapper:active {
+  cursor: grabbing;
+}
+
+/* SVG and HTML Canvas Layers */
+.mindmap-svg-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.mindmap-nodes-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: center center;
+  pointer-events: none;
+}
+
+/* Curved Bezier Links */
+.mindmap-link {
+  fill: none;
+  stroke: var(--ink-border);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  transition: stroke 0.25s ease, stroke-width 0.25s ease;
+}
+
+.mindmap-link.active-link {
+  stroke: var(--c-vermilion);
+  stroke-width: 3;
+  stroke-dasharray: 6 3;
+  animation: linkPulse 20s linear infinite;
+}
+
+.mindmap-link.compound-link {
+  stroke: var(--c-jade);
+  stroke-width: 1.8;
+  stroke-dasharray: 4 2;
+  animation: linkPulse 15s linear infinite;
+}
+
+.mindmap-link.decompose-link {
+  stroke: var(--c-plum);
+  stroke-width: 2.2;
+}
+
+.mindmap-link.story-link {
+  stroke: var(--c-amber);
+  stroke-width: 1.8;
+  stroke-dasharray: 4 4;
+}
+
+@keyframes linkPulse {
+  to { stroke-dashoffset: -100; }
+}
+
+/* Common Mindmap Node */
+.mindmap-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease, opacity 0.2s ease;
+  user-select: none;
+}
+
+.mindmap-node:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.mindmap-node:active {
+  transform: translate(-50%, -50%) scale(0.96);
+}
+
+/* Dimmed node state when an active branch is focused */
+.mindmap-node.dimmed-node {
+  opacity: 0.38;
+  filter: grayscale(0.25);
+}
+
+/* 1. Center Radical Node */
+.mindmap-node.center-radical {
+  width: 72px;
+  height: 72px;
+  background: radial-gradient(circle, var(--bg-surface-elevated) 40%, var(--bg-surface-subtle) 100%);
+  border: 2.5px solid var(--c-vermilion);
+  border-radius: 50%;
+  box-shadow: 0 0 0 5px var(--c-vermilion-soft), var(--shadow-md);
+  z-index: 50;
+  text-align: center;
+  animation: centerPulsate 3s ease-in-out infinite alternate;
+}
+
+@keyframes centerPulsate {
+  from { box-shadow: 0 0 0 5px var(--c-vermilion-soft), var(--shadow-md); }
+  to { box-shadow: 0 0 0 10px var(--c-vermilion-soft), var(--shadow-lg); }
+}
+
+.center-radical .node-hanzi {
+  font-family: var(--font-hanzi);
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--c-vermilion);
+  line-height: 1;
+}
+
+.center-radical .node-pinyin {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+}
+
+.center-radical .node-thai {
+  font-size: 8px;
+  color: var(--ink-tertiary);
+  max-width: 58px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 2. Character Nodes (First Level) */
+.mindmap-node.char-node {
+  width: 52px;
+  height: 52px;
+  background: var(--bg-surface);
+  border: 1.5px solid var(--ink-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  z-index: 40;
+  text-align: center;
+  padding: 2px;
+}
+
+.mindmap-node.char-node.selected {
+  border-color: var(--c-vermilion);
+  background: var(--bg-surface-elevated);
+  box-shadow: 0 0 0 4px var(--c-vermilion-soft), var(--shadow-md);
+  transform: translate(-50%, -50%) scale(1.12);
+  z-index: 45;
+}
+
+.char-node .node-hanzi {
+  font-family: var(--font-hanzi);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink-primary);
+  line-height: 1;
+}
+
+.char-node .node-pinyin {
+  font-size: 9px;
+  font-weight: 700;
+  margin-top: 1px;
+}
+
+.char-node .node-thai {
+  font-size: 7.5px;
+  color: var(--ink-secondary);
+  white-space: nowrap;
+  max-width: 44px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Tone Tag Color Classes */
+.tone-tag-1 { color: var(--tone-1) !important; }
+.tone-tag-2 { color: var(--tone-2) !important; }
+.tone-tag-3 { color: var(--tone-3) !important; }
+.tone-tag-4 { color: var(--tone-4) !important; }
+
+/* 3. On-Canvas Leaf Nodes (Second Level: Compound Words) */
+.mindmap-node.compound-leaf.on-canvas-leaf {
+  background: var(--bg-surface-elevated);
+  border: 1.5px solid var(--c-jade);
+  border-radius: var(--radius-pill);
+  padding: 4px 9px;
+  box-shadow: 0 2px 8px rgba(30, 111, 80, 0.12);
+  z-index: 42;
+  min-width: 66px;
+  text-align: center;
+}
+
+.on-canvas-leaf:hover {
+  background: var(--c-jade-soft);
+  border-color: var(--c-jade);
+  box-shadow: var(--shadow-md);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.on-canvas-leaf.active-leaf {
+  background: var(--c-jade-soft);
+  border: 2px solid var(--c-jade);
+  box-shadow: 0 4px 14px rgba(30, 111, 80, 0.35);
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.on-canvas-leaf .node-hanzi {
+  font-family: var(--font-hanzi);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-jade);
+}
+
+.on-canvas-leaf .node-pinyin {
+  font-size: 8.5px;
+  color: var(--ink-secondary);
+  font-weight: 600;
+}
+
+.on-canvas-leaf .node-thai {
+  font-size: 7.5px;
+  color: var(--ink-tertiary);
+  max-width: 60px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 4. Orbit Pagination Controls (Floating cleanly above Quick Inspector Bar) */
+.orbit-pagination-bar {
+  position: absolute;
+  bottom: 64px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-surface-elevated);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--ink-border-light);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  z-index: 90;
+}
+
+.orbit-page-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--ink-primary);
+}
+
+.orbit-page-badge strong {
+  color: var(--c-vermilion);
+}
+
+.orbit-page-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.orbit-page-num {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+}
+
+.orbit-page-btn {
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--ink-border);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--ink-primary);
+  cursor: pointer;
+  transition: all var(--duration-fast);
+}
+
+.orbit-page-btn:hover:not(:disabled) {
+  background: var(--c-vermilion);
+  color: #ffffff;
+  border-color: var(--c-vermilion);
+}
+
+.orbit-page-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Decompose View Nodes */
+.mindmap-node.center-character-decompose {
+  min-width: 84px;
+  max-width: 132px;
+  min-height: 76px;
+  padding: 10px 10px;
+  background: var(--bg-surface);
+  border: 2.5px solid var(--c-vermilion);
+  border-radius: 20px;
+  box-shadow: 0 0 0 5px var(--c-vermilion-soft), var(--shadow-md);
+  z-index: 60;
+  text-align: center;
+}
+
+.center-character-decompose .node-hanzi {
+  font-family: var(--font-hanzi);
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--c-vermilion);
+  line-height: 1;
+}
+
+.center-character-decompose .node-pinyin {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+  margin-top: 3px;
+  white-space: nowrap;
+}
+
+.center-character-decompose .node-thai {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--ink-tertiary);
+  line-height: 1.25;
+  margin-top: 1px;
+  white-space: normal;
+  word-break: keep-all;
+}
+
+.mindmap-node.component-node {
+  background: var(--bg-surface);
+  border: 1.8px solid var(--c-plum);
+  border-radius: 14px;
+  padding: 6px 10px;
+  box-shadow: var(--shadow-sm);
+  z-index: 50;
+  min-width: 80px;
+  text-align: center;
+}
+
+.node-badge {
+  font-size: 8.5px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--c-plum);
+  padding: 1px 5px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+}
+
+.component-node.body-comp {
+  border-color: var(--c-indigo);
+}
+.component-node.body-comp .node-badge {
+  background: var(--c-indigo);
+}
+
+.component-node .node-hanzi {
+  font-family: var(--font-hanzi);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink-primary);
+}
+
+.component-node .node-pinyin {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--ink-secondary);
+}
+
+.component-node .node-thai {
+  font-size: 8px;
+  color: var(--ink-tertiary);
+}
+
+/* Story Capsule in Decompose View */
+.mindmap-node.story-capsule {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--c-amber);
+  border-radius: var(--radius-pill);
+  padding: 6px 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  box-shadow: var(--shadow-sm);
+  z-index: 50;
+  white-space: nowrap;
+}
+
+.story-capsule .capsule-icon {
+  font-size: 13px;
+}
+
+.story-capsule .capsule-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--c-amber);
+  display: block;
+}
+
+.story-capsule .capsule-sub {
+  font-size: 8.5px;
+  color: var(--ink-secondary);
+  display: block;
+}
+
+.story-capsule.modern-capsule {
+  border-color: var(--c-jade);
+}
+.story-capsule.modern-capsule .capsule-title {
+  color: var(--c-jade);
+}

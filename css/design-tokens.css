@@ -1,0 +1,94 @@
+/* Design Tokens: Chinese Radical Mindmap (HanziMind - 汉字根源) */
+:root {
+  /* Color Palette - Modern Oriental Minimalist */
+  --bg-parchment: #fcf9f2;
+  --bg-parchment-warm: #f6f0e4;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #ffffff;
+  --bg-surface-subtle: #f8f5ee;
+  
+  /* Ink & Typography Colors */
+  --ink-primary: #1c1c1e;
+  --ink-secondary: #48484a;
+  --ink-tertiary: #8e8e93;
+  --ink-quaternary: #aeaeb2;
+  --ink-border: #e5dfd5;
+  --ink-border-light: #f0ebe2;
+
+  /* Traditional Chinese Aesthetic Accents */
+  --c-vermilion: #d33828;      /* 硃砂红 - Cinnabar/Vermilion */
+  --c-vermilion-soft: #fdeee9;
+  --c-vermilion-glow: rgba(211, 56, 40, 0.15);
+  
+  --c-jade: #21835f;           /* 翡翠绿 - Imperial Jade */
+  --c-jade-soft: #eaf6f1;
+  --c-jade-glow: rgba(33, 131, 95, 0.15);
+
+  --c-amber: #d97706;          /* 琥珀金 - Amber Gold */
+  --c-amber-soft: #fef3c7;
+
+  --c-indigo: #275284;         /* 景德青 - Indigo Ceramic */
+  --c-indigo-soft: #eef4fb;
+
+  --c-plum: #7e3b6a;           /* 黛紫 - Plum Orchid */
+  --c-plum-soft: #fbf0f8;
+
+  /* Tone Colors for Chinese Learning */
+  --tone-1: #e11d48; /* Tone 1 - High Flat 55 (Red/Coral) */
+  --tone-2: #059669; /* Tone 2 - Rising 35 (Jade Green) */
+  --tone-3: #2563eb; /* Tone 3 - Dipping 214 (Royal Blue) */
+  --tone-4: #d97706; /* Tone 4 - Falling 51 (Amber Orange) */
+  --tone-5: #6b7280; /* Neutral Tone (Muted Gray) */
+
+  /* Typography */
+  --font-hanzi: "Noto Serif SC", "Songti SC", "SimSun", "STSong", serif;
+  --font-hanzi-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-ui: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Sarabun", sans-serif;
+  --font-thai: "Sarabun", "Plus Jakarta Sans", -apple-system, sans-serif;
+
+  /* Elevation & Shadows */
+  --shadow-sm: 0 2px 6px rgba(44, 38, 29, 0.04);
+  --shadow-md: 0 6px 18px rgba(44, 38, 29, 0.08);
+  --shadow-lg: 0 14px 32px rgba(44, 38, 29, 0.12);
+  --shadow-floating: 0 20px 40px rgba(44, 38, 29, 0.16);
+
+  /* Radius */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 9999px;
+
+  /* Transition Curves */
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 260ms;
+  --duration-slow: 400ms;
+}
+
+/* Dark Mode Tokens */
+body.dark-theme {
+  --bg-parchment: #121316;
+  --bg-parchment-warm: #181a1f;
+  --bg-surface: #1f2228;
+  --bg-surface-elevated: #262a32;
+  --bg-surface-subtle: #191b20;
+
+  --ink-primary: #f2f2f7;
+  --ink-secondary: #aeaeb2;
+  --ink-tertiary: #636366;
+  --ink-quaternary: #3a3a3c;
+  --ink-border: #2c3038;
+  --ink-border-light: #22252c;
+
+  --c-vermilion-soft: rgba(211, 56, 40, 0.2);
+  --c-jade-soft: rgba(33, 131, 95, 0.2);
+  --c-amber-soft: rgba(217, 119, 6, 0.2);
+  --c-indigo-soft: rgba(39, 82, 132, 0.2);
+  --c-plum-soft: rgba(126, 59, 106, 0.2);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.6);
+}
