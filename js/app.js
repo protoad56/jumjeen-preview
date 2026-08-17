@@ -92,6 +92,18 @@ class HanziMindApp {
       });
     }
 
+    // Simplified / Traditional radical-label toggle
+    const scriptBtn = document.getElementById("btn-script-toggle");
+    if (scriptBtn) {
+      scriptBtn.addEventListener("click", () => {
+        const mode = window.ScriptMode.toggle();
+        scriptBtn.textContent = mode === "traditional" ? "繁" : "简";
+        scriptBtn.title = mode === "traditional" ? "กำลังโชว์ตัวเต็ม (แตะเพื่อสลับเป็นตัวย่อ)" : "กำลังโชว์ตัวย่อ (แตะเพื่อสลับเป็นตัวเต็ม)";
+        this.renderRadicalPills();
+        if (this.activeTab === "radicals") this.renderRadicalsLibrary();
+      });
+    }
+
     // Viewport Mode (Mobile Frame vs Fullscreen Web)
     const frameBtn = document.getElementById("btn-frame-toggle");
     if (frameBtn) {
@@ -266,7 +278,8 @@ class HanziMindApp {
       <button class="radical-pill" style="background: var(--c-amber-soft); border-color: var(--c-amber); color: var(--c-amber); font-weight: 700;" onclick="window.App.switchTab('radicals')">
         <span>📚 ดูครบ 214 ราก</span>
       </button>
-    ` + shortcuts.map(radKey => {
+    ` + shortcuts.map(simpKey => {
+      const radKey = window.ScriptMode ? window.ScriptMode.pillTarget(simpKey) : simpKey;
       const rad = this.mindmap.getRadicalData(radKey);
       const isSelected = (radKey === this.currentRadical);
       const isLocked = window.PremiumGate && !window.PremiumGate.canAccessRadical(radKey);
@@ -664,7 +677,9 @@ class HanziMindApp {
         const kw = this.radicalSearchKeyword.toLowerCase();
         const kwNorm = window.DB ? window.DB.normalizePinyin(kw) : kw;
         const pinyinNorm = window.DB ? window.DB.normalizePinyin(r.pinyin) : r.pinyin.toLowerCase();
+        const displayChar = window.ScriptMode ? window.ScriptMode.displayChar(r.char) : r.char;
         const match = r.char.includes(kw) ||
+                      displayChar.includes(kw) ||
                       r.pinyin.toLowerCase().includes(kw) ||
                       pinyinNorm.includes(kwNorm) ||
                       r.thai.toLowerCase().includes(kw) ||
@@ -710,12 +725,14 @@ class HanziMindApp {
       <!-- Compact 214 Cards Grid -->
       <div class="radicals-cards-grid">
         ${filtered.map(rad => {
-          const isLocked = window.PremiumGate && !window.PremiumGate.canAccessRadical(rad.char);
+          const navTarget = window.ScriptMode ? window.ScriptMode.navigationTarget(rad.char) : rad.char;
+          const displayChar = window.ScriptMode ? window.ScriptMode.displayChar(rad.char) : rad.char;
+          const isLocked = window.PremiumGate && !window.PremiumGate.canAccessRadical(navTarget);
           return `
-            <div class="rad-lib-card ${isLocked ? 'locked' : ''}" onclick="window.App.openRadicalFromLibrary('${rad.char}')">
+            <div class="rad-lib-card ${isLocked ? 'locked' : ''}" onclick="window.App.openRadicalFromLibrary('${navTarget}')">
               ${isLocked ? '<span class="lock-badge">🔒</span>' : ''}
               <div class="rad-lib-top">
-                <div class="rad-lib-hanzi">${rad.char}</div>
+                <div class="rad-lib-hanzi">${displayChar}</div>
                 <div class="rad-lib-meta">
                   <span class="rad-lib-pinyin">#${rad.num} · ${rad.pinyin}</span>
                   <span class="rad-lib-cat">${rad.strokes} ขีด · ${rad.cat.split('และ')[0]}</span>
