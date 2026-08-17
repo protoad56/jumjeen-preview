@@ -118,66 +118,6 @@ body.dark-theme .desktop-preview-container {
   box-shadow: var(--shadow-lg);
 }
 
-/* ============================================================
-   Real Device Mode: on an actual phone (native app wrapper or a
-   mobile browser), the desktop "phone-in-a-browser" mockup frame
-   — decorative bezel, fake notch, hardcoded 09:41 status bar, the
-   desktop-only view-toggle bar — must not render. The app instead
-   fills the real screen edge-to-edge, using the OS's own status
-   bar / notch and safe-area insets.
-   ============================================================ */
-@media (max-width: 480px) {
-  /* Brand badge + "fullscreen mode" toggle only make sense in the desktop
-     demo layout; on a real device we're already fullscreen. Keep just the
-     theme toggle, floated as a small corner button over the app content. */
-  .global-demo-bar .brand-badge,
-  #btn-frame-toggle {
-    display: none;
-  }
-
-  .global-demo-bar {
-    position: fixed;
-    top: env(safe-area-inset-top);
-    right: 4px;
-    left: auto;
-    width: auto;
-    max-width: none;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    padding: 8px;
-    margin: 0;
-    z-index: 1200;
-  }
-
-  .desktop-preview-container {
-    min-height: 100dvh;
-    padding: 0;
-    background: var(--bg-parchment);
-  }
-
-  .app-viewport-wrapper {
-    max-width: none;
-    width: 100vw;
-    height: 100dvh;
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  .mobile-notch,
-  .mobile-status-bar {
-    display: none;
-  }
-
-  .app-header {
-    padding-top: calc(10px + env(safe-area-inset-top));
-  }
-
-  .app-tab-bar {
-    padding-bottom: calc(8px + env(safe-area-inset-bottom));
-  }
-}
-
 /* iPhone Dynamic Island / Bezel */
 .mobile-notch {
   position: absolute;
@@ -635,4 +575,69 @@ body.dark-theme .desktop-preview-container {
 .quick-action-btn.voice-btn:hover {
   border-color: var(--c-vermilion);
   color: var(--c-vermilion);
+}
+
+/* ============================================================
+   Real Device Mode: on an actual phone (native app wrapper or a
+   mobile browser), the desktop "phone-in-a-browser" mockup frame
+   — decorative bezel, fake notch, hardcoded 09:41 status bar, the
+   desktop-only view-toggle bar — must not render. The app instead
+   fills the real screen edge-to-edge, using the OS's own status
+   bar / notch and safe-area insets.
+   Kept at the END of this file on purpose: several rules below
+   target the same selectors as earlier base rules (.mobile-notch,
+   .mobile-status-bar, .app-header, .app-tab-bar) with equal CSS
+   specificity — being inside a @media block does NOT win a cascade
+   tie, only source order does. Moving this earlier silently breaks
+   it again (this happened once already). */
+@media (max-width: 480px) {
+  /* Brand badge + "fullscreen mode" toggle only make sense in the desktop
+     demo layout; on a real device we're already fullscreen. Keep just the
+     theme toggle, floated as a small corner button over the app content. */
+  .global-demo-bar .brand-badge,
+  #btn-frame-toggle {
+    display: none;
+  }
+
+  .global-demo-bar {
+    position: fixed;
+    top: env(safe-area-inset-top);
+    right: 4px;
+    left: auto;
+    width: auto;
+    max-width: none;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 8px;
+    margin: 0;
+    z-index: 1200;
+  }
+
+  .desktop-preview-container {
+    min-height: 100dvh;
+    padding: 0;
+    background: var(--bg-parchment);
+  }
+
+  .app-viewport-wrapper {
+    max-width: none;
+    width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .mobile-notch,
+  .mobile-status-bar {
+    display: none;
+  }
+
+  .app-header {
+    padding-top: calc(10px + env(safe-area-inset-top));
+  }
+
+  .app-tab-bar {
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
+  }
 }
