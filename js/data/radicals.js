@@ -1187,24 +1187,6 @@ const RADICALS_DATA = {
       "成"
     ]
   },
-  "戶": {
-    "id": "戶",
-    "name": "戶 (hù)",
-    "pinyin": "hù",
-    "thaiMeaning": "ประตูบานเดี่ยว / ครัวเรือน (户)",
-    "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 戶 สื่อถึง ประตูบานเดี่ยว / ครัวเรือน (户)",
-    "category": "สิ่งปลูกสร้าง",
-    "strokeCount": 4,
-    "frequency": "สูง",
-    "themeColor": "var(--c-vermilion)",
-    "themeSoft": "var(--c-vermilion-soft)",
-    "description": "รากศัพท์ '戶' (ประตูบานเดี่ยว / ครัวเรือน (户)) จัดอยู่ในหมวด สิ่งปลูกสร้าง เป็นรากศัพท์คังซีลำดับที่ 63",
-    "characterIds": [
-      "房",
-      "所",
-      "扇"
-    ]
-  },
   "手": {
     "id": "手",
     "name": "手 / 扌 (shǒu)",
@@ -1675,9 +1657,9 @@ const RADICALS_DATA = {
       "爽"
     ]
   },
-  "爿": {
-    "id": "爿",
-    "name": "爿 (qiáng)",
+  "丬": {
+    "id": "丬",
+    "name": "丬 (qiáng)",
     "pinyin": "qiáng",
     "thaiMeaning": "ท่อนไม้ผ่าซีก / เตียงนอน (丬)",
     "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 爿 สื่อถึง ท่อนไม้ผ่าซีก / เตียงนอน (丬)",
@@ -1899,9 +1881,9 @@ const RADICALS_DATA = {
       "町"
     ]
   },
-  "疋": {
-    "id": "疋",
-    "name": "疋 (pǐ)",
+  "匹": {
+    "id": "匹",
+    "name": "匹 (pǐ)",
     "pinyin": "pǐ",
     "thaiMeaning": "ม้วนผ้า / เท้าก้าวเดิน (𤴔)",
     "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 疋 สื่อถึง ม้วนผ้า / เท้าก้าวเดิน (𤴔)",
@@ -2572,9 +2554,9 @@ const RADICALS_DATA = {
       "艳"
     ]
   },
-  "艸": {
-    "id": "艸",
-    "name": "艸 (cǎo)",
+  "草": {
+    "id": "草",
+    "name": "草 (cǎo)",
     "pinyin": "cǎo",
     "thaiMeaning": "หญ้า / พืชสมุนไพร (艹)",
     "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 艸 สื่อถึง หญ้า / พืชสมุนไพร (艹)",
@@ -2701,20 +2683,19 @@ const RADICALS_DATA = {
       "覆"
     ]
   },
-  "見": {
-    "id": "見",
-    "name": "見 (jiàn)",
+  "见": {
+    "id": "见",
+    "name": "见 (jiàn)",
     "pinyin": "jiàn",
-    "thaiMeaning": "มองเห็น / พบเจอ (见)",
-    "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 見 สื่อถึง มองเห็น / พบเจอ (见)",
+    "thaiMeaning": "มองเห็น / พบเจอ",
+    "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 见 สื่อถึง มองเห็น / พบเจอ",
     "category": "การกระทำและอาการ",
-    "strokeCount": 7,
+    "strokeCount": 4,
     "frequency": "สูงมาก",
     "themeColor": "var(--c-vermilion)",
     "themeSoft": "var(--c-vermilion-soft)",
-    "description": "รากศัพท์ '見' (มองเห็น / พบเจอ (见)) จัดอยู่ในหมวด การกระทำและอาการ เป็นรากศัพท์คังซีลำดับที่ 147",
+    "description": "รากศัพท์ '见' (มองเห็น / พบเจอ) จัดอยู่ในหมวด การกระทำและอาการ เป็นรากศัพท์คังซีลำดับที่ 147",
     "characterIds": [
-      "见",
       "观",
       "觉"
     ]
@@ -2820,24 +2801,6 @@ const RADICALS_DATA = {
       "貂"
     ]
   },
-  "貝": {
-    "id": "貝",
-    "name": "貝 (bèi)",
-    "pinyin": "bèi",
-    "thaiMeaning": "เปลือกหอยเบี้ย / เงินตรา (贝)",
-    "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 貝 สื่อถึง เปลือกหอยเบี้ย / เงินตรา (贝)",
-    "category": "การเงินและสิ่งมีค่า",
-    "strokeCount": 7,
-    "frequency": "สูงที่สุด",
-    "themeColor": "var(--c-vermilion)",
-    "themeSoft": "var(--c-vermilion-soft)",
-    "description": "รากศัพท์ '貝' (เปลือกหอยเบี้ย / เงินตรา (贝)) จัดอยู่ในหมวด การเงินและสิ่งมีค่า เป็นรากศัพท์คังซีลำดับที่ 154",
-    "characterIds": [
-      "财",
-      "负",
-      "贤"
-    ]
-  },
   "赤": {
     "id": "赤",
     "name": "赤 (chì)",
@@ -2917,22 +2880,6 @@ const RADICALS_DATA = {
       "躬",
       "躲",
       "躺"
-    ]
-  },
-  "車": {
-    "id": "車",
-    "name": "車 (chē)",
-    "pinyin": "chē",
-    "thaiMeaning": "รถ / เกวียนล้อหมุน (车)",
-    "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 車 สื่อถึง รถ / เกวียนล้อหมุน (车)",
-    "category": "ยานพาหนะและการเดินทาง",
-    "strokeCount": 7,
-    "frequency": "สูงมาก",
-    "themeColor": "var(--c-vermilion)",
-    "themeSoft": "var(--c-vermilion-soft)",
-    "description": "รากศัพท์ '車' (รถ / เกวียนล้อหมุน (车)) จัดอยู่ในหมวด ยานพาหนะและการเดินทาง เป็นรากศัพท์คังซีลำดับที่ 159",
-    "characterIds": [
-      "軛"
     ]
   },
   "辛": {
@@ -3078,9 +3025,9 @@ const RADICALS_DATA = {
       "鉴"
     ]
   },
-  "長": {
-    "id": "長",
-    "name": "長 (cháng)",
+  "长": {
+    "id": "长",
+    "name": "长 (cháng)",
     "pinyin": "cháng",
     "thaiMeaning": "ยาว / เติบโต (长)",
     "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 長 สื่อถึง ยาว / เติบโต (长)",
@@ -3092,24 +3039,6 @@ const RADICALS_DATA = {
     "description": "รากศัพท์ '長' (ยาว / เติบโต (长)) จัดอยู่ในหมวด สภาพและลักษณะ เป็นรากศัพท์คังซีลำดับที่ 168",
     "characterIds": [
       "镻"
-    ]
-  },
-  "門": {
-    "id": "門",
-    "name": "門 (mén)",
-    "pinyin": "mén",
-    "thaiMeaning": "ประตูคู่บานใหญ่ (门)",
-    "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 門 สื่อถึง ประตูคู่บานใหญ่ (门)",
-    "category": "สิ่งปลูกสร้าง",
-    "strokeCount": 8,
-    "frequency": "สูงมาก",
-    "themeColor": "var(--c-vermilion)",
-    "themeSoft": "var(--c-vermilion-soft)",
-    "description": "รากศัพท์ '門' (ประตูคู่บานใหญ่ (门)) จัดอยู่ในหมวด สิ่งปลูกสร้าง เป็นรากศัพท์คังซีลำดับที่ 169",
-    "characterIds": [
-      "问",
-      "闭",
-      "闯"
     ]
   },
   "阜": {
@@ -3254,9 +3183,9 @@ const RADICALS_DATA = {
       "鞋"
     ]
   },
-  "韋": {
-    "id": "韋",
-    "name": "韋 (wéi)",
+  "韦": {
+    "id": "韦",
+    "name": "韦 (wéi)",
     "pinyin": "wéi",
     "thaiMeaning": "หนังฟอกนุ่ม (韦)",
     "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 韋 สื่อถึง หนังฟอกนุ่ม (韦)",
@@ -3304,27 +3233,9 @@ const RADICALS_DATA = {
       "韵"
     ]
   },
-  "頁": {
-    "id": "頁",
-    "name": "頁 (yè)",
-    "pinyin": "yè",
-    "thaiMeaning": "ศีรษะ / หน้ากระดาษ (页)",
-    "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 頁 สื่อถึง ศีรษะ / หน้ากระดาษ (页)",
-    "category": "ร่างกายและสิ่งของ",
-    "strokeCount": 9,
-    "frequency": "สูงมาก",
-    "themeColor": "var(--c-vermilion)",
-    "themeSoft": "var(--c-vermilion-soft)",
-    "description": "รากศัพท์ '頁' (ศีรษะ / หน้ากระดาษ (页)) จัดอยู่ในหมวด ร่างกายและสิ่งของ เป็นรากศัพท์คังซีลำดับที่ 181",
-    "characterIds": [
-      "顶",
-      "项",
-      "顺"
-    ]
-  },
-  "風": {
-    "id": "風",
-    "name": "風 (fēng)",
+  "风": {
+    "id": "风",
+    "name": "风 (fēng)",
     "pinyin": "fēng",
     "thaiMeaning": "สายลม / ลมพัด (风)",
     "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 風 สื่อถึง สายลม / ลมพัด (风)",
@@ -3339,9 +3250,9 @@ const RADICALS_DATA = {
       "飓"
     ]
   },
-  "飛": {
-    "id": "飛",
-    "name": "飛 (fēi)",
+  "飞": {
+    "id": "飞",
+    "name": "飞 (fēi)",
     "pinyin": "fēi",
     "thaiMeaning": "โบยบิน / นกบิน (飞)",
     "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 飛 สื่อถึง โบยบิน / นกบิน (飞)",
@@ -3403,22 +3314,6 @@ const RADICALS_DATA = {
       "馨"
     ]
   },
-  "馬": {
-    "id": "馬",
-    "name": "馬 (mǎ)",
-    "pinyin": "mǎ",
-    "thaiMeaning": "ม้า / ความรวดเร็ว (马)",
-    "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 馬 สื่อถึง ม้า / ความรวดเร็ว (马)",
-    "category": "สัตว์และธรรมชาติ",
-    "strokeCount": 10,
-    "frequency": "สูงมาก",
-    "themeColor": "var(--c-vermilion)",
-    "themeSoft": "var(--c-vermilion-soft)",
-    "description": "รากศัพท์ '馬' (ม้า / ความรวดเร็ว (马)) จัดอยู่ในหมวด สัตว์และธรรมชาติ เป็นรากศัพท์คังซีลำดับที่ 187",
-    "characterIds": [
-      "驼"
-    ]
-  },
   "骨": {
     "id": "骨",
     "name": "骨 (gǔ)",
@@ -3466,22 +3361,6 @@ const RADICALS_DATA = {
     "characterIds": [
       "髦",
       "髻"
-    ]
-  },
-  "鬥": {
-    "id": "鬥",
-    "name": "鬥 (dòu)",
-    "pinyin": "dòu",
-    "thaiMeaning": "การต่อสู้ / ประลองศึก (斗)",
-    "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 鬥 สื่อถึง การต่อสู้ / ประลองศึก (斗)",
-    "category": "การกระทำและการงาน",
-    "strokeCount": 10,
-    "frequency": "ปานกลาง",
-    "themeColor": "var(--c-vermilion)",
-    "themeSoft": "var(--c-vermilion-soft)",
-    "description": "รากศัพท์ '鬥' (การต่อสู้ / ประลองศึก (斗)) จัดอยู่ในหมวด การกระทำและการงาน เป็นรากศัพท์คังซีลำดับที่ 191",
-    "characterIds": [
-      "鬬"
     ]
   },
   "鬯": {
@@ -3534,9 +3413,9 @@ const RADICALS_DATA = {
       "魔"
     ]
   },
-  "魚": {
-    "id": "魚",
-    "name": "魚 (yú)",
+  "鱼": {
+    "id": "鱼",
+    "name": "鱼 (yú)",
     "pinyin": "yú",
     "thaiMeaning": "ปลา / สัตว์น้ำ (鱼)",
     "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 魚 สื่อถึง ปลา / สัตว์น้ำ (鱼)",
@@ -3550,25 +3429,9 @@ const RADICALS_DATA = {
       "魣"
     ]
   },
-  "鳥": {
-    "id": "鳥",
-    "name": "鳥 (niǎo)",
-    "pinyin": "niǎo",
-    "thaiMeaning": "นก / สัตว์ปีก (鸟)",
-    "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 鳥 สื่อถึง นก / สัตว์ปีก (鸟)",
-    "category": "สัตว์และธรรมชาติ",
-    "strokeCount": 11,
-    "frequency": "สูงมาก",
-    "themeColor": "var(--c-vermilion)",
-    "themeSoft": "var(--c-vermilion-soft)",
-    "description": "รากศัพท์ '鳥' (นก / สัตว์ปีก (鸟)) จัดอยู่ในหมวด สัตว์และธรรมชาติ เป็นรากศัพท์คังซีลำดับที่ 196",
-    "characterIds": [
-      "鳯"
-    ]
-  },
-  "鹵": {
-    "id": "鹵",
-    "name": "鹵 (lǔ)",
+  "卤": {
+    "id": "卤",
+    "name": "卤 (lǔ)",
     "pinyin": "lǔ",
     "thaiMeaning": "เกลือสินเธาว์ / ด่าง (卤)",
     "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 鹵 สื่อถึง เกลือสินเธาว์ / ด่าง (卤)",
@@ -3598,9 +3461,9 @@ const RADICALS_DATA = {
       "麒"
     ]
   },
-  "麥": {
-    "id": "麥",
-    "name": "麥 (mài)",
+  "麦": {
+    "id": "麦",
+    "name": "麦 (mài)",
     "pinyin": "mài",
     "thaiMeaning": "ข้าวสาลี / ข้าวบาร์เลย์ (麦)",
     "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 麥 สื่อถึง ข้าวสาลี / ข้าวบาร์เลย์ (麦)",
@@ -3630,9 +3493,9 @@ const RADICALS_DATA = {
       "麾"
     ]
   },
-  "黃": {
-    "id": "黃",
-    "name": "黃 (huáng)",
+  "黄": {
+    "id": "黄",
+    "name": "黄 (huáng)",
     "pinyin": "huáng",
     "thaiMeaning": "สีเหลืองทอง (黄)",
     "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 黃 สื่อถึง สีเหลืองทอง (黄)",
@@ -3696,9 +3559,9 @@ const RADICALS_DATA = {
       "黻"
     ]
   },
-  "黽": {
-    "id": "黽",
-    "name": "黽 (mǐn)",
+  "黾": {
+    "id": "黾",
+    "name": "黾 (mǐn)",
     "pinyin": "mǐn",
     "thaiMeaning": "คางคก / กบ (黾)",
     "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 黽 สื่อถึง คางคก / กบ (黾)",
@@ -3777,9 +3640,9 @@ const RADICALS_DATA = {
       "鼾"
     ]
   },
-  "齊": {
-    "id": "齊",
-    "name": "齊 (qí)",
+  "齐": {
+    "id": "齐",
+    "name": "齐 (qí)",
     "pinyin": "qí",
     "thaiMeaning": "เรียบร้อย / สม่ำเสมอ (齐)",
     "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 齊 สื่อถึง เรียบร้อย / สม่ำเสมอ (齐)",
@@ -3793,9 +3656,9 @@ const RADICALS_DATA = {
       "齑"
     ]
   },
-  "齒": {
-    "id": "齒",
-    "name": "齒 (chǐ)",
+  "齿": {
+    "id": "齿",
+    "name": "齿 (chǐ)",
     "pinyin": "chǐ",
     "thaiMeaning": "ฟัน / ซี่ฟัน (齿)",
     "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 齒 สื่อถึง ฟัน / ซี่ฟัน (齿)",
@@ -3810,9 +3673,9 @@ const RADICALS_DATA = {
       "龋"
     ]
   },
-  "龍": {
-    "id": "龍",
-    "name": "龍 (lóng)",
+  "龙": {
+    "id": "龙",
+    "name": "龙 (lóng)",
     "pinyin": "lóng",
     "thaiMeaning": "มังกร / สัตว์มงคลเทพ (龙)",
     "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 龍 สื่อถึง มังกร / สัตว์มงคลเทพ (龙)",
@@ -3826,9 +3689,9 @@ const RADICALS_DATA = {
       "龛"
     ]
   },
-  "龜": {
-    "id": "龜",
-    "name": "龜 (guī)",
+  "龟": {
+    "id": "龟",
+    "name": "龟 (guī)",
     "pinyin": "guī",
     "thaiMeaning": "เต่า / สัตว์อายุยืน (龟)",
     "ancientPictograph": "ภาพอักษรดั้งเดิมของหมวด 龜 สื่อถึง เต่า / สัตว์อายุยืน (龟)",
@@ -4080,7 +3943,10 @@ const RADICALS_DATA = {
       "货",
       "资",
       "赔",
-      "赚"
+      "赚",
+      "财",
+      "负",
+      "贤"
     ]
   },
   "鸟": {

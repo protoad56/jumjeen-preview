@@ -143,7 +143,7 @@ class RadicalFusionGame {
       { char: "包", pinyin: "bāo", label: "ห่อหุ้ม", cat: "object" },
       { char: "反", pinyin: "fǎn", label: "กลับด้าน", cat: "object" },
       { char: "寸", pinyin: "cùn", label: "นิ้ววัด", cat: "object" },
-      { char: "鳥", pinyin: "niǎo", label: "นก", cat: "animal" },
+      { char: "鸟", pinyin: "niǎo", label: "นก", cat: "animal" },
       { char: "山", pinyin: "shān", label: "ภูเขา", cat: "nature" },
       { char: "石", pinyin: "shí", label: "หิน", cat: "nature" },
       { char: "王", pinyin: "wáng", label: "ราชา", cat: "human" },

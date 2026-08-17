@@ -73,7 +73,7 @@ const RADICALS_CATALOG = [
   // 4 ขีด (Strokes: 4) -> 34 ตัว
   { num: 61, char: "心", pinyin: "xīn", thai: "หัวใจ / จิตใจ / อารมณ์ (忄)", strokes: 4, cat: "ร่างกายและจิตใจ", rank: "สูงที่สุด" },
   { num: 62, char: "戈", pinyin: "gē", thai: "หอกยาว / อาวุธโบราณ", strokes: 4, cat: "เครื่องมือและสิ่งของ", rank: "สูง" },
-  { num: 63, char: "戶", pinyin: "hù", thai: "ประตูบานเดี่ยว / ครัวเรือน (户)", strokes: 4, cat: "สิ่งปลูกสร้าง", rank: "สูง" },
+  { num: 63, char: "户", pinyin: "hù", thai: "ประตูบานเดี่ยว / ครัวเรือน (户)", strokes: 4, cat: "สิ่งปลูกสร้าง", rank: "สูง" },
   { num: 64, char: "手", pinyin: "shǒu", thai: "มือ / การหยิบจับ (扌)", strokes: 4, cat: "ร่างกายและการกระทำ", rank: "สูงที่สุด" },
   { num: 65, char: "支", pinyin: "zhī", thai: "กิ่งไม้ / ค้ำจุน / แยกย่อย", strokes: 4, cat: "ธรรมชาติและพืช", rank: "ปานกลาง" },
   { num: 66, char: "攴", pinyin: "pū", thai: "การตี / เคาะเบาๆ (攵)", strokes: 4, cat: "การกระทำและอาการ", rank: "สูงมาก" },
@@ -100,7 +100,7 @@ const RADICALS_CATALOG = [
   { num: 87, char: "爪", pinyin: "zhǎo", thai: "กรงเล็บ / อุ้งมือ (爫)", strokes: 4, cat: "สัตว์และร่างกาย", rank: "สูง" },
   { num: 88, char: "父", pinyin: "fù", thai: "พ่อ / บิดา / ผู้ทำงานหนัก", strokes: 4, cat: "มนุษย์และสังคม", rank: "สูง" },
   { num: 89, char: "爻", pinyin: "yáo", thai: "เส้นผูกโยง / ยันต์ปากัว", strokes: 4, cat: "ความเชื่อและวัฒนธรรม", rank: "ต่ำ" },
-  { num: 90, char: "爿", pinyin: "qiáng", thai: "ท่อนไม้ผ่าซีก / เตียงนอน (丬)", strokes: 4, cat: "เครื่องมือและสิ่งของ", rank: "ต่ำ" },
+  { num: 90, char: "丬", pinyin: "qiáng", thai: "ท่อนไม้ผ่าซีก / เตียงนอน (丬)", strokes: 4, cat: "เครื่องมือและสิ่งของ", rank: "ต่ำ" },
   { num: 91, char: "片", pinyin: "piàn", thai: "แผ่นไม้บาง / แผ่นชิ้นส่วน", strokes: 4, cat: "เครื่องมือและสิ่งของ", rank: "สูง" },
   { num: 92, char: "牙", pinyin: "yá", thai: "ฟันกราม / เขี้ยวสัตว์", strokes: 4, cat: "ร่างกายและสัตว์", rank: "ปานกลาง" },
   { num: 93, char: "牛", pinyin: "niú", thai: "วัว / โค (牜)", strokes: 4, cat: "สัตว์และธรรมชาติ", rank: "สูงมาก" },
@@ -115,7 +115,7 @@ const RADICALS_CATALOG = [
   { num: 100, char: "生", pinyin: "shēng", thai: "เกิด / เติบโต / ชีวิต", strokes: 5, cat: "ปรัชญาและสภาพ", rank: "สูงมาก" },
   { num: 101, char: "用", pinyin: "yòng", thai: "ใช้สอย / ประโยชน์", strokes: 5, cat: "การกระทำและอาการ", rank: "สูง" },
   { num: 102, char: "田", pinyin: "tián", thai: "ทุ่งนา / ไร่นาเกษตร", strokes: 5, cat: "ภูมิศาสตร์และเกษตรกรรม", rank: "สูงมาก" },
-  { num: 103, char: "疋", pinyin: "pǐ", thai: "ม้วนผ้า / เท้าก้าวเดิน (𤴔)", strokes: 5, cat: "เครื่องมือและสิ่งของ", rank: "ปานกลาง" },
+  { num: 103, char: "匹", pinyin: "pǐ", thai: "ม้วนผ้า / เท้าก้าวเดิน (𤴔)", strokes: 5, cat: "เครื่องมือและสิ่งของ", rank: "ปานกลาง" },
   { num: 104, char: "疒", pinyin: "nè", thai: "ความเจ็บป่วย / คนนอนป่วย", strokes: 5, cat: "ร่างกายและสุขภาพ", rank: "สูงมาก" },
   { num: 105, char: "癶", pinyin: "bō", thai: "สองเท้าก้าวแยกออก", strokes: 5, cat: "การกระทำและอาการ", rank: "ต่ำ" },
   { num: 106, char: "白", pinyin: "bái", thai: "สีขาว / ชัดเจน / บริสุทธิ์", strokes: 5, cat: "สีสันและสภาพ", rank: "สูงมาก" },
@@ -154,7 +154,7 @@ const RADICALS_CATALOG = [
   { num: 137, char: "舟", pinyin: "zhōu", thai: "เรือพาย / นาวา", strokes: 6, cat: "ยานพาหนะและการเดินทาง", rank: "สูง" },
   { num: 138, char: "艮", pinyin: "gèn", thai: "ความเด็ดเดี่ยว / หันหลัง", strokes: 6, cat: "ปรัชญาและสภาพ", rank: "ปานกลาง" },
   { num: 139, char: "色", pinyin: "sè", thai: "สีสัน / สีหน้า / ความงาม", strokes: 6, cat: "สีสันและสภาพ", rank: "สูง" },
-  { num: 140, char: "艸", pinyin: "cǎo", thai: "หญ้า / พืชสมุนไพร (艹)", strokes: 6, cat: "ธรรมชาติและพืช", rank: "สูงที่สุด" },
+  { num: 140, char: "草", pinyin: "cǎo", thai: "หญ้า / พืชสมุนไพร (艹)", strokes: 6, cat: "ธรรมชาติและพืช", rank: "สูงที่สุด" },
   { num: 141, char: "虍", pinyin: "hū", thai: "ลายเสือโคร่ง / เสือ", strokes: 6, cat: "สัตว์และธรรมชาติ", rank: "สูง" },
   { num: 142, char: "虫", pinyin: "chóng", thai: "แมลง / หนอน / สัตว์เลื้อยคลาน", strokes: 6, cat: "สัตว์และธรรมชาติ", rank: "สูงมาก" },
   { num: 143, char: "血", pinyin: "xiě", thai: "โลหิต / เลือด", strokes: 6, cat: "ร่างกายและของเหลว", rank: "สูง" },
@@ -163,19 +163,19 @@ const RADICALS_CATALOG = [
   { num: 146, char: "襾", pinyin: "yà", thai: "ฝาครอบ / ทิศตะวันตก (西/覀)", strokes: 6, cat: "ดาราศาสตร์และทิศทาง", rank: "สูง" },
 
   // 7 ขีด (Strokes: 7) -> 20 ตัว
-  { num: 147, char: "見", pinyin: "jiàn", thai: "มองเห็น / พบเจอ (见)", strokes: 7, cat: "การกระทำและอาการ", rank: "สูงมาก" },
+  { num: 147, char: "见", pinyin: "jiàn", thai: "มองเห็น / พบเจอ (见)", strokes: 7, cat: "การกระทำและอาการ", rank: "สูงมาก" },
   { num: 148, char: "角", pinyin: "jiǎo", thai: "เขาสัตว์ / มุม", strokes: 7, cat: "สัตว์และร่างกาย", rank: "สูง" },
   { num: 149, char: "言", pinyin: "yán", thai: "คำพูด / ภาษา / วาจา (讠)", strokes: 7, cat: "ภาษาและการสื่อสาร", rank: "สูงที่สุด" },
   { num: 150, char: "谷", pinyin: "gǔ", thai: "หุบเขา / ลำธารในเขา", strokes: 7, cat: "ภูมิศาสตร์และธรรมชาติ", rank: "ปานกลาง" },
   { num: 151, char: "豆", pinyin: "dòu", thai: "ถั่ว / ภาชนะบูชาทรงสูง", strokes: 7, cat: "อาหารและพืช", rank: "สูง" },
   { num: 152, char: "豕", pinyin: "shǐ", thai: "หมู / สุกร", strokes: 7, cat: "สัตว์และธรรมชาติ", rank: "สูง" },
   { num: 153, char: "豸", pinyin: "zhì", thai: "สัตว์ป่าไร้เขา / สัตว์กินเนื้อ", strokes: 7, cat: "สัตว์และธรรมชาติ", rank: "ปานกลาง" },
-  { num: 154, char: "貝", pinyin: "bèi", thai: "เปลือกหอยเบี้ย / เงินตรา (贝)", strokes: 7, cat: "การเงินและสิ่งมีค่า", rank: "สูงที่สุด" },
+  { num: 154, char: "贝", pinyin: "bèi", thai: "เปลือกหอยเบี้ย / เงินตรา (贝)", strokes: 7, cat: "การเงินและสิ่งมีค่า", rank: "สูงที่สุด" },
   { num: 155, char: "赤", pinyin: "chì", thai: "สีแดงชาด / บริสุทธิ์", strokes: 7, cat: "สีสันและสภาพ", rank: "สูง" },
   { num: 156, char: "走", pinyin: "zǒu", thai: "วิ่ง / เดินทาง (赱)", strokes: 7, cat: "การกระทำและการเดินทาง", rank: "สูงมาก" },
   { num: 157, char: "足", pinyin: "zú", thai: "เท้า / ขา / เพียงพอ (𧾷)", strokes: 7, cat: "ร่างกายและการกระทำ", rank: "สูงมาก" },
   { num: 158, char: "身", pinyin: "shēn", thai: "ร่างกาย / ลำตัว", strokes: 7, cat: "ร่างกายและมนุษย์", rank: "สูง" },
-  { num: 159, char: "車", pinyin: "chē", thai: "รถ / เกวียนล้อหมุน (车)", strokes: 7, cat: "ยานพาหนะและการเดินทาง", rank: "สูงมาก" },
+  { num: 159, char: "车", pinyin: "chē", thai: "รถ / เกวียนล้อหมุน (车)", strokes: 7, cat: "ยานพาหนะและการเดินทาง", rank: "สูงมาก" },
   { num: 160, char: "辛", pinyin: "xīn", thai: "รสเผ็ด / ความยากลำบาก", strokes: 7, cat: "รสชาติและสภาพ", rank: "สูง" },
   { num: 161, char: "辰", pinyin: "chén", thai: "เวลาเช้า / มังกรราศี", strokes: 7, cat: "ดาราศาสตร์และกาลเวลา", rank: "ปานกลาง" },
   { num: 162, char: "辵", pinyin: "chuò", thai: "ทางเดิน / การสัญจร (辶)", strokes: 7, cat: "การกระทำและการเดินทาง", rank: "สูงที่สุด" },
@@ -186,8 +186,8 @@ const RADICALS_CATALOG = [
 
   // 8 ขีด (Strokes: 8) -> 9 ตัว
   { num: 167, char: "金", pinyin: "jīn", thai: "ทองคำ / โลหะ (钅)", strokes: 8, cat: "ธรรมชาติและแร่ธาตุ", rank: "สูงที่สุด" },
-  { num: 168, char: "長", pinyin: "cháng", thai: "ยาว / เติบโต (长)", strokes: 8, cat: "สภาพและลักษณะ", rank: "สูง" },
-  { num: 169, char: "門", pinyin: "mén", thai: "ประตูคู่บานใหญ่ (门)", strokes: 8, cat: "สิ่งปลูกสร้าง", rank: "สูงมาก" },
+  { num: 168, char: "长", pinyin: "cháng", thai: "ยาว / เติบโต (长)", strokes: 8, cat: "สภาพและลักษณะ", rank: "สูง" },
+  { num: 169, char: "门", pinyin: "mén", thai: "ประตูคู่บานใหญ่ (门)", strokes: 8, cat: "สิ่งปลูกสร้าง", rank: "สูงมาก" },
   { num: 170, char: "阜", pinyin: "fù", thai: "เนินเขา / ดินกองสูง (阝ซ้าย)", strokes: 8, cat: "ภูมิศาสตร์และธรรมชาติ", rank: "สูงมาก" },
   { num: 171, char: "隶", pinyin: "lì", thai: "การเอื้อมจับ / ทาสรับใช้", strokes: 8, cat: "มนุษย์และสังคม", rank: "ต่ำ" },
   { num: 172, char: "隹", pinyin: "zhuī", thai: "นกหางสั้น / ปักษา", strokes: 8, cat: "สัตว์และธรรมชาติ", rank: "สูง" },
@@ -198,56 +198,55 @@ const RADICALS_CATALOG = [
   // 9 ขีด (Strokes: 9) -> 11 ตัว
   { num: 176, char: "面", pinyin: "miàn", thai: "ใบหน้า / ผิวหน้า / ด้าน", strokes: 9, cat: "ร่างกายและทิศทาง", rank: "สูง" },
   { num: 177, char: "革", pinyin: "gé", thai: "หนังสัตว์ฟอก / ปฏิรูป", strokes: 9, cat: "เครื่องมือและสิ่งของ", rank: "สูง" },
-  { num: 178, char: "韋", pinyin: "wéi", thai: "หนังฟอกนุ่ม (韦)", strokes: 9, cat: "เครื่องมือและสิ่งของ", rank: "ปานกลาง" },
+  { num: 178, char: "韦", pinyin: "wéi", thai: "หนังฟอกนุ่ม (韦)", strokes: 9, cat: "เครื่องมือและสิ่งของ", rank: "ปานกลาง" },
   { num: 179, char: "韭", pinyin: "jiǔ", thai: "ผักกุยช่าย", strokes: 9, cat: "อาหารและพืช", rank: "ต่ำ" },
   { num: 180, char: "音", pinyin: "yīn", thai: "เสียงดนตรี / ทำนอง", strokes: 9, cat: "ดนตรีและภาษา", rank: "สูง" },
-  { num: 181, char: "頁", pinyin: "yè", thai: "ศีรษะ / หน้ากระดาษ (页)", strokes: 9, cat: "ร่างกายและสิ่งของ", rank: "สูงมาก" },
-  { num: 182, char: "風", pinyin: "fēng", thai: "สายลม / ลมพัด (风)", strokes: 9, cat: "ดาราศาสตร์และธรรมชาติ", rank: "สูงมาก" },
-  { num: 183, char: "飛", pinyin: "fēi", thai: "โบยบิน / นกบิน (飞)", strokes: 9, cat: "การกระทำและอาการ", rank: "สูง" },
+  { num: 181, char: "页", pinyin: "yè", thai: "ศีรษะ / หน้ากระดาษ (页)", strokes: 9, cat: "ร่างกายและสิ่งของ", rank: "สูงมาก" },
+  { num: 182, char: "风", pinyin: "fēng", thai: "สายลม / ลมพัด (风)", strokes: 9, cat: "ดาราศาสตร์และธรรมชาติ", rank: "สูงมาก" },
+  { num: 183, char: "飞", pinyin: "fēi", thai: "โบยบิน / นกบิน (飞)", strokes: 9, cat: "การกระทำและอาการ", rank: "สูง" },
   { num: 184, char: "食", pinyin: "shí", thai: "อาหาร / การกิน (饣)", strokes: 9, cat: "อาหารและโภชนาการ", rank: "สูงมาก" },
   { num: 185, char: "首", pinyin: "shǒu", thai: "ศีรษะ / ผู้นำ / บทแรก", strokes: 9, cat: "ร่างกายและสังคม", rank: "สูง" },
   { num: 186, char: "香", pinyin: "xiāng", thai: "กลิ่นหอม / ข้าวสุกหอม", strokes: 9, cat: "อาหารและรสชาติ", rank: "สูง" },
 
   // 10 ขีด (Strokes: 10) -> 8 ตัว
-  { num: 187, char: "馬", pinyin: "mǎ", thai: "ม้า / ความรวดเร็ว (马)", strokes: 10, cat: "สัตว์และธรรมชาติ", rank: "สูงมาก" },
+  { num: 187, char: "马", pinyin: "mǎ", thai: "ม้า / ความรวดเร็ว (马)", strokes: 10, cat: "สัตว์และธรรมชาติ", rank: "สูงมาก" },
   { num: 188, char: "骨", pinyin: "gǔ", thai: "กระดูก / โครงร่าง", strokes: 10, cat: "ร่างกายและสุขภาพ", rank: "สูง" },
   { num: 189, char: "高", pinyin: "gāo", thai: "สูง / หอคอยสูง", strokes: 10, cat: "สภาพและสิ่งปลูกสร้าง", rank: "สูง" },
   { num: 190, char: "髟", pinyin: "biāo", thai: "เส้นผมยาวสลวย", strokes: 10, cat: "ร่างกายและมนุษย์", rank: "ปานกลาง" },
-  { num: 191, char: "鬥", pinyin: "dòu", thai: "การต่อสู้ / ประลองศึก (斗)", strokes: 10, cat: "การกระทำและการงาน", rank: "ปานกลาง" },
   { num: 192, char: "鬯", pinyin: "chàng", thai: "สุราเครื่องหอมบูชา", strokes: 10, cat: "ความเชื่อและอาหาร", rank: "ต่ำ" },
   { num: 193, char: "鬲", pinyin: "lì", thai: "หม้อต้มสามขาโบราณ", strokes: 10, cat: "เครื่องมือและสิ่งของ", rank: "ต่ำ" },
   { num: 194, char: "鬼", pinyin: "guǐ", thai: "ผี / วิญญาณ / สิ่งลี้ลับ", strokes: 10, cat: "ความเชื่อและวัฒนธรรม", rank: "สูง" },
 
   // 11 ขีด (Strokes: 11) -> 6 ตัว
-  { num: 195, char: "魚", pinyin: "yú", thai: "ปลา / สัตว์น้ำ (鱼)", strokes: 11, cat: "สัตว์และธรรมชาติ", rank: "สูงมาก" },
-  { num: 196, char: "鳥", pinyin: "niǎo", thai: "นก / สัตว์ปีก (鸟)", strokes: 11, cat: "สัตว์และธรรมชาติ", rank: "สูงมาก" },
-  { num: 197, char: "鹵", pinyin: "lǔ", thai: "เกลือสินเธาว์ / ด่าง (卤)", strokes: 11, cat: "อาหารและแร่ธาตุ", rank: "ต่ำ" },
+  { num: 195, char: "鱼", pinyin: "yú", thai: "ปลา / สัตว์น้ำ (鱼)", strokes: 11, cat: "สัตว์และธรรมชาติ", rank: "สูงมาก" },
+  { num: 196, char: "鸟", pinyin: "niǎo", thai: "นก / สัตว์ปีก (鸟)", strokes: 11, cat: "สัตว์และธรรมชาติ", rank: "สูงมาก" },
+  { num: 197, char: "卤", pinyin: "lǔ", thai: "เกลือสินเธาว์ / ด่าง (卤)", strokes: 11, cat: "อาหารและแร่ธาตุ", rank: "ต่ำ" },
   { num: 198, char: "鹿", pinyin: "lù", thai: "กวางป่า / เขาคู่สง่างาม", strokes: 11, cat: "สัตว์และธรรมชาติ", rank: "สูง" },
-  { num: 199, char: "麥", pinyin: "mài", thai: "ข้าวสาลี / ข้าวบาร์เลย์ (麦)", strokes: 11, cat: "อาหารและพืช", rank: "สูง" },
+  { num: 199, char: "麦", pinyin: "mài", thai: "ข้าวสาลี / ข้าวบาร์เลย์ (麦)", strokes: 11, cat: "อาหารและพืช", rank: "สูง" },
   { num: 200, char: "麻", pinyin: "má", thai: "ต้นปอ / ต้นกัญชา / อาการชา", strokes: 11, cat: "ธรรมชาติและพืช", rank: "สูง" },
 
   // 12 ขีด (Strokes: 12) -> 4 ตัว
-  { num: 201, char: "黃", pinyin: "huáng", thai: "สีเหลืองทอง (黄)", strokes: 12, cat: "สีสันและสภาพ", rank: "สูงมาก" },
+  { num: 201, char: "黄", pinyin: "huáng", thai: "สีเหลืองทอง (黄)", strokes: 12, cat: "สีสันและสภาพ", rank: "สูงมาก" },
   { num: 202, char: "黍", pinyin: "shǔ", thai: "ข้าวฟ่างเหนียว", strokes: 12, cat: "อาหารและพืช", rank: "ต่ำ" },
   { num: 203, char: "黑", pinyin: "hēi", thai: "สีดำ / เขม่าควันไฟ", strokes: 12, cat: "สีสันและสภาพ", rank: "สูง" },
   { num: 204, char: "黹", pinyin: "zhǐ", thai: "การปักผ้า / ลวดลายเย็บ", strokes: 12, cat: "ศิลปะและงานฝีมือ", rank: "ต่ำ" },
 
   // 13 ขีด (Strokes: 13) -> 4 ตัว
-  { num: 205, char: "黽", pinyin: "mǐn", thai: "คางคก / กบ (黾)", strokes: 13, cat: "สัตว์และธรรมชาติ", rank: "ต่ำ" },
+  { num: 205, char: "黾", pinyin: "mǐn", thai: "คางคก / กบ (黾)", strokes: 13, cat: "สัตว์และธรรมชาติ", rank: "ต่ำ" },
   { num: 206, char: "鼎", pinyin: "dǐng", thai: "กระถางธูปสามขา / อำนาจรัฐ", strokes: 13, cat: "เครื่องมือและวัฒนธรรม", rank: "ปานกลาง" },
   { num: 207, char: "鼓", pinyin: "gǔ", thai: "กลองหนัง / การตีกลองศึก", strokes: 13, cat: "ดนตรีและวัฒนธรรม", rank: "ปานกลาง" },
   { num: 208, char: "鼠", pinyin: "shǔ", thai: "หนู / สัตว์ฟันแทะ", strokes: 13, cat: "สัตว์และธรรมชาติ", rank: "สูง" },
 
   // 14 ขีด (Strokes: 14) -> 2 ตัว
   { num: 209, char: "鼻", pinyin: "bí", thai: "จมูก / การดมกลิ่น", strokes: 14, cat: "ร่างกายและสุขภาพ", rank: "สูง" },
-  { num: 210, char: "齊", pinyin: "qí", thai: "เรียบร้อย / สม่ำเสมอ (齐)", strokes: 14, cat: "ปรัชญาและสภาพ", rank: "สูง" },
+  { num: 210, char: "齐", pinyin: "qí", thai: "เรียบร้อย / สม่ำเสมอ (齐)", strokes: 14, cat: "ปรัชญาและสภาพ", rank: "สูง" },
 
   // 15 ขีด (Strokes: 15) -> 1 ตัว
-  { num: 211, char: "齒", pinyin: "chǐ", thai: "ฟัน / ซี่ฟัน (齿)", strokes: 15, cat: "ร่างกายและสุขภาพ", rank: "สูง" },
+  { num: 211, char: "齿", pinyin: "chǐ", thai: "ฟัน / ซี่ฟัน (齿)", strokes: 15, cat: "ร่างกายและสุขภาพ", rank: "สูง" },
 
   // 16 ขีด (Strokes: 16) -> 2 ตัว
-  { num: 212, char: "龍", pinyin: "lóng", thai: "มังกร / สัตว์มงคลเทพ (龙)", strokes: 16, cat: "ความเชื่อและวัฒนธรรม", rank: "สูง" },
-  { num: 213, char: "龜", pinyin: "guī", thai: "เต่า / สัตว์อายุยืน (龟)", strokes: 16, cat: "สัตว์และธรรมชาติ", rank: "สูง" },
+  { num: 212, char: "龙", pinyin: "lóng", thai: "มังกร / สัตว์มงคลเทพ (龙)", strokes: 16, cat: "ความเชื่อและวัฒนธรรม", rank: "สูง" },
+  { num: 213, char: "龟", pinyin: "guī", thai: "เต่า / สัตว์อายุยืน (龟)", strokes: 16, cat: "สัตว์และธรรมชาติ", rank: "สูง" },
 
   // 17 ขีด (Strokes: 17) -> 1 ตัว
   { num: 214, char: "龠", pinyin: "yuè", thai: "ขลุ่ยโบราณสามรู / ท่วงทำนอง", strokes: 17, cat: "ดนตรีและวัฒนธรรม", rank: "ต่ำ" }
