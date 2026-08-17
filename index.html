@@ -255,5 +255,11 @@
   <script src="js/radical-fusion.js?v=4.4"></script>
   <script src="js/paywall.js?v=4.4"></script>
   <script src="js/app.js?v=4.4"></script>
+  <script>
+    // Preview-build only: auto-unlock all 214 radicals for testers.
+    // (This file is unique to the jumjeen-preview deployment — the real
+    // app's source keeps the actual paywall gate untouched.)
+    if (window.PremiumGate) window.PremiumGate.unlock();
+  </script>
 </body>
 </html>
