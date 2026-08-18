@@ -58,7 +58,7 @@ class HanziMindApp {
       this.mindmap.setHskFilter(settings.hskLevel);
     }
     if (settings.theme === "dark") {
-      document.body.classList.add("theme-dark");
+      document.body.classList.add("dark-theme");
     }
     this.renderRadicalPills();
     this.renderCharacterViews();
@@ -91,16 +91,6 @@ class HanziMindApp {
       etymSubtabBar.addEventListener("click", (e) => {
         const btn = e.target.closest(".etym-subtab-btn");
         if (btn) this.switchEtymTab(btn.dataset.etymTab);
-      });
-    }
-
-    // Theme toggle
-    const themeBtn = document.getElementById("btn-theme-toggle");
-    if (themeBtn) {
-      themeBtn.addEventListener("click", () => {
-        document.body.classList.toggle("dark-theme");
-        const isDark = document.body.classList.contains("dark-theme");
-        themeBtn.innerHTML = isDark ? "☀️" : "🌙";
       });
     }
 
@@ -1135,9 +1125,9 @@ class HanziMindApp {
     this.saveSettings(settings);
 
     if (theme === "dark") {
-      document.body.classList.add("theme-dark");
+      document.body.classList.add("dark-theme");
     } else {
-      document.body.classList.remove("theme-dark");
+      document.body.classList.remove("dark-theme");
     }
 
     document.querySelectorAll(".theme-option-card").forEach(btn => {

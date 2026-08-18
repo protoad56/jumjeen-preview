@@ -1182,31 +1182,12 @@ body.dark-theme .desktop-preview-container {
    tie, only source order does. Moving this earlier silently breaks
    it again (this happened once already). */
 @media (max-width: 480px) {
-  /* Brand badge + "fullscreen mode" toggle only make sense in the desktop
-     demo layout; on a real device we're already fullscreen. Keep just the
-     theme toggle, floated as a small corner button over the app content. */
-  .global-demo-bar .brand-badge,
-  #btn-frame-toggle {
-    display: none;
-  }
-
+  /* The whole demo bar (brand badge + "fullscreen mode" toggle) only makes
+     sense in the desktop demo layout; on a real device we're already
+     fullscreen and theme switching now lives in the in-app Settings modal,
+     so there's nothing left in this bar worth floating over the content. */
   .global-demo-bar {
-    /* Sits BELOW .app-header (which has its own settings-gear button at
-       its right edge) so the two top-right controls never overlap.
-       60px clears the header's padding + button height on every device
-       we've tested; if the header grows taller this needs to grow too. */
-    position: fixed;
-    top: calc(env(safe-area-inset-top) + 60px);
-    right: 4px;
-    left: auto;
-    width: auto;
-    max-width: none;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    padding: 8px;
-    margin: 0;
-    z-index: 1200;
+    display: none;
   }
 
   .desktop-preview-container {

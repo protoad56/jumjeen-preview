@@ -1223,8 +1223,7 @@ body.dark-theme .fusion-piece-card.can-fuse .piece-char {
   color: #94a3b8;
 }
 
-body.dark-theme .fusion-piece-card.cannot-fuse,
-body.theme-dark .fusion-piece-card.cannot-fuse {
+body.dark-theme .fusion-piece-card.cannot-fuse {
   background: rgba(30, 41, 59, 0.4);
   border-color: rgba(71, 85, 105, 0.6);
   opacity: 0.32;
