@@ -304,15 +304,57 @@ class HanziMindApp {
       hanziEl.textContent = customItem.hanzi;
       pinyinEl.textContent = customItem.pinyin;
       thaiEl.textContent = customItem.thai;
-      return;
+    } else {
+      const charData = window.CHARACTERS_DATA ? window.CHARACTERS_DATA[this.currentChar] : null;
+      const lexicon = window.HANZI_LEXICON ? window.HANZI_LEXICON[this.currentChar] : null;
+
+      hanziEl.textContent = this.currentChar;
+      pinyinEl.textContent = charData ? charData.primaryPinyin : (lexicon ? lexicon.pinyin : this.currentRadical);
+      thaiEl.textContent = charData ? charData.thaiMeaningShort : (lexicon ? lexicon.thai : "รากศัพท์ภาษาจีน");
     }
 
-    const charData = window.CHARACTERS_DATA ? window.CHARACTERS_DATA[this.currentChar] : null;
-    const lexicon = window.HANZI_LEXICON ? window.HANZI_LEXICON[this.currentChar] : null;
+    // The mastery button always tracks this.currentChar (the actual SRS-tracked
+    // unit) even when customItem is showing a compound-word preview like 三月 —
+    // compound words aren't independently trackable in the SRS system.
+    const masteryBtn = document.getElementById("quick-mastery-btn");
+    const masteryLabel = document.getElementById("quick-mastery-btn-label");
+    if (masteryBtn && masteryLabel) {
+      const isMastered = window.DB && window.DB.isCharacterMastered(this.currentChar);
+      masteryBtn.classList.toggle("mastered", isMastered);
+      masteryLabel.textContent = isMastered ? "✓ จำได้แล้ว" : "☆ จำได้แล้ว";
+    }
+  }
 
-    hanziEl.textContent = this.currentChar;
-    pinyinEl.textContent = charData ? charData.primaryPinyin : (lexicon ? lexicon.pinyin : this.currentRadical);
-    thaiEl.textContent = charData ? charData.thaiMeaningShort : (lexicon ? lexicon.thai : "รากศัพท์ภาษาจีน");
+  toggleCurrentMastery() {
+    if (!window.DB || !this.currentChar) return;
+    const charId = this.currentChar;
+    const isMastered = window.DB.isCharacterMastered(charId);
+
+    if (isMastered) {
+      window.DB.saveSRSProgress(charId, {
+        character_id: charId,
+        repetition_count: 1,
+        interval_days: 1,
+        ease_factor: 2.5,
+        mastery_level: "learning",
+        next_review_time: Date.now()
+      });
+    } else {
+      window.DB.saveSRSProgress(charId, {
+        character_id: charId,
+        repetition_count: 5,
+        interval_days: 21,
+        ease_factor: 2.5,
+        mastery_level: "mastered",
+        last_reviewed_time: Date.now(),
+        next_review_time: Date.now() + 21 * 24 * 60 * 60 * 1000
+      });
+    }
+
+    this.updateQuickInspectBar();
+    this.mindmap.render();
+    this.renderRadicalPills();
+    if (this.activeTab === "radicals") this.renderRadicalsLibrary();
   }
 
   /**

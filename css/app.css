@@ -639,15 +639,27 @@ body.dark-theme .desktop-preview-container {
   background: var(--c-vermilion-dark);
 }
 
-.quick-action-btn.voice-btn {
+.quick-action-btn.mastery-btn {
   background: var(--bg-surface-subtle);
   border: 1px solid var(--ink-border);
   color: var(--ink-primary);
 }
 
-.quick-action-btn.voice-btn:hover {
-  border-color: var(--c-vermilion);
-  color: var(--c-vermilion);
+.quick-action-btn.mastery-btn:hover {
+  border-color: var(--c-jade);
+  color: var(--c-jade);
+}
+
+.quick-action-btn.mastery-btn.mastered {
+  background: var(--c-jade);
+  border-color: var(--c-jade);
+  color: #ffffff;
+}
+
+.quick-action-btn.mastery-btn.mastered:hover {
+  background: var(--c-jade);
+  color: #ffffff;
+  opacity: 0.9;
 }
 
 /* ============================================================
