@@ -308,6 +308,24 @@ class JumJeenDatabase {
     return all;
   }
 
+  /** Synchronous mastery check for render loops (mindmap nodes, progress
+   *  bars) that can't await — reads straight from the in-memory SRS cache. */
+  isCharacterMastered(charId) {
+    const srs = this.inMemoryCache.srs.get(charId);
+    return !!srs && srs.mastery_level === 'mastered';
+  }
+
+  /** Count how many of a radical's branch characters are mastered, for
+   *  progress bars on the radical pills / library cards. */
+  getRadicalMasteryProgress(characterIds) {
+    const total = characterIds.length;
+    let mastered = 0;
+    for (const charId of characterIds) {
+      if (this.isCharacterMastered(charId)) mastered++;
+    }
+    return { mastered, total };
+  }
+
   async getSRSStatistics() {
     let total = 0, newCount = 0, learningCount = 0, reviewingCount = 0, masteredCount = 0;
     for (const srs of this.inMemoryCache.srs.values()) {

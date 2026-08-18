@@ -266,17 +266,22 @@ class HanziMindApp {
 
     list.innerHTML = `
       <button class="radical-pill" style="background: var(--c-amber-soft); border-color: var(--c-amber); color: var(--c-amber); font-weight: 700;" onclick="window.App.switchTab('radicals')">
-        <span>📚 ดูครบ 214 ราก</span>
+        <div class="pill-top-row"><span>📚 ดูครบ 214 ราก</span></div>
       </button>
     ` + shortcuts.map(radKey => {
       const rad = this.mindmap.getRadicalData(radKey);
       const isSelected = (radKey === this.currentRadical);
       const isLocked = window.PremiumGate && !window.PremiumGate.canAccessRadical(radKey);
+      const progress = window.DB ? window.DB.getRadicalMasteryProgress(rad.characterIds || []) : { mastered: 0, total: 0 };
+      const pct = progress.total > 0 ? Math.round((progress.mastered / progress.total) * 100) : 0;
       return `
-        <button class="radical-pill ${isSelected ? 'active' : ''} ${isLocked ? 'locked' : ''}" onclick="window.App.selectRadical('${radKey}')">
-          <span class="rad-char">${rad.id}</span>
-          <span class="rad-name">${rad.pinyin || ''}</span>
-          ${isLocked ? '<span class="lock-badge">🔒</span>' : ''}
+        <button class="radical-pill ${isSelected ? 'active' : ''} ${isLocked ? 'locked' : ''}" onclick="window.App.selectRadical('${radKey}')" title="จำได้แล้ว ${progress.mastered}/${progress.total} ตัว">
+          <div class="pill-top-row">
+            <span class="rad-char">${rad.id}</span>
+            <span class="rad-name">${rad.pinyin || ''}</span>
+            ${isLocked ? '<span class="lock-badge">🔒</span>' : ''}
+          </div>
+          ${progress.total > 0 ? `<div class="mastery-progress-bar"><div class="mastery-progress-fill" style="width: ${pct}%"></div></div>` : ''}
         </button>
       `;
     }).join("");
@@ -1008,6 +1013,9 @@ class HanziMindApp {
       <div class="radicals-cards-grid">
         ${filtered.map(rad => {
           const isLocked = window.PremiumGate && !window.PremiumGate.canAccessRadical(rad.char);
+          const fullRad = window.RADICALS_DATA ? window.RADICALS_DATA[rad.char] : null;
+          const progress = window.DB && fullRad ? window.DB.getRadicalMasteryProgress(fullRad.characterIds || []) : { mastered: 0, total: 0 };
+          const pct = progress.total > 0 ? Math.round((progress.mastered / progress.total) * 100) : 0;
           return `
             <div class="rad-lib-card ${isLocked ? 'locked' : ''}" onclick="window.App.openRadicalFromLibrary('${rad.char}')">
               ${isLocked ? '<span class="lock-badge">🔒</span>' : ''}
@@ -1019,6 +1027,12 @@ class HanziMindApp {
                 </div>
               </div>
               <div class="rad-lib-thai">${rad.thai}</div>
+              ${progress.total > 0 ? `
+                <div class="rad-lib-progress-row">
+                  <div class="mastery-progress-bar"><div class="mastery-progress-fill" style="width: ${pct}%"></div></div>
+                  <span class="rad-lib-progress-label">${progress.mastered}/${progress.total}</span>
+                </div>
+              ` : ''}
             </div>
           `;
         }).join('')}

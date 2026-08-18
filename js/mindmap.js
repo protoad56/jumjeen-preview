@@ -341,11 +341,12 @@ class RadicalMindmap {
       const pinyin = charData ? charData.primaryPinyin : (lexiconItem ? lexiconItem.pinyin : (rad.pinyin || ""));
       const thai = charData ? charData.thaiMeaningShort.split('/')[0].trim() : (lexiconItem ? lexiconItem.thai.split(',')[0].trim() : (rad.thaiMeaning || ""));
       const tone = charData ? charData.primaryTone : (lexiconItem ? lexiconItem.tone : 1);
+      const isMastered = window.DB ? window.DB.isCharacterMastered(charId) : false;
 
       const charNode = {
         id: `char-${charId}`,
         charId: charId,
-        type: `char-node ${isSelected ? 'selected' : ''} ${hasActiveLeaves && !isSelected && count > 2 ? 'dimmed-node' : ''}`,
+        type: `char-node ${isSelected ? 'selected' : ''} ${isMastered ? 'mastered' : ''} ${hasActiveLeaves && !isSelected && count > 2 ? 'dimmed-node' : ''}`,
         hanzi: charId,
         title: pinyin,
         subtitle: thai,

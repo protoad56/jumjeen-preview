@@ -344,9 +344,10 @@ body.dark-theme .desktop-preview-container {
 
 .radical-pill {
   display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 6px 12px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3px;
+  padding: 6px 12px 5px;
   background: var(--bg-surface);
   border: 1px solid var(--ink-border);
   border-radius: var(--radius-pill);
@@ -354,6 +355,12 @@ body.dark-theme .desktop-preview-container {
   white-space: nowrap;
   font-size: 12px;
   transition: all var(--duration-fast);
+}
+
+.radical-pill .pill-top-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .radical-pill .rad-char {
@@ -372,6 +379,30 @@ body.dark-theme .desktop-preview-container {
 
 .radical-pill.active .rad-char {
   color: #ffffff;
+}
+
+/* Mastery progress bar: how many of this radical's branch characters
+   the user has SRS-mastered. Reused (larger) on the 214-library cards. */
+.mastery-progress-bar {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--ink-border);
+  overflow: hidden;
+}
+
+.mastery-progress-bar .mastery-progress-fill {
+  height: 100%;
+  background: var(--c-jade);
+  border-radius: 2px;
+  transition: width var(--duration-fast);
+}
+
+.radical-pill.active .mastery-progress-bar {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.radical-pill.active .mastery-progress-bar .mastery-progress-fill {
+  background: #ffffff;
 }
 
 /* App Main Content Area */

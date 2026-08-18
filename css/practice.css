@@ -1588,6 +1588,24 @@ body.dark-theme .eureka-story-box {
   text-overflow: ellipsis;
 }
 
+.rad-lib-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 7px;
+}
+
+.rad-lib-progress-row .mastery-progress-bar {
+  flex: 1;
+}
+
+.rad-lib-progress-label {
+  font-size: 8.5px;
+  font-weight: 700;
+  color: var(--c-jade);
+  white-space: nowrap;
+}
+
 .rad-lib-chars {
   display: flex;
   flex-wrap: wrap;

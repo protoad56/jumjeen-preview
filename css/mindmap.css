@@ -175,6 +175,40 @@
   z-index: 45;
 }
 
+/* Mastered branch characters (SRS mastery_level === 'mastered'): a jade
+   tint + small corner check, so progress is visible at a glance without
+   removing the node (keeps it tappable for a refresher review). */
+.mindmap-node.char-node.mastered {
+  border-color: var(--c-jade);
+  background: var(--c-jade-soft);
+}
+
+.mindmap-node.char-node.mastered .node-hanzi {
+  color: var(--c-jade);
+}
+
+.mindmap-node.char-node.mastered::after {
+  content: "✓";
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--c-jade);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.mindmap-node.char-node.selected.mastered {
+  border-color: var(--c-jade);
+  box-shadow: 0 0 0 4px var(--c-jade-glow), var(--shadow-md);
+}
+
 .char-node .node-hanzi {
   font-family: var(--font-hanzi);
   font-size: 20px;
