@@ -1191,8 +1191,12 @@ body.dark-theme .desktop-preview-container {
   }
 
   .global-demo-bar {
+    /* Sits BELOW .app-header (which has its own settings-gear button at
+       its right edge) so the two top-right controls never overlap.
+       60px clears the header's padding + button height on every device
+       we've tested; if the header grows taller this needs to grow too. */
     position: fixed;
-    top: env(safe-area-inset-top);
+    top: calc(env(safe-area-inset-top) + 60px);
     right: 4px;
     left: auto;
     width: auto;
