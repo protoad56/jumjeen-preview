@@ -264,6 +264,44 @@
   transform: translate(-50%, -50%) scale(1.08);
 }
 
+/* Mastered compound words: leaves are already jade-outlined by default, so
+   an outline alone wouldn't read as "different" — use a solid fill instead,
+   same language as the mastered char-node's corner check.
+   Selector matches the base rule's 3-class specificity (.mindmap-node
+   .compound-leaf.on-canvas-leaf) on purpose — a shorter .on-canvas-leaf
+   .mastered selector loses the background/border-color tie against that
+   base rule and silently renders white-on-white text. */
+.mindmap-node.compound-leaf.on-canvas-leaf.mastered {
+  background: var(--c-jade);
+  border-color: var(--c-jade);
+}
+
+.on-canvas-leaf.mastered .node-hanzi,
+.on-canvas-leaf.mastered .node-pinyin {
+  color: #ffffff;
+}
+
+.on-canvas-leaf.mastered .node-thai {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.on-canvas-leaf.mastered::after {
+  content: "✓";
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--c-jade);
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 14px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
 .on-canvas-leaf .node-hanzi {
   font-family: var(--font-hanzi);
   font-size: 12px;

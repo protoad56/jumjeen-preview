@@ -104,7 +104,7 @@
 
           <!-- Quick Character Inspector Trigger Bar -->
           <div class="mindmap-quick-inspect-bar" id="mindmap-quick-inspect-bar">
-            <div class="quick-inspect-left" onclick="window.App.switchTab('etymology')">
+            <div class="quick-inspect-left" onclick="window.App.goToStoryPage()">
               <span class="quick-hanzi" id="quick-inspect-hanzi">好</span>
               <div class="quick-text-col">
                 <span class="quick-pinyin" id="quick-inspect-pinyin">hǎo</span>
@@ -112,7 +112,7 @@
               </div>
             </div>
             <div class="quick-actions-group">
-              <button class="quick-action-btn story-btn" onclick="window.App.switchTab('etymology')">
+              <button class="quick-action-btn story-btn" id="quick-story-btn" onclick="window.App.goToStoryPage()">
                 <span>📖 เรื่องราว</span>
               </button>
               <button class="quick-action-btn mastery-btn" id="quick-mastery-btn" onclick="window.App.toggleCurrentMastery()">

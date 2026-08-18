@@ -432,9 +432,11 @@ class RadicalMindmap {
           }
         }
 
+        const isLeafMastered = window.DB ? window.DB.isCharacterMastered(comp.word) : false;
+
         const leafNode = {
           id: `leaf-${comp.word}`,
-          type: "compound-leaf on-canvas-leaf",
+          type: `compound-leaf on-canvas-leaf ${isLeafMastered ? 'mastered' : ''}`,
           hanzi: comp.word,
           title: comp.pinyin,
           subtitle: comp.thai,

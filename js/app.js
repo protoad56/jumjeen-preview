@@ -16,6 +16,11 @@ class HanziMindApp {
   constructor() {
     this.currentRadical = "女";
     this.currentChar = "好";
+    // When a compound-leaf on the mindmap (e.g. 你好) is tapped, this holds
+    // that word so the mastery button / bar can act on the compound itself
+    // instead of silently falling back to the base character. Cleared
+    // whenever a new base character is selected.
+    this.currentQuickWord = null;
     this.activeTab = "mindmap";
     this.mindmap = null;
     this.strokeAnimator = null;
@@ -237,6 +242,7 @@ class HanziMindApp {
     }
 
     this.currentChar = charId;
+    this.currentQuickWord = null;
     if (charData && charData.radical) {
       this.currentRadical = charData.radical;
       this.renderRadicalPills();
@@ -247,6 +253,23 @@ class HanziMindApp {
     }
     this.renderCharacterViews();
     return true;
+  }
+
+  /** Expands a radical's branch characters into every trackable SRS unit —
+   *  each character plus every compound word attached to it (你好, 好看, ...)
+   *  — so mastery progress reflects real vocabulary learned, not just bare
+   *  characters. Compound words are shared across characters (你好 appears
+   *  under both 你 and 好), so dedupe with a Set before counting. */
+  buildTrackableIdsForRadical(characterIds) {
+    const ids = new Set();
+    for (const charId of characterIds) {
+      ids.add(charId);
+      const charData = window.CHARACTERS_DATA ? window.CHARACTERS_DATA[charId] : null;
+      if (charData && charData.compounds) {
+        for (const comp of charData.compounds) ids.add(comp.word);
+      }
+    }
+    return Array.from(ids);
   }
 
   renderRadicalPills() {
@@ -272,10 +295,11 @@ class HanziMindApp {
       const rad = this.mindmap.getRadicalData(radKey);
       const isSelected = (radKey === this.currentRadical);
       const isLocked = window.PremiumGate && !window.PremiumGate.canAccessRadical(radKey);
-      const progress = window.DB ? window.DB.getRadicalMasteryProgress(rad.characterIds || []) : { mastered: 0, total: 0 };
+      const trackableIds = this.buildTrackableIdsForRadical(rad.characterIds || []);
+      const progress = window.DB ? window.DB.getRadicalMasteryProgress(trackableIds) : { mastered: 0, total: 0 };
       const pct = progress.total > 0 ? Math.round((progress.mastered / progress.total) * 100) : 0;
       return `
-        <button class="radical-pill ${isSelected ? 'active' : ''} ${isLocked ? 'locked' : ''}" onclick="window.App.selectRadical('${radKey}')" title="จำได้แล้ว ${progress.mastered}/${progress.total} ตัว">
+        <button class="radical-pill ${isSelected ? 'active' : ''} ${isLocked ? 'locked' : ''}" onclick="window.App.selectRadical('${radKey}')" title="จำได้แล้ว ${progress.mastered}/${progress.total} คำ">
           <div class="pill-top-row">
             <span class="rad-char">${rad.id}</span>
             <span class="rad-name">${rad.pinyin || ''}</span>
@@ -300,6 +324,11 @@ class HanziMindApp {
     const thaiEl = document.getElementById("quick-inspect-thai");
     if (!hanziEl) return;
 
+    // Remember the compound word (if any) so the mastery button and story
+    // button below can act on/react to what's actually being shown, not
+    // silently fall back to the base character.
+    this.currentQuickWord = customItem ? customItem.hanzi : null;
+
     if (customItem) {
       hanziEl.textContent = customItem.hanzi;
       pinyinEl.textContent = customItem.pinyin;
@@ -313,26 +342,48 @@ class HanziMindApp {
       thaiEl.textContent = charData ? charData.thaiMeaningShort : (lexicon ? lexicon.thai : "รากศัพท์ภาษาจีน");
     }
 
-    // The mastery button always tracks this.currentChar (the actual SRS-tracked
-    // unit) even when customItem is showing a compound-word preview like 三月 —
-    // compound words aren't independently trackable in the SRS system.
+    // The story page only has content for base characters, not compound
+    // words — hide it rather than link somewhere that isn't what's shown.
+    const storyBtn = document.getElementById("quick-story-btn");
+    if (storyBtn) {
+      storyBtn.style.display = this.currentQuickWord ? "none" : "";
+    }
+
+    this.refreshMasteryButton();
+  }
+
+  /** Guards both the story button and the tappable hanzi/pinyin area of the
+   *  quick-inspect bar: only navigates to the Etymology tab when a real base
+   *  character is shown, never while previewing a compound word (there's no
+   *  per-compound story page, so it would silently land on the wrong char). */
+  goToStoryPage() {
+    if (this.currentQuickWord) return;
+    this.switchTab("etymology");
+  }
+
+  /** Mastery tracks whatever is currently shown in the quick-inspect bar —
+   *  the compound word when one's being previewed, otherwise the base
+   *  character. Split out so toggleCurrentMastery() can refresh just the
+   *  button without re-deriving (and overwriting) the hanzi/pinyin/thai text. */
+  refreshMasteryButton() {
+    const trackedId = this.currentQuickWord || this.currentChar;
     const masteryBtn = document.getElementById("quick-mastery-btn");
     const masteryLabel = document.getElementById("quick-mastery-btn-label");
-    if (masteryBtn && masteryLabel) {
-      const isMastered = window.DB && window.DB.isCharacterMastered(this.currentChar);
-      masteryBtn.classList.toggle("mastered", isMastered);
-      masteryLabel.textContent = isMastered ? "✓ จำได้แล้ว" : "☆ จำได้แล้ว";
-    }
+    if (!masteryBtn || !masteryLabel) return;
+    const isMastered = window.DB && window.DB.isCharacterMastered(trackedId);
+    masteryBtn.classList.toggle("mastered", isMastered);
+    masteryLabel.textContent = isMastered ? "✓ จำได้แล้ว" : "☆ จำได้แล้ว";
   }
 
   toggleCurrentMastery() {
-    if (!window.DB || !this.currentChar) return;
-    const charId = this.currentChar;
-    const isMastered = window.DB.isCharacterMastered(charId);
+    if (!window.DB) return;
+    const trackedId = this.currentQuickWord || this.currentChar;
+    if (!trackedId) return;
+    const isMastered = window.DB.isCharacterMastered(trackedId);
 
     if (isMastered) {
-      window.DB.saveSRSProgress(charId, {
-        character_id: charId,
+      window.DB.saveSRSProgress(trackedId, {
+        character_id: trackedId,
         repetition_count: 1,
         interval_days: 1,
         ease_factor: 2.5,
@@ -340,8 +391,8 @@ class HanziMindApp {
         next_review_time: Date.now()
       });
     } else {
-      window.DB.saveSRSProgress(charId, {
-        character_id: charId,
+      window.DB.saveSRSProgress(trackedId, {
+        character_id: trackedId,
         repetition_count: 5,
         interval_days: 21,
         ease_factor: 2.5,
@@ -351,7 +402,7 @@ class HanziMindApp {
       });
     }
 
-    this.updateQuickInspectBar();
+    this.refreshMasteryButton();
     this.mindmap.render();
     this.renderRadicalPills();
     if (this.activeTab === "radicals") this.renderRadicalsLibrary();
@@ -1056,7 +1107,8 @@ class HanziMindApp {
         ${filtered.map(rad => {
           const isLocked = window.PremiumGate && !window.PremiumGate.canAccessRadical(rad.char);
           const fullRad = window.RADICALS_DATA ? window.RADICALS_DATA[rad.char] : null;
-          const progress = window.DB && fullRad ? window.DB.getRadicalMasteryProgress(fullRad.characterIds || []) : { mastered: 0, total: 0 };
+          const trackableIds = fullRad ? this.buildTrackableIdsForRadical(fullRad.characterIds || []) : [];
+          const progress = window.DB && fullRad ? window.DB.getRadicalMasteryProgress(trackableIds) : { mastered: 0, total: 0 };
           const pct = progress.total > 0 ? Math.round((progress.mastered / progress.total) * 100) : 0;
           return `
             <div class="rad-lib-card ${isLocked ? 'locked' : ''}" onclick="window.App.openRadicalFromLibrary('${rad.char}')">
