@@ -326,6 +326,40 @@ class JumJeenDatabase {
     return { mastered, total };
   }
 
+  /** Full curriculum coverage report, grouped by HSK level — every base
+   *  character AND every compound word attached to it, deduped (a compound
+   *  like 你好 is listed under both 你 and 好's .compounds arrays). Unlike
+   *  getSRSStatistics() (which only reflects items already touched by the
+   *  SRS engine, and only base characters at that), this always reflects
+   *  the app's true total curriculum size so "X / Y mastered" percentages
+   *  are meaningful even for items never reviewed yet. */
+  getFullMasteryReport() {
+    const chars = window.CHARACTERS_DATA || {};
+    const seen = new Set();
+    const byLevel = {};
+
+    const addItem = (id, level) => {
+      if (seen.has(id)) return;
+      seen.add(id);
+      const lvl = level || 0; // 0 = ungraded / no HSK tag
+      if (!byLevel[lvl]) byLevel[lvl] = { total: 0, mastered: 0 };
+      byLevel[lvl].total++;
+      if (this.isCharacterMastered(id)) byLevel[lvl].mastered++;
+    };
+
+    for (const [charId, cd] of Object.entries(chars)) {
+      addItem(charId, cd.hskLevel);
+      for (const comp of (cd.compounds || [])) {
+        addItem(comp.word, comp.hsk);
+      }
+    }
+
+    const overallTotal = seen.size;
+    const overallMastered = Array.from(seen).filter(id => this.isCharacterMastered(id)).length;
+
+    return { byLevel, overallTotal, overallMastered };
+  }
+
   async getSRSStatistics() {
     let total = 0, newCount = 0, learningCount = 0, reviewingCount = 0, masteredCount = 0;
     for (const srs of this.inMemoryCache.srs.values()) {

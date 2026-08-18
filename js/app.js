@@ -27,6 +27,7 @@ class HanziMindApp {
     this.fusionGame = null;
     this.srsEngine = null;
     this.currentRadicalCategoryFilter = "ทั้งหมด";
+    this.currentRadicalRankFilter = "ทั้งหมด";
     this.currentStrokeFilter = "ทั้งหมด";
     this.radicalSearchKeyword = "";
     this.currentEtymTab = "char";
@@ -342,23 +343,166 @@ class HanziMindApp {
       thaiEl.textContent = charData ? charData.thaiMeaningShort : (lexicon ? lexicon.thai : "รากศัพท์ภาษาจีน");
     }
 
-    // The story page only has content for base characters, not compound
-    // words — hide it rather than link somewhere that isn't what's shown.
-    const storyBtn = document.getElementById("quick-story-btn");
-    if (storyBtn) {
-      storyBtn.style.display = this.currentQuickWord ? "none" : "";
-    }
-
     this.refreshMasteryButton();
   }
 
-  /** Guards both the story button and the tappable hanzi/pinyin area of the
-   *  quick-inspect bar: only navigates to the Etymology tab when a real base
-   *  character is shown, never while previewing a compound word (there's no
-   *  per-compound story page, so it would silently land on the wrong char). */
+  /** Shared handler for the story button and the tappable hanzi/pinyin area
+   *  of the quick-inspect bar. Etymology tab itself branches on
+   *  this.currentQuickWord to render a compound breakdown instead of a
+   *  single character's page, so this can always navigate safely now. */
   goToStoryPage() {
-    if (this.currentQuickWord) return;
     this.switchTab("etymology");
+  }
+
+  /** For a compound word (e.g. 你好), find its own {word, pinyin, thai, hsk}
+   *  entry by scanning its component characters' .compounds lists — a
+   *  compound word isn't independently keyed anywhere, but every compound
+   *  is attached to at least one of its own component characters. */
+  findCompoundData(word) {
+    for (const ch of Array.from(word)) {
+      const charData = window.CHARACTERS_DATA ? window.CHARACTERS_DATA[ch] : null;
+      if (charData && charData.compounds) {
+        const found = charData.compounds.find(c => c.word === word);
+        if (found) return found;
+      }
+    }
+    return null;
+  }
+
+  /** Jump from a compound-word breakdown straight to one of its component
+   *  characters' own radical mindmap. */
+  jumpToComponent(charId) {
+    if (!window.CHARACTERS_DATA[charId] && !window.HANZI_LEXICON[charId]) return;
+    const ok = this.selectCharacter(charId, true);
+    if (ok) this.switchTab("mindmap");
+  }
+
+  /** Etymology view for a compound word (你好, 好看, ...) instead of a base
+   *  character. There's no per-compound etymology data, but every one of
+   *  its component characters has real data, so this reuses that instead
+   *  of fabricating anything: components card shows each component (clickable
+   *  through to its own mindmap), story card stitches together each
+   *  component's real origin text, vocab card surfaces other compounds
+   *  sharing a component as further reading. */
+  renderCompoundBreakdown(word) {
+    const heroTarget = document.getElementById("etymology-hero-card");
+    const componentsTarget = document.getElementById("etymology-components-card");
+    const storyTarget = document.getElementById("etymology-story-card");
+    const vocabTarget = document.getElementById("etymology-vocab-card");
+    if (!heroTarget) return;
+
+    const compoundData = this.findCompoundData(word);
+    const pinyin = compoundData ? compoundData.pinyin : "";
+    const thai = compoundData ? compoundData.thai : "";
+
+    const compChars = Array.from(word).map(ch => {
+      const cd = window.CHARACTERS_DATA ? window.CHARACTERS_DATA[ch] : null;
+      const lex = window.HANZI_LEXICON ? window.HANZI_LEXICON[ch] : null;
+      return {
+        char: ch,
+        pinyin: cd ? cd.primaryPinyin : (lex ? lex.pinyin : ""),
+        thai: cd ? cd.thaiMeaningShort : (lex ? lex.thai : ""),
+        radical: this.findRadicalForCharacter(ch),
+        hasOwnPage: !!(cd || lex)
+      };
+    });
+
+    heroTarget.innerHTML = `
+      <div class="char-hero-header">
+        <div class="char-main-box">
+          <div class="char-large-hanzi">${word}</div>
+          <div class="char-meta-row">
+            <span class="pinyin-tag">${pinyin}</span>
+            <span class="hsk-badge">คำผสมจาก ${compChars.length} ตัวอักษร</span>
+            <button class="audio-speak-btn" onclick="window.AudioEngine.speak('${compoundData ? compoundData.audioText || word : word}')">
+              🔊 ฟังเสียง
+            </button>
+          </div>
+        </div>
+        <div class="char-meaning-summary">
+          <div class="summary-label">ความหมาย</div>
+          <div class="summary-val">${thai}</div>
+        </div>
+      </div>
+    `;
+
+    if (componentsTarget) {
+      componentsTarget.innerHTML = `
+        <div class="etymology-box component-fusion-box">
+          <div class="box-title">
+            <span class="icon">🧩</span>
+            <span>ตัวอักษรที่ประกอบกันเป็นคำนี้ (แตะเพื่อดูรากศัพท์ของแต่ละตัว)</span>
+          </div>
+          <div class="components-formula-flow">
+            ${compChars.map(c => `
+              <div class="component-card ${c.hasOwnPage ? 'clickable-component' : ''}"
+                   ${c.hasOwnPage ? `onclick="window.App.jumpToComponent('${c.char}')"` : ''}>
+                <div class="comp-role-badge">${c.radical ? `ราก ${c.radical}` : 'อักษร'}</div>
+                <div class="c-char">${c.char}</div>
+                <div class="c-pinyin">${c.pinyin}</div>
+                <div class="c-meaning">${c.thai}</div>
+              </div>
+            `).join('<div class="formula-plus">➕</div>')}
+            <div class="formula-equals">➔</div>
+            <div class="component-card result-card">
+              <div class="comp-role-badge">คำผสม</div>
+              <div class="c-char">${word}</div>
+              <div class="c-pinyin">${pinyin}</div>
+              <div class="c-meaning">${thai}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    if (storyTarget) {
+      const storyCards = compChars
+        .map(c => ({ c, cd: window.CHARACTERS_DATA ? window.CHARACTERS_DATA[c.char] : null }))
+        .filter(({ cd }) => cd && cd.ancientEtymology)
+        .map(({ c, cd }) => `
+          <div class="etymology-box origin-story-box">
+            <div class="box-title">
+              <span class="icon">🏛️</span>
+              <span>ที่มาของ ${c.char} (${c.pinyin})</span>
+            </div>
+            <div class="oracle-script-quote"><strong>${cd.ancientEtymology.oracleScript || ''}</strong></div>
+            <p class="origin-story-text">${cd.ancientEtymology.originStory || ''}</p>
+          </div>
+        `);
+      storyTarget.innerHTML = storyCards.length
+        ? storyCards.join('')
+        : `<div class="etym-empty-notice">✨ ยังไม่มีเรื่องราวดั้งเดิมสำหรับตัวอักษรในคำนี้</div>`;
+    }
+
+    if (vocabTarget) {
+      const otherCompounds = new Map();
+      for (const ch of Array.from(word)) {
+        const cd = window.CHARACTERS_DATA ? window.CHARACTERS_DATA[ch] : null;
+        if (!cd || !cd.compounds) continue;
+        for (const comp of cd.compounds) {
+          if (comp.word !== word) otherCompounds.set(comp.word, comp);
+        }
+      }
+      const list = Array.from(otherCompounds.values());
+      vocabTarget.innerHTML = list.length ? `
+        <div class="etymology-box compounds-box">
+          <div class="box-title"><span class="icon">🌿</span><span>คำผสมอื่นที่ใช้ตัวอักษรร่วมกัน</span></div>
+          <div class="compounds-grid">
+            ${list.map(c => `
+              <div class="compound-item" onclick="window.AudioEngine.speak('${(c.audioText || c.word).replace(/'/g, "\\'")}')">
+                <div class="comp-header">
+                  <span class="comp-word">${c.word}</span>
+                  <span class="comp-pinyin">${c.pinyin}</span>
+                  ${c.hsk ? `<span class="comp-hsk">HSK ${c.hsk}</span>` : ''}
+                </div>
+                <div class="comp-thai">${c.thai}</div>
+                <div class="comp-audio-btn">🔊 ฟังเสียง</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : `<div class="etym-empty-notice">✨ ไม่มีคำผสมอื่นที่ใช้ตัวอักษรร่วมกัน</div>`;
+    }
   }
 
   /** Mastery tracks whatever is currently shown in the quick-inspect bar —
@@ -586,20 +730,25 @@ class HanziMindApp {
    * Content is split across 4 short panes (hero+stroke / components / story / vocab)
    */
   renderEtymologyDetail() {
-    const charData = window.CHARACTERS_DATA ? window.CHARACTERS_DATA[this.currentChar] : null;
-    const heroTarget = document.getElementById("etymology-hero-card");
-    const componentsTarget = document.getElementById("etymology-components-card");
-    const storyTarget = document.getElementById("etymology-story-card");
-    const vocabTarget = document.getElementById("etymology-vocab-card");
-    if (!heroTarget) return;
-
-    // Keep the active sub-tab pane in sync
+    // Keep the active sub-tab pane in sync (shared by both render paths)
     document.querySelectorAll(".etym-subtab-btn").forEach(btn => {
       btn.classList.toggle("active", btn.dataset.etymTab === this.currentEtymTab);
     });
     document.querySelectorAll(".etym-pane").forEach(pane => {
       pane.classList.toggle("active", pane.id === `etym-pane-${this.currentEtymTab}`);
     });
+
+    if (this.currentQuickWord) {
+      this.renderCompoundBreakdown(this.currentQuickWord);
+      return;
+    }
+
+    const charData = window.CHARACTERS_DATA ? window.CHARACTERS_DATA[this.currentChar] : null;
+    const heroTarget = document.getElementById("etymology-hero-card");
+    const componentsTarget = document.getElementById("etymology-components-card");
+    const storyTarget = document.getElementById("etymology-story-card");
+    const vocabTarget = document.getElementById("etymology-vocab-card");
+    if (!heroTarget) return;
 
     if (!charData) {
       const lexicon = window.HANZI_LEXICON ? window.HANZI_LEXICON[this.currentChar] : null;
@@ -1051,8 +1200,14 @@ class HanziMindApp {
 
     const catalog = window.RADICALS_CATALOG || [];
     const strokeOptions = ["ทั้งหมด", "1-2 ขีด", "3-4 ขีด", "5-6 ขีด", "7-8 ขีด", "9+ ขีด"];
+    const rankOptions = ["ทั้งหมด", "สูงที่สุด", "สูงมาก", "สูง", "ปานกลาง", "ต่ำ"];
+    // Categories in the raw catalog are compound labels like "ร่างกายและพลังงาน"
+    // (body-and-energy) — split on "และ" to a broad bucket ("ร่างกาย") so the
+    // filter has ~20 options instead of the full ~57 overly-specific pairs.
+    const broadCat = (c) => c.split("และ")[0];
+    const categoryOptions = ["ทั้งหมด", ...Array.from(new Set(catalog.map(r => broadCat(r.cat)))).sort()];
 
-    // Filter by search keyword and stroke count
+    // Filter by search keyword, stroke count, category, and rank/frequency
     let filtered = catalog.filter(r => {
       // 1. Keyword search filter (pinyin normalized so "nu" also matches "nǚ")
       if (this.radicalSearchKeyword) {
@@ -1068,11 +1223,19 @@ class HanziMindApp {
       }
 
       // 2. Stroke count filter
-      if (this.currentStrokeFilter === "1-2 ขีด") return r.strokes <= 2;
-      if (this.currentStrokeFilter === "3-4 ขีด") return r.strokes >= 3 && r.strokes <= 4;
-      if (this.currentStrokeFilter === "5-6 ขีด") return r.strokes >= 5 && r.strokes <= 6;
-      if (this.currentStrokeFilter === "7-8 ขีด") return r.strokes >= 7 && r.strokes <= 8;
-      if (this.currentStrokeFilter === "9+ ขีด") return r.strokes >= 9;
+      if (this.currentStrokeFilter === "1-2 ขีด" && !(r.strokes <= 2)) return false;
+      if (this.currentStrokeFilter === "3-4 ขีด" && !(r.strokes >= 3 && r.strokes <= 4)) return false;
+      if (this.currentStrokeFilter === "5-6 ขีด" && !(r.strokes >= 5 && r.strokes <= 6)) return false;
+      if (this.currentStrokeFilter === "7-8 ขีด" && !(r.strokes >= 7 && r.strokes <= 8)) return false;
+      if (this.currentStrokeFilter === "9+ ขีด" && !(r.strokes >= 9)) return false;
+
+      // 3. Category filter (broad bucket)
+      if (this.currentRadicalCategoryFilter !== "ทั้งหมด" && broadCat(r.cat) !== this.currentRadicalCategoryFilter) return false;
+
+      // 4. Rank / frequency filter — doubles as a rough "how essential is this
+      // radical to learn first" difficulty proxy, since there's no per-radical
+      // HSK level in the data (only individual characters have one).
+      if (this.currentRadicalRankFilter !== "ทั้งหมด" && r.rank !== this.currentRadicalRankFilter) return false;
 
       return true;
     });
@@ -1094,12 +1257,22 @@ class HanziMindApp {
       <!-- Stroke Count Filter Pills -->
       <div class="rad-cat-filter-bar" style="display: flex; gap: 6px; overflow-x: auto; padding: 4px 0 10px; scrollbar-width: none;">
         ${strokeOptions.map(st => `
-          <button class="rad-cat-btn ${this.currentStrokeFilter === st ? 'active' : ''}" 
+          <button class="rad-cat-btn ${this.currentStrokeFilter === st ? 'active' : ''}"
                   style="padding: 5px 10px; border-radius: 999px; border: 1px solid var(--ink-border); background: ${this.currentStrokeFilter === st ? 'var(--c-vermilion)' : 'var(--bg-surface)'}; color: ${this.currentStrokeFilter === st ? '#fff' : 'var(--ink-secondary)'}; font-size: 10.5px; font-weight: 600; cursor: pointer; white-space: nowrap;"
                   onclick="window.App.filterRadicalStrokes('${st}')">
             ${st}
           </button>
         `).join('')}
+      </div>
+
+      <!-- Category & Frequency Filter Dropdowns -->
+      <div class="rad-dropdown-filter-row">
+        <select id="rad-lib-category-filter" class="rad-filter-select" onchange="window.App.filterRadicalCategory(this.value)">
+          ${categoryOptions.map(c => `<option value="${escapeHtml(c)}" ${this.currentRadicalCategoryFilter === c ? 'selected' : ''}>${c === 'ทั้งหมด' ? 'หมวดหมู่: ทั้งหมด' : c}</option>`).join('')}
+        </select>
+        <select id="rad-lib-rank-filter" class="rad-filter-select" onchange="window.App.filterRadicalRank(this.value)">
+          ${rankOptions.map(r => `<option value="${escapeHtml(r)}" ${this.currentRadicalRankFilter === r ? 'selected' : ''}>${r === 'ทั้งหมด' ? 'ความถี่การใช้งาน: ทั้งหมด' : `ความถี่: ${r}`}</option>`).join('')}
+        </select>
       </div>
 
       <!-- Compact 214 Cards Grid -->
@@ -1151,6 +1324,16 @@ class HanziMindApp {
 
   filterRadicalStrokes(strokeCategory) {
     this.currentStrokeFilter = strokeCategory;
+    this.renderRadicalsLibrary();
+  }
+
+  filterRadicalCategory(category) {
+    this.currentRadicalCategoryFilter = category;
+    this.renderRadicalsLibrary();
+  }
+
+  filterRadicalRank(rank) {
+    this.currentRadicalRankFilter = rank;
     this.renderRadicalsLibrary();
   }
 

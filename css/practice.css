@@ -293,6 +293,20 @@
   white-space: nowrap;
 }
 
+/* Compound-word breakdown: each component character is a real, separately
+   navigable page (unlike sub-character glyph components), so give it an
+   obvious tap affordance. */
+.component-card.clickable-component {
+  cursor: pointer;
+}
+
+.component-card.clickable-component:hover,
+.component-card.clickable-component:active {
+  border-color: var(--c-vermilion);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
 .component-card.semantic-card .comp-role-badge {
   background: #ecfdf5;
   color: #065f46;
@@ -1501,6 +1515,25 @@ body.dark-theme .eureka-story-box {
   font-size: 12px;
   color: var(--ink-secondary);
   margin-top: 2px;
+}
+
+.rad-dropdown-filter-row {
+  display: flex;
+  gap: 8px;
+  padding: 0 0 10px;
+}
+
+.rad-filter-select {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--ink-border);
+  background: var(--bg-surface);
+  color: var(--ink-primary);
+  font-size: 10.5px;
+  font-weight: 600;
+  outline: none;
 }
 
 .radicals-cards-grid {

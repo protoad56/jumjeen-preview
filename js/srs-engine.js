@@ -11,7 +11,13 @@ class SRSEngine {
     this.isAnswerRevealed = false;
     this.activeCard = null;
     this.stats = { total: 0, reviewedThisSession: 0, correctStreak: 0 };
+    this.showStatsView = false;
     window.SRSEngine = this;
+  }
+
+  toggleStatsView() {
+    this.showStatsView = !this.showStatsView;
+    this.render();
   }
 
   /**
@@ -122,6 +128,11 @@ class SRSEngine {
   async render() {
     if (!this.container) return;
 
+    if (this.showStatsView) {
+      this.container.innerHTML = this.renderStatsScreen();
+      return;
+    }
+
     const stats = await window.DB.getSRSStatistics();
 
     // If session finished or no cards due
@@ -158,6 +169,9 @@ class SRSEngine {
             <button class="btn-restart-srs" onclick="window.SRSEngine.startSession(true)">
               🔄 ทบทวนอีกครั้ง (ฝึกซ้อมทันที)
             </button>
+            <button class="btn-view-stats" onclick="window.SRSEngine.toggleStatsView()">
+              📊 ดูสถิติแบบละเอียดตามระดับ HSK
+            </button>
           </div>
         </div>
       `;
@@ -174,6 +188,7 @@ class SRSEngine {
         <div class="srs-progress-header">
           <span class="srs-counter">คำที่ ${this.currentIndex + 1} / ${this.currentQueue.length}</span>
           <span class="srs-badge ${srs.mastery_level}">ระดับ: ${this.getMasteryLabel(srs.mastery_level)}</span>
+          <button class="btn-stats-mini" onclick="window.SRSEngine.toggleStatsView()" title="ดูสถิติแบบละเอียด">📊</button>
         </div>
 
         <!-- Flip Flashcard -->
@@ -244,6 +259,83 @@ class SRSEngine {
       case 'learning': return 'กำลังเรียน 📝';
       default: return 'คำศัพท์ใหม่ ✨';
     }
+  }
+
+  /** Full learning-progress breakdown by HSK level, covering every
+   *  character and compound word in the app (not just ones already
+   *  touched by a review session) — answers "what have I actually
+   *  learned so far, and roughly what level am I at." */
+  renderStatsScreen() {
+    if (!window.DB || !window.DB.getFullMasteryReport) {
+      return `<div class="etym-empty-notice">✨ ไม่พบข้อมูลสถิติ</div>`;
+    }
+    const { byLevel, overallTotal, overallMastered } = window.DB.getFullMasteryReport();
+    const overallPct = overallTotal > 0 ? Math.round((overallMastered / overallTotal) * 100) : 0;
+
+    // "Current level" = the highest HSK level reached by unbroken mastery
+    // from level 1 up — e.g. HSK1 90%, HSK2 85%, HSK3 40% → estimated at
+    // HSK2, since HSK3 isn't solid yet even though a few HSK4 words might
+    // coincidentally already be mastered.
+    const MASTERY_THRESHOLD = 70;
+    let estimatedLevel = 0;
+    for (let lvl = 1; lvl <= 6; lvl++) {
+      const stat = byLevel[lvl];
+      if (!stat || stat.total === 0) break;
+      const pct = (stat.mastered / stat.total) * 100;
+      if (pct >= MASTERY_THRESHOLD) estimatedLevel = lvl;
+      else break;
+    }
+
+    const levelRows = [1, 2, 3, 4, 5, 6].map(lvl => {
+      const stat = byLevel[lvl] || { total: 0, mastered: 0 };
+      const pct = stat.total > 0 ? Math.round((stat.mastered / stat.total) * 100) : 0;
+      return `
+        <div class="hsk-level-row">
+          <div class="hsk-level-label">
+            <span class="hsk-level-tag">HSK ${lvl}</span>
+            <span class="hsk-level-count">${stat.mastered}/${stat.total} คำ</span>
+          </div>
+          <div class="mastery-progress-bar hsk-bar"><div class="mastery-progress-fill" style="width: ${pct}%"></div></div>
+        </div>
+      `;
+    }).join('');
+
+    const ungraded = byLevel[0];
+    const ungradedRow = ungraded && ungraded.total > 0 ? `
+      <div class="hsk-level-row">
+        <div class="hsk-level-label">
+          <span class="hsk-level-tag">ไม่ระบุระดับ</span>
+          <span class="hsk-level-count">${ungraded.mastered}/${ungraded.total} คำ</span>
+        </div>
+        <div class="mastery-progress-bar hsk-bar"><div class="mastery-progress-fill" style="width: ${ungraded.total > 0 ? Math.round((ungraded.mastered / ungraded.total) * 100) : 0}%"></div></div>
+      </div>
+    ` : '';
+
+    return `
+      <div class="srs-dashboard stats-screen">
+        <div class="stats-screen-header">
+          <button class="btn-back-stats" onclick="window.SRSEngine.toggleStatsView()">← กลับ</button>
+          <h3>📊 สถิติการเรียนรู้</h3>
+        </div>
+
+        <div class="srs-stat-hero">
+          <div class="srs-hero-icon">${estimatedLevel > 0 ? '🎓' : '🌱'}</div>
+          <h3>${estimatedLevel > 0 ? `ระดับปัจจุบันโดยประมาณ: HSK ${estimatedLevel}` : 'ยังไม่ถึงระดับ HSK 1'}</h3>
+          <p>จำได้ขึ้นใจแล้ว ${overallMastered} / ${overallTotal} คำ (${overallPct}%) จากคลังคำศัพท์ทั้งหมดในแอป</p>
+        </div>
+
+        <div class="hsk-breakdown-box">
+          <div class="box-title"><span class="icon">📈</span><span>ความคืบหน้าแยกตามระดับ HSK</span></div>
+          ${levelRows}
+          ${ungradedRow}
+        </div>
+
+        <p class="stats-methodology-note">
+          * ประเมินจากคำที่กดปุ่ม "จำได้แล้ว" หรือทบทวนจนถึงรอบ ≥ 21 วันในระบบ SRS เท่านั้น
+          ไม่ได้วัดจากการสอบจริง ใช้เป็นแนวทางคร่าวๆ ก่อนตัดสินใจสอบ HSK จริงควรลองทำข้อสอบเก่า (真题) ประกอบด้วย
+        </p>
+      </div>
+    `;
   }
 }
 
