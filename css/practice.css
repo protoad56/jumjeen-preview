@@ -1140,6 +1140,12 @@ body.dark-theme .stroke-canvas-box {
 
 .fusion-piece-card {
   position: relative;
+  /* Grid items default to min-width: auto, which means a long nowrap
+     label refuses to shrink below its own content width — it blows up
+     the card past its 1fr track instead of the ellipsis in .piece-label
+     ever kicking in. min-width: 0 lets the item actually respect the
+     grid's column sizing, which is what makes text-overflow work at all. */
+  min-width: 0;
   background: var(--bg-surface);
   border: 1px solid var(--ink-border);
   border-radius: var(--radius-sm);

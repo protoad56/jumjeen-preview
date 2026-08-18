@@ -92,3 +92,10 @@ body.dark-theme {
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
   --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.6);
 }
+
+/* Every rule in the app reads hanzi text via var(--font-hanzi), so
+   redefining it here on body is the whole implementation — no need to
+   hunt down and duplicate every place a Chinese character gets rendered. */
+body.font-sans {
+  --font-hanzi: var(--font-hanzi-sans);
+}

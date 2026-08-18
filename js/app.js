@@ -66,6 +66,9 @@ class HanziMindApp {
     if (settings.theme === "dark") {
       document.body.classList.add("dark-theme");
     }
+    if (settings.hanziFont === "sans") {
+      document.body.classList.add("font-sans");
+    }
     this.renderRadicalPills();
     this.renderCharacterViews();
     this.setupSearch();
@@ -250,6 +253,14 @@ class HanziMindApp {
     }
 
     if (updateMindmap) {
+      // If this character belongs to a different radical than whatever ring
+      // the mindmap is currently showing, switch rings first — otherwise
+      // selectCharacter() below just sets an ID that isn't even a node on
+      // the visible ring, which looks exactly like "nothing happened" when
+      // jumping here from search results or a compound-word breakdown.
+      if (charData && charData.radical && this.mindmap.currentRadical !== charData.radical) {
+        this.mindmap.setRadical(charData.radical);
+      }
       this.mindmap.selectCharacter(charId);
     }
     this.renderCharacterViews();
@@ -1401,7 +1412,8 @@ class HanziMindApp {
       speechRate: 0.9,
       showTraditional: true,
       showSixWritings: true,
-      theme: "light"
+      theme: "light",
+      hanziFont: "serif"
     };
   }
 
@@ -1451,8 +1463,23 @@ class HanziMindApp {
       document.body.classList.remove("dark-theme");
     }
 
-    document.querySelectorAll(".theme-option-card").forEach(btn => {
+    // Scoped to [data-theme] specifically — .theme-option-card is reused by
+    // the hanzi-font picker below, and an unqualified query would also
+    // (incorrectly) toggle "active" on those buttons every time theme changes.
+    document.querySelectorAll(".theme-option-card[data-theme]").forEach(btn => {
       btn.classList.toggle("active", btn.dataset.theme === theme);
+    });
+  }
+
+  setHanziFont(mode) {
+    const settings = this.getSettings();
+    settings.hanziFont = mode;
+    this.saveSettings(settings);
+
+    document.body.classList.toggle("font-sans", mode === "sans");
+
+    document.querySelectorAll(".theme-option-card[data-hanzi-font]").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.hanziFont === mode);
     });
   }
 
@@ -1482,8 +1509,12 @@ class HanziMindApp {
       if (lbl) lbl.textContent = `${rateSlider.value}x`;
     }
 
-    document.querySelectorAll(".theme-option-card").forEach(btn => {
+    document.querySelectorAll(".theme-option-card[data-theme]").forEach(btn => {
       btn.classList.toggle("active", btn.dataset.theme === settings.theme);
+    });
+
+    document.querySelectorAll(".theme-option-card[data-hanzi-font]").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.hanziFont === (settings.hanziFont || "serif"));
     });
   }
 

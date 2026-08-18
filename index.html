@@ -307,6 +307,23 @@
                   <span class="toggle-track"></span>
                 </label>
               </div>
+
+              <div class="setting-switch-row" style="flex-direction: column; align-items: stretch; gap: 10px;">
+                <div class="switch-label-col">
+                  <span class="switch-title">ฟอนต์ตัวอักษรจีน</span>
+                  <span class="switch-subtitle">สลับเป็นฟอนต์ตัวพิมพ์เรียบง่ายถ้ารู้สึกว่าฟอนต์พู่กันอ่านยาก</span>
+                </div>
+                <div class="theme-select-grid" id="hanzi-font-select">
+                  <button class="theme-option-card active" data-hanzi-font="serif" onclick="window.App.setHanziFont('serif')">
+                    <span class="font-sample-hanzi" style="font-family: var(--font-hanzi);">好</span>
+                    <span>พู่กัน (Serif)</span>
+                  </button>
+                  <button class="theme-option-card" data-hanzi-font="sans" onclick="window.App.setHanziFont('sans')">
+                    <span class="font-sample-hanzi" style="font-family: var(--font-hanzi-sans);">好</span>
+                    <span>ตัวพิมพ์ (Sans-serif)</span>
+                  </button>
+                </div>
+              </div>
             </div>
 
             <!-- 4. Theme & Appearance -->

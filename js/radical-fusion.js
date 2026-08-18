@@ -121,7 +121,7 @@ class RadicalFusionGame {
       { char: "亻", pinyin: "rén", label: "คน/มนุษย์", cat: "human" },
       { char: "木", pinyin: "mù", label: "ต้นไม้", cat: "nature" },
       { char: "日", pinyin: "rì", label: "พระอาทิตย์", cat: "nature" },
-      { char: "月", pinyin: "yuè", label: "พระจันทร์ (หรือ เนื้อ/ร่างกาย ในบางคำ)", cat: "nature" },
+      { char: "月", pinyin: "yuè", label: "พระจันทร์/เนื้อ*", note: "月 มีสองความหมาย: พระจันทร์ (เช่นใน 明) หรือ เนื้อ/ร่างกาย 肉月旁 (เช่นใน 胖, 脸) แล้วแต่คำที่ผสม", cat: "nature" },
       { char: "火", pinyin: "huǒ", label: "ไฟ", cat: "nature" },
       { char: "口", pinyin: "kǒu", label: "ปาก/ช่อง", cat: "human" },
       { char: "乞", pinyin: "qǐ", label: "ขอ/เสียง qǐ", cat: "human" },
@@ -407,10 +407,13 @@ class RadicalFusionGame {
                 }
               }
 
+              let tooltip = statusClass === 'cannot-fuse' ? `ตัวนี้ไม่สามารถผสมกับ ${this.slot1.char} ได้` : `แตะเพื่อเลือก ${piece.char}`;
+              if (piece.note) tooltip = `${piece.note}\n\n${tooltip}`;
+
               return `
-                <div class="fusion-piece-card ${statusClass}" 
+                <div class="fusion-piece-card ${statusClass}"
                      onclick="window.FusionGame.selectPiece('${piece.char}', '${piece.pinyin}', '${piece.label.replace(/'/g, "\\'")}')"
-                     title="${statusClass === 'cannot-fuse' ? `ตัวนี้ไม่สามารถผสมกับ ${this.slot1.char} ได้` : `แตะเพื่อเลือก ${piece.char}`}">
+                     title="${tooltip.replace(/"/g, "&quot;")}">
                   ${statusPill}
                   <div class="piece-char">${piece.char}</div>
                   <div class="piece-pinyin">${piece.pinyin}</div>

@@ -1187,6 +1187,11 @@ body.dark-theme .desktop-preview-container {
   box-shadow: 0 2px 8px rgba(40, 53, 147, 0.25);
 }
 
+.font-sample-hanzi {
+  font-size: 22px;
+  line-height: 1;
+}
+
 .modal-footer-action {
   padding: 14px 20px;
   background: var(--bg-surface-elevated);
