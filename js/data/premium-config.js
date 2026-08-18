@@ -25,6 +25,7 @@ const FREE_RADICALS = ["女", "氵", "讠", "辶", "日", "口", "心", "亻", "
 
 const PremiumGate = {
   STORAGE_KEY: "jumjeen_premium_unlocked",
+  DEV_PREVIEW_ALL_UNLOCKED: true, // Set to true to unlock all 214 radicals for system testing
   _ready: false,
 
   isFreeRadical(radChar) {
@@ -32,6 +33,7 @@ const PremiumGate = {
   },
 
   isUnlocked() {
+    if (this.DEV_PREVIEW_ALL_UNLOCKED) return true;
     try {
       return localStorage.getItem(this.STORAGE_KEY) === "true";
     } catch (e) {
@@ -40,6 +42,7 @@ const PremiumGate = {
   },
 
   canAccessRadical(radChar) {
+    if (this.DEV_PREVIEW_ALL_UNLOCKED) return true;
     return this.isUnlocked() || this.isFreeRadical(radChar);
   },
 

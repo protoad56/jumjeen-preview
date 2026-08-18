@@ -363,7 +363,11 @@ class AudioPronounceEngine {
         { x: padX + drawW, y: pitchToY(1.0) }
       ];
     } else {
-      points = [{ x: padX + drawW * 0.5, y: pitchToY(2.5) }];
+      // Neutral Tone (轻声 Chao 31): short light falling contour
+      points = [
+        { x: padX + drawW * 0.35, y: pitchToY(3.0) },
+        { x: padX + drawW * 0.65, y: pitchToY(1.5) }
+      ];
     }
 
     if (points.length < 2) {
@@ -408,6 +412,114 @@ class AudioPronounceEngine {
   }
 }
 
+/**
+ * Mandarin Tone Sandhi Realization Engine (ระบบคำนวณการผันเสียงวรรณยุกต์ตามสัทศาสตร์จริง)
+ */
+class ToneSandhiEngine {
+  /**
+   * Calculate spoken pinyin and sandhi rules for Chinese words/phrases
+   * @param {string} chinese Chinese characters e.g. "你好", "不是", "一个"
+   * @param {string} rawPinyin Dictionary pinyin e.g. "nǐ hǎo", "bù shì", "yī gè"
+   * @returns {Object} { spokenPinyin, hasSandhi, ruleName, explanation }
+   */
+  static analyzeSandhi(chinese, rawPinyin) {
+    if (!chinese || !rawPinyin) return { spokenPinyin: rawPinyin || "", hasSandhi: false };
+
+    const syllables = rawPinyin.trim().split(/\s+/);
+    const chars = Array.from(chinese.trim());
+
+    // 1. Double 3rd tone rule (เสียง 3 + 3 ➔ 2 + 3) e.g. 你好 (nǐ hǎo ➔ ní hǎo), 很好 (hěn hǎo ➔ hén hǎo)
+    if (syllables.length === 2 && this.getTone(syllables[0]) === 3 && this.getTone(syllables[1]) === 3) {
+      const changedSyllable = this.changeTone(syllables[0], 2);
+      const spoken = `${changedSyllable} ${syllables[1]}`;
+      return {
+        spokenPinyin: spoken,
+        hasSandhi: true,
+        ruleName: "กฎเสียง 3+3 ➔ 2+3",
+        explanation: `เสียง 3 สองพยางค์ติดกัน พยางค์แรกเปลี่ยนเป็นเสียง 2 (จาก '${syllables[0]}' ออกเสียงเป็น '${changedSyllable}')`
+      };
+    }
+
+    // 2. "不" (bù) rule: Before Tone 4, "不" changes from 4th tone to 2nd tone (bú)
+    if (chars.length >= 2 && chars[0] === "不" && syllables.length >= 2) {
+      const secondTone = this.getTone(syllables[1]);
+      if (secondTone === 4) {
+        const spoken = syllables.map((s, idx) => idx === 0 ? "bú" : s).join(" ");
+        return {
+          spokenPinyin: spoken,
+          hasSandhi: true,
+          ruleName: "กฎการผันเสียง '不' (bù ➔ bú)",
+          explanation: "'不' นำหน้าพยางค์เสียงที่ 4 จะเปลี่ยนเป็นเสียงที่ 2 'bú' (เช่น 不是 ➔ bú shì)"
+        };
+      }
+    }
+
+    // 3. "一" (yī) rule:
+    // Before Tone 4: "一" becomes 2nd tone (yí) e.g. 一个 ➔ yí gè, 一样 ➔ yí yàng
+    // Before Tone 1, 2, 3: "一" becomes 4th tone (yì) e.g. 一天 ➔ yì tiān, 一起 ➔ yì qǐ
+    if (chars.length >= 2 && chars[0] === "一" && syllables.length >= 2) {
+      const secondTone = this.getTone(syllables[1]);
+      if (secondTone === 4) {
+        const spoken = syllables.map((s, idx) => idx === 0 ? "yí" : s).join(" ");
+        return {
+          spokenPinyin: spoken,
+          hasSandhi: true,
+          ruleName: "กฎการผันเสียง '一' (yī ➔ yí)",
+          explanation: "'一' นำหน้าพยางค์เสียงที่ 4 จะเปลี่ยนเป็นเสียงที่ 2 'yí' (เช่น 一个 ➔ yí gè)"
+        };
+      } else if (secondTone >= 1 && secondTone <= 3) {
+        const spoken = syllables.map((s, idx) => idx === 0 ? "yì" : s).join(" ");
+        return {
+          spokenPinyin: spoken,
+          hasSandhi: true,
+          ruleName: "กฎการผันเสียง '一' (yī ➔ yì)",
+          explanation: `'一' นำหน้าพยางค์เสียง 1, 2 หรือ 3 จะเปลี่ยนเป็นเสียงที่ 4 'yì' (เช่น 一起 ➔ yì qǐ)`
+        };
+      }
+    }
+
+    return { spokenPinyin: rawPinyin, hasSandhi: false, ruleName: "", explanation: "" };
+  }
+
+  /**
+   * Convenience wrapper to get spoken pinyin directly
+   * @param {string} chinese
+   * @param {string} rawPinyin
+   * @returns {string}
+   */
+  static calculateSpokenPinyin(chinese, rawPinyin) {
+    const res = this.analyzeSandhi(chinese, rawPinyin);
+    return res ? res.spokenPinyin : (rawPinyin || "");
+  }
+
+  static getTone(syllable) {
+    if (!syllable) return 0;
+    if (/[āēīōūǖ]/.test(syllable)) return 1;
+    if (/[áéíóúǘ]/.test(syllable)) return 2;
+    if (/[ǎěǐǒǔǚ]/.test(syllable)) return 3;
+    if (/[àèìòùǜ]/.test(syllable)) return 4;
+    return 0; // neutral tone
+  }
+
+  static changeTone(syllable, targetTone) {
+    const toneMaps = {
+      'ǎ': ['a', 'ā', 'á', 'ǎ', 'à'],
+      'ě': ['e', 'ē', 'é', 'ě', 'è'],
+      'ǐ': ['i', 'ī', 'í', 'ǐ', 'ì'],
+      'ǒ': ['o', 'ō', 'ó', 'ǒ', 'ò'],
+      'ǔ': ['u', 'ū', 'ú', 'ǔ', 'ù'],
+      'ǚ': ['ü', 'ǖ', 'ǘ', 'ǚ', 'ǜ']
+    };
+    for (const [t3Char, forms] of Object.entries(toneMaps)) {
+      if (syllable.includes(t3Char)) {
+        return syllable.replace(t3Char, forms[targetTone]);
+      }
+    }
+    return syllable;
+  }
+}
+
 if (typeof window !== 'undefined') {
   window.AudioEngine = new AudioPronounceEngine();
+  window.ToneSandhiEngine = ToneSandhiEngine;
 }

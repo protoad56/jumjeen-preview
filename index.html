@@ -70,6 +70,9 @@
             <h1>จำจีน · รากศัพท์</h1>
             <span class="sub-thai">เรียนศัพท์จีนจากผังรากศัพท์ & เรื่องราวดั้งเดิม</span>
           </div>
+          <button id="btn-open-settings" class="header-settings-btn" title="ตั้งค่าระบบ" onclick="window.App.openSettingsModal()">
+            <span class="settings-btn-icon">⚙️</span>
+          </button>
         </div>
       </header>
 
@@ -148,18 +151,15 @@
                   <span>แอนิเมชันลำดับการเขียนขีด (Stroke Order & Anatomy)</span>
                 </div>
 
-                <div class="stroke-canvas-box">
-                  <canvas id="stroke-canvas" width="220" height="220"></canvas>
-                </div>
+                <div class="stroke-canvas-box" id="stroke-target-container"></div>
 
                 <div class="stroke-step-label" id="stroke-step-label">
-                  แตะปุ่มเริ่มเพื่อดูลำดับขีดทีละเส้น
+                  แตะปุ่มเพื่อเล่นแอนิเมชันพู่กันจีน หรือแตะ 'ฝึกเขียน' เพื่อลากเส้น
                 </div>
 
                 <div class="stroke-controls-row">
                   <button class="btn-ctrl primary" id="btn-stroke-play">▶ เล่นแอนิเมชัน</button>
-                  <button class="btn-ctrl" id="btn-stroke-prev">◀ ก่อนหน้า</button>
-                  <button class="btn-ctrl" id="btn-stroke-next">ถัดไป ▶</button>
+                  <button class="btn-ctrl" id="btn-stroke-quiz">✍️ ฝึกเขียนตามเส้น</button>
                   <button class="btn-ctrl" id="btn-stroke-reset">⟲ รีเซ็ต</button>
                 </div>
               </div>
@@ -218,6 +218,123 @@
 
       </main>
 
+      <!-- Settings & Difficulty Modal -->
+      <div id="settings-modal" class="modal-overlay">
+        <div class="modal-card settings-modal-card">
+          <div class="modal-header">
+            <div class="modal-title-group">
+              <span class="modal-header-icon">⚙️</span>
+              <h3 class="modal-heading">ตั้งค่าระบบ & ระดับความยาก</h3>
+            </div>
+            <button class="modal-close-icon-btn" onclick="window.App.closeSettingsModal()">✕</button>
+          </div>
+
+          <div class="settings-modal-body">
+            <!-- 1. Difficulty / HSK Level Filter -->
+            <div class="setting-block">
+              <div class="setting-header">
+                <span class="setting-title">🎯 ระดับความยากของคำศัพท์ (HSK Level)</span>
+                <span class="setting-description">เลือกช่วงระดับคำศัพท์ที่ต้องการให้แสดงบนผัง Mindmap และการทบทวน</span>
+              </div>
+              <div class="difficulty-button-group">
+                <button class="diff-option-btn active" data-hsk="all" onclick="window.App.setDifficulty('all')">ทั้งหมด (HSK 1-6)</button>
+                <button class="diff-option-btn" data-hsk="1-2" onclick="window.App.setDifficulty('1-2')">เริ่มต้น (HSK 1-2)</button>
+                <button class="diff-option-btn" data-hsk="3-4" onclick="window.App.setDifficulty('3-4')">ปานกลาง (HSK 3-4)</button>
+                <button class="diff-option-btn" data-hsk="5+" onclick="window.App.setDifficulty('5+')">ขั้นสูง (HSK 5-6)</button>
+              </div>
+            </div>
+
+            <!-- 2. Linguistic & Phonetics Settings -->
+            <div class="setting-block">
+              <div class="setting-header">
+                <span class="setting-title">🔊 สัทศาสตร์ & การออกเสียง</span>
+              </div>
+              
+              <div class="setting-switch-row">
+                <div class="switch-label-col">
+                  <span class="switch-title">ระบบผันเสียงจริง (Tone Sandhi)</span>
+                  <span class="switch-subtitle">แสดงป้ายสัทศาสตร์เสียงพูดจริง เช่น [ní hǎo], [bú shì]</span>
+                </div>
+                <label class="custom-toggle">
+                  <input type="checkbox" id="setting-toggle-sandhi" checked onchange="window.App.updateSetting('showSandhi', this.checked)">
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+
+              <div class="setting-switch-row">
+                <div class="switch-label-col">
+                  <span class="switch-title">เล่นเสียงอ่านอัตโนมัติ</span>
+                  <span class="switch-subtitle">ออกเสียงคำศัพท์ทันทีเมื่อแตะเลือกบนผัง Mindmap</span>
+                </div>
+                <label class="custom-toggle">
+                  <input type="checkbox" id="setting-toggle-autospeak" checked onchange="window.App.updateSetting('autoSpeak', this.checked)">
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+
+              <div class="setting-slider-row">
+                <div class="slider-header-row">
+                  <span class="switch-title">ความเร็วเสียงอ่าน TTS</span>
+                  <span class="slider-value-badge" id="lbl-speech-rate">0.9x</span>
+                </div>
+                <input type="range" class="custom-slider" id="setting-speech-rate" min="0.5" max="1.3" step="0.1" value="0.9" onchange="window.App.updateSpeechRate(this.value)" oninput="document.getElementById('lbl-speech-rate').textContent = `${this.value}x`">
+              </div>
+            </div>
+
+            <!-- 3. Character Display Settings -->
+            <div class="setting-block">
+              <div class="setting-header">
+                <span class="setting-title">🔀 การแสดงผลตัวอักษร</span>
+              </div>
+              
+              <div class="setting-switch-row">
+                <div class="switch-label-col">
+                  <span class="switch-title">เทียบเคียงตัวเต็ม (繁体字)</span>
+                  <span class="switch-subtitle">แสดงตัวเต็มเคียงข้างตัวย่อเพื่อดูรากศัพท์ดั้งเดิม [愛, 門, 後]</span>
+                </div>
+                <label class="custom-toggle">
+                  <input type="checkbox" id="setting-toggle-trad" checked onchange="window.App.updateSetting('showTraditional', this.checked)">
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+
+              <div class="setting-switch-row">
+                <div class="switch-label-col">
+                  <span class="switch-title">ป้ายประเภทอักษร 6 ชนิด (六书)</span>
+                  <span class="switch-subtitle">แสดงป้าย 形声 / 会意 / 象形 / 指事 พร้อมแยกชิ้นส่วนเสียง-ความหมาย</span>
+                </div>
+                <label class="custom-toggle">
+                  <input type="checkbox" id="setting-toggle-sixwritings" checked onchange="window.App.updateSetting('showSixWritings', this.checked)">
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 4. Theme & Appearance -->
+            <div class="setting-block">
+              <div class="setting-header">
+                <span class="setting-title">🎨 ธีมหน้าจอ (Theme)</span>
+              </div>
+              <div class="theme-select-grid">
+                <button class="theme-option-card active" data-theme="light" onclick="window.App.setTheme('light')">
+                  <span class="theme-icon">☀️</span>
+                  <span>สว่าง (Parchment)</span>
+                </button>
+                <button class="theme-option-card" data-theme="dark" onclick="window.App.setTheme('dark')">
+                  <span class="theme-icon">🌙</span>
+                  <span>มืด (Ink Dark)</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="modal-footer-action">
+            <button class="btn-confirm-settings" onclick="window.App.closeSettingsModal()">✓ บันทึกการตั้งค่า</button>
+          </div>
+        </div>
+      </div>
+
       <!-- Bottom Tab Bar Navigation (4 Core Pillars) -->
       <nav class="app-tab-bar">
         <button class="tab-nav-btn active" data-tab="mindmap">
@@ -242,21 +359,24 @@
   </div>
 
   <!-- JavaScript Engines & Datasets -->
-  <script src="js/data/radicals_catalog.js?v=4.4"></script>
-  <script src="js/data/radicals.js?v=4.4"></script>
-  <script src="js/data/characters.js?v=4.4"></script>
-  <script src="js/data/hanzi-lexicon.js?v=4.4"></script>
-  <script src="js/data/premium-config.js?v=4.4"></script>
-  <script src="js/db/database.js?v=4.4"></script>
-  <script src="js/srs-engine.js?v=4.4"></script>
-  <script src="js/audio-pronounce.js?v=4.4"></script>
-  <script src="js/stroke-animator.js?v=4.4"></script>
-  <script src="js/mindmap.js?v=4.4"></script>
-  <script src="js/radical-fusion.js?v=4.4"></script>
-  <script src="js/paywall.js?v=4.4"></script>
-  <script src="js/app.js?v=4.4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+  <script src="js/data/radicals_catalog.js?v=5.1"></script>
+  <script src="js/data/radicals.js?v=5.1"></script>
+  <script src="js/data/characters.js?v=5.1"></script>
+  <script src="js/data/traditional_map.js?v=5.1"></script>
+  <script src="js/data/phonetic_families.js?v=5.1"></script>
+  <script src="js/data/hanzi-lexicon.js?v=5.1"></script>
+  <script src="js/data/premium-config.js?v=5.1"></script>
+  <script src="js/db/database.js?v=5.1"></script>
+  <script src="js/srs-engine.js?v=5.1"></script>
+  <script src="js/audio-pronounce.js?v=5.1"></script>
+  <script src="js/stroke-animator.js?v=5.1"></script>
+  <script src="js/mindmap.js?v=5.1"></script>
+  <script src="js/radical-fusion.js?v=5.1"></script>
+  <script src="js/paywall.js?v=5.1"></script>
+  <script src="js/app.js?v=5.1"></script>
   <script>
-    // Preview-build only: auto-unlock all 214 radicals for testers.
+    // Preview-build only: auto-unlock all radicals for testers.
     // (This file is unique to the jumjeen-preview deployment — the real
     // app's source keeps the actual paywall gate untouched.)
     if (window.PremiumGate) window.PremiumGate.unlock();

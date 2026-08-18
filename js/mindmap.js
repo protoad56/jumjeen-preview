@@ -284,12 +284,14 @@ class RadicalMindmap {
     const centerY = (h / 2) + 14;
 
     // 1. Center Radical Node Item
+    const variantTag = (rad.variants && rad.variants.length > 0) ? rad.variants.join(' ') : null;
     const centerNodeItem = {
       id: `rad-${rad.id}`,
       type: "center-radical",
       hanzi: rad.id,
       title: rad.pinyin,
       subtitle: rad.thaiMeaning,
+      badge: variantTag,
       x: centerX,
       y: centerY,
       w: 74,

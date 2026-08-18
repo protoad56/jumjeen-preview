@@ -16,95 +16,95 @@ class RadicalFusionGame {
     this.recipes = [
       // 女 (Woman / Female)
       { comp1: "女", comp2: "子", result: "好", story: "แม่ (女) + ลูก (子) = ความสุขและความดีงาม (好)" },
-      { comp1: "女", comp2: "马", result: "妈", story: "ผู้หญิง (女) + ม้า (马 mǎ) = คุณแม่ (妈 mā)" },
+      { comp1: "女", comp2: "马", result: "妈", story: "ผู้หญิง (女) + เสียง mǎ/mā (马) = คุณแม่ (妈)" },
       { comp1: "宀", comp2: "女", result: "安", story: "หลังคาบ้าน (宀) + ผู้หญิง (女) = ปลอดภัยและสงบสุข (安)" },
-      { comp1: "女", comp2: "少", result: "妙", story: "ผู้หญิง (女) + อ่อนวัย (少) = มหัศจรรย์/ยอดเยี่ยม (妙)" },
-      { comp1: "女", comp2: "生", result: "姓", story: "ผู้หญิง (女) + ให้กำเนิด (生) = นามสกุล/แซ่ (姓)" },
-      { comp1: "女", comp2: "且", result: "姐", story: "ผู้หญิง (女) + เสาบรรพบุรุษ (且) = พี่สาว (姐)" },
-      { comp1: "女", comp2: "未", result: "妹", story: "ผู้หญิง (女) + ยังไม่โต (未) = น้องสาว (妹)" },
-      { comp1: "女", comp2: "口", result: "如", story: "ผู้หญิง (女) + ปาก (口) = ดั่งเช่น/เป็นไปตาม (如)" },
+      { comp1: "女", comp2: "少", result: "妙", story: "ผู้หญิง (女) + เสียง shǎo/miào (少) = มหัศจรรย์/ยอดเยี่ยม (妙)" },
+      { comp1: "女", comp2: "生", result: "姓", story: "ผู้หญิง (女) + เสียง shēng/xìng / กำเนิด (生) = นามสกุล/แซ่ (姓)" },
+      { comp1: "女", comp2: "且", result: "姐", story: "ผู้หญิง (女) + เสียง qiě/jiě (且) = พี่สาว (姐)" },
+      { comp1: "女", comp2: "未", result: "妹", story: "ผู้หญิง (女) + เสียง wèi/mèi (未) = น้องสาว (妹)" },
+      { comp1: "女", comp2: "口", result: "如", story: "ผู้หญิง (女) + เสียง/ปาก (口) = ดั่งเช่น/เป็นไปตาม (如)" },
 
       // 亻 / 人 (Human / Person)
       { comp1: "亻", comp2: "木", result: "休", story: "คน (亻) + พิงต้นไม้ (木) = พักผ่อน (休)" },
-      { comp1: "亻", comp2: "也", result: "他", story: "คน (亻) + สิ่งอื่น (也) = เขา (他)" },
-      { comp1: "亻", comp2: "门", result: "们", story: "คน (亻) + ประตู (门) = พวกเรา/พวกเขา (们)" },
-      { comp1: "亻", comp2: "尔", result: "你", story: "คน (亻) + เธอ (尔) = เธอ/คุณ (你)" },
-      { comp1: "亻", comp2: "故", result: "做", story: "คน (亻) + กิจธุระ (故) = ลงมือทำ (做)" },
-      { comp1: "亻", comp2: "乍", result: "作", story: "คน (亻) + มีดตัด (乍) = ประดิษฐ์/ทำงาน (作)" },
+      { comp1: "亻", comp2: "也", result: "他", story: "คน (亻) + เสียง yě/tā (也) = เขา (他)" },
+      { comp1: "亻", comp2: "门", result: "们", story: "คน (亻) + เสียง mén/men (门) = พวกเรา/พวกเขา (们)" },
+      { comp1: "亻", comp2: "尔", result: "你", story: "คน (亻) + เสียง ěr/nǐ (尔) = เธอ/คุณ (你)" },
+      { comp1: "亻", comp2: "故", result: "做", story: "คน (亻) + เสียง gù/zuò (故) = ลงมือทำ (做)" },
+      { comp1: "亻", comp2: "乍", result: "作", story: "คน (亻) + เสียง zhà/zuò (乍) = ประดิษฐ์/ทำงาน (作)" },
       { comp1: "亻", comp2: "牛", result: "件", story: "คน (亻) + ผ่าชิ้นเนื้อวัว (牛) = ชิ้น/เรื่อง (件)" },
-      { comp1: "人", comp2: "王", result: "全", story: "คน (人) + กษัตริย์ (王) = สมบูรณ์/ทั้งหมด (全)" },
+      { comp1: "人", comp2: "王", result: "全", story: "คน (人/入) + กษัตริย์/หยก (王) = สมบูรณ์/ทั้งหมด (全)" },
 
       // 日 & 月 (Sun & Moon)
       { comp1: "日", comp2: "月", result: "明", story: "พระอาทิตย์ (日) + พระจันทร์ (月) = สว่างไสวแจ่มแจ้ง (明)" },
-      { comp1: "日", comp2: "十", result: "早", story: "พระอาทิตย์ (日) + สิบ (十) = ยามเช้า (早)" },
-      { comp1: "日", comp2: "生", result: "星", story: "พระอาทิตย์ (日) + ให้กำเนิด (生) = ดวงดาว (星)" },
-      { comp1: "日", comp2: "日", result: "晶", story: "พระอาทิตย์ 3 ดวงส่องประกาย (日+日) = ผลึกแก้วระยิบระยับ (晶)" },
+      { comp1: "日", comp2: "十", result: "早", story: "พระอาทิตย์ (日) + สิบ/ประกาย (十) = ยามเช้า (早)" },
+      { comp1: "日", comp2: "生", result: "星", story: "ดวงดาว/ท้องฟ้า (日) + เสียง shēng/xīng (生) = ดวงดาว (星)" },
+      { comp1: "日", comp2: "青", result: "晴", story: "พระอาทิตย์ (日) + เสียง qīng (青) = ท้องฟ้าแจ่มใส (晴)" },
 
       // 木 (Tree / Wood)
       { comp1: "木", comp2: "木", result: "林", story: "ต้นไม้ (木) + ต้นไม้ (木) = ป่าไม้ (林)" },
       { comp1: "木", comp2: "林", result: "森", story: "ต้นไม้ (木) + ป่าไม้ (林) = ป่าดงดิบทึบ (森)" },
-      { comp1: "木", comp2: "寸", result: "村", story: "ต้นไม้ (木) + ก้าวเดิน (寸) = หมู่บ้าน (村)" },
-      { comp1: "木", comp2: "反", result: "板", story: "ต้นไม้ (木) + แผ่นเรียบ (反) = ไม้กระดาน (板)" },
-      { comp1: "木", comp2: "果", result: "棵", story: "ต้นไม้ (木) + ผลไม้ (果) = ต้น (棵)" },
-      { comp1: "木", comp2: "不", result: "杯", story: "ไม้ (木) + ไม่คว่ำ (不) = ถ้วย/แก้วน้ำ (杯)" },
+      { comp1: "木", comp2: "及", result: "极", story: "ไม้ (木) + เสียง jí (及) = ที่สุด/ขั้ว (极)" },
+      { comp1: "木", comp2: "交", result: "校", story: "ไม้ (木) + เสียง jiāo/xiào (交) = โรงเรียน (校)" },
+      { comp1: "木", comp2: "羊", result: "样", story: "แม่พิมพ์ไม้ (木) + เสียง yáng/yàng (羊) = แบบอย่าง/รูปร่าง (样)" },
+      { comp1: "木", comp2: "不", result: "杯", story: "จอกไม้โบราณ (木) + เสียง bēi/fǒu (不) = ถ้วย/แก้วน้ำ (杯)" },
 
       // 火 / 灬 (Fire)
       { comp1: "火", comp2: "火", result: "炎", story: "เปลวไฟ (火) + เปลวไฟ (火) = ร้อนจัดลุกโชน (炎)" },
-      { comp1: "火", comp2: "丁", result: "灯", story: "ไฟ (火) + ปักหมุด (丁) = ตะเกียง/โคมไฟ (灯)" },
-      { comp1: "火", comp2: "因", result: "烟", story: "ไฟ (火) + ล้อมกรอบ (因) = ควันไฟ (烟)" },
-      { comp1: "火", comp2: "少", result: "炒", story: "ไฟ (火) + เล็กน้อย (少) = ผัดอาหาร (炒)" },
-      { comp1: "火", comp2: "包", result: "炮", story: "ไฟ (火) + ห่อหุ้ม (包) = ปืนใหญ่/ประทัด (炮)" },
+      { comp1: "火", comp2: "丁", result: "灯", story: "ไฟ/แสงสว่าง (火) + เสียง dīng/dēng (丁) = ตะเกียง/โคมไฟ (灯)" },
+      { comp1: "火", comp2: "因", result: "烟", story: "ไฟ/ควันเผา (火) + เสียง yīn/yān (因) = ควันไฟ (烟)" },
+      { comp1: "火", comp2: "少", result: "炒", story: "ไฟ/ปรุงอาหาร (火) + เสียง shǎo/chǎo (少) = ผัดอาหาร (炒)" },
+      { comp1: "火", comp2: "尧", result: "烧", story: "ไฟ (火) + เสียง yáo/shāo (尧) = เผา/ต้มสุก (烧)" },
       { comp1: "禾", comp2: "火", result: "秋", story: "รวงข้าว (禾) + สีเปลวไฟ (火) = ฤดูใบไม้ร่วง (秋)" },
 
       // 口 (Mouth)
-      { comp1: "口", comp2: "乞", result: "吃", story: "อ้าปาก (口) + ขอกลืน (乞) = กินอาหาร (吃)" },
+      { comp1: "口", comp2: "乞", result: "吃", story: "ช่องปาก (口) + เสียง qǐ/chī (乞) = กินอาหาร (吃)" },
       { comp1: "口", comp2: "十", result: "古", story: "ปากบอกเล่า (口) + สิบรุ่น (十) = โบราณกาล (古)" },
       { comp1: "口", comp2: "鸟", result: "鸣", story: "ปาก (口) + นก (鸟) = นกร้องขับขาน (鸣)" },
-      { comp1: "口", comp2: "天", result: "吞", story: "อ้าปาก (口) + ใหญ่เท่าฟ้า (天) = กลืนกิน (吞)" },
+      { comp1: "口", comp2: "昌", result: "唱", story: "ช่องปาก (口) + เสียง chāng/chàng (昌) = ร้องเพลง/ขับร้อง (唱)" },
       { comp1: "门", comp2: "口", result: "问", story: "หน้าประตู (门) + เอ่ยปาก (口) = ถามไถ่ (问)" },
 
       // 氵 (Water)
       { comp1: "氵", comp2: "水", result: "淼", story: "สายน้ำ (氵) + น้ำ (水) = ผืนน้ำเวิ้งว้าง (淼)" },
-      { comp1: "氵", comp2: "青", result: "清", story: "สายน้ำ (氵) + เขียวสด (青) = ใสสะอาดบริสุทธิ์ (清)" },
-      { comp1: "氵", comp2: "每", result: "海", story: "สายน้ำ (氵) + ทุกๆ แหล่ง (每) = ทะเลกว้างใหญ่ (海)" },
-      { comp1: "氵", comp2: "工", result: "江", story: "สายน้ำ (氵) + งานขุด (工) = แม่น้ำแยงซีเกียง (江)" },
-      { comp1: "氵", comp2: "可", result: "河", story: "สายน้ำ (氵) + ลำธาร (可) = แม่น้ำฮวงโห (河)" },
+      { comp1: "氵", comp2: "青", result: "清", story: "สายน้ำ (氵) + เสียง qīng (青) = ใสสะอาดบริสุทธิ์ (清)" },
+      { comp1: "氵", comp2: "每", result: "海", story: "สายน้ำ (氵) + เสียง měi/hǎi (每) = ทะเลกว้างใหญ่ (海)" },
+      { comp1: "氵", comp2: "工", result: "江", story: "สายน้ำ (氵) + เสียง gōng/jiāng (工) = แม่น้ำแยงซี/แม่น้ำสายใหญ่ (江)" },
+      { comp1: "氵", comp2: "可", result: "河", story: "สายน้ำ (氵) + เสียง kě/hé (可) = แม่น้ำฮวงโห/แม่น้ำ (河)" },
 
       // 讠 (Speech / Language)
       { comp1: "讠", comp2: "舌", result: "话", story: "คำพูด (讠) + ลิ้น (舌) = คำพูด/บทสนทนา (话)" },
-      { comp1: "讠", comp2: "吾", result: "语", story: "คำพูด (讠) + ตัวเรา (吾) = ภาษา (语)" },
+      { comp1: "讠", comp2: "吾", result: "语", story: "คำพูด/ภาษา (讠) + เสียง wú/yǔ (吾) = ภาษา (语)" },
       { comp1: "讠", comp2: "十", result: "计", story: "คำพูด (讠) + ตัวเลขสิบ (十) = วางแผน/คำนวณ (计)" },
-      { comp1: "讠", comp2: "兑", result: "说", story: "คำพูด (讠) + รอยยิ้มเบิกบาน (兑) = พูดจา (说)" },
-      { comp1: "讠", comp2: "卖", result: "读", story: "คำพูด (讠) + ต่อเนื่อง (卖) = อ่านหนังสือ (读)" },
+      { comp1: "讠", comp2: "兑", result: "说", story: "คำพูด (讠) + เสียง duì/shuō (兑) = พูดจา (说)" },
+      { comp1: "讠", comp2: "卖", result: "读", story: "คำพูด (讠) + เสียง mài/dú (卖) = อ่านหนังสือ (读)" },
 
       // 钅 (Metal / Gold)
-      { comp1: "钅", comp2: "戋", result: "钱", story: "โลหะ (钅) + หอกเล็กมีค่า (戋) = เงินตรา/ทอง (钱)" },
-      { comp1: "钅", comp2: "童", result: "钟", story: "โลหะ (钅) + เสียงดังก้อง (童) = ระฆัง/นาฬิกา (钟)" },
-      { comp1: "钅", comp2: "昔", result: "错", story: "โลหะ (钅) + รอยสลักเก่า (昔) = ผิดพลาด (错)" },
-      { comp1: "钅", comp2: "艮", result: "银", story: "โลหะ (钅) + ดวงตาแวววาว (艮) = แร่เงินบริสุทธิ์ (银)" },
-      { comp1: "钅", comp2: "十", result: "针", story: "โลหะ (钅) + ปลายแหลมสิบ (十) = เข็มเย็บผ้า (针)" },
+      { comp1: "钅", comp2: "戋", result: "钱", story: "โลหะ (钅) + เสียง jiān/qián (戋) = เงินตรา (钱)" },
+      { comp1: "钅", comp2: "中", result: "钟", story: "โลหะ (钅) + เสียง zhōng (中) = ระฆัง/นาฬิกา (钟)" },
+      { comp1: "钅", comp2: "昔", result: "错", story: "โลหะ (钅) + เสียง xī/cuò (昔) = สลักลาย/ผิดพลาด (错)" },
+      { comp1: "钅", comp2: "艮", result: "银", story: "โลหะ (钅) + เสียง gèn/yín (艮) = แร่เงินบริสุทธิ์ (银)" },
+      { comp1: "钅", comp2: "十", result: "针", story: "โลหะ (钅) + เสียง shí/zhēn (十) = เข็มเย็บผ้า (针)" },
 
       // 辶 (Walking / Movement)
-      { comp1: "辶", comp2: "斤", result: "近", story: "ก้าวเดิน (辶) + ขวานตัดระยะ (斤) = ใกล้ชิด (近)" },
-      { comp1: "辶", comp2: "井", result: "进", story: "ก้าวเดิน (辶) + ขอบบ่อ (井) = ก้าวหน้า/เข้าสู่ (进)" },
-      { comp1: "辶", comp2: "寸", result: "过", story: "ก้าวเดิน (辶) + นิ้ววัด (寸) = ข้ามผ่าน/เคย (过)" },
-      { comp1: "辶", comp2: "元", result: "远", story: "ก้าวเดิน (辶) + ขอบฟ้ากว้าง (元) = ห่างไกล (远)" },
+      { comp1: "辶", comp2: "斤", result: "近", story: "การเดิน/ระยะทาง (辶) + เสียง jīn/jìn (斤) = ใกล้ชิด (近)" },
+      { comp1: "辶", comp2: "井", result: "进", story: "การเดิน/ก้าวไป (辶) + เสียง jǐng/jìn (井) = ก้าวหน้า/เข้าสู่ (进)" },
+      { comp1: "辶", comp2: "寸", result: "过", story: "การเดิน/เคลื่อนผ่าน (辶) + เสียง cùn/guò (寸) = ข้ามผ่าน/เคย (过)" },
+      { comp1: "辶", comp2: "元", result: "远", story: "การเดิน/ระยะทาง (辶) + เสียง yuán/yuǎn (元) = ห่างไกล (远)" },
 
       // 饣 (Food / Eat)
-      { comp1: "饣", comp2: "包", result: "饱", story: "อาหาร (饣) + ห่อหุ้ม (包) = อิ่มท้อง (饱)" },
-      { comp1: "饣", comp2: "反", result: "饭", story: "อาหาร (饣) + กลับด้านบนเตา (反) = ข้าว (饭)" },
-      { comp1: "饣", comp2: "官", result: "馆", story: "อาหาร (饣) + อาคารใหญ่ (官) = โรงเตี๊ยม/ร้านอาหาร (馆)" },
-      { comp1: "饣", comp2: "我", result: "饿", story: "อาหาร (饣) + ตัวเราขาด (我) = หิวโหย (饿)" },
+      { comp1: "饣", comp2: "包", result: "饱", story: "อาหาร (饣) + เสียง bāo/bǎo (包) = อิ่มท้อง (饱)" },
+      { comp1: "饣", comp2: "反", result: "饭", story: "อาหาร (饣) + เสียง fǎn/fàn (反) = ข้าว/มื้ออาหาร (饭)" },
+      { comp1: "饣", comp2: "官", result: "馆", story: "อาหาร/ที่พัก (饣) + เสียง guān/guǎn (官) = ร้านอาหาร/อาคาร (馆)" },
+      { comp1: "饣", comp2: "我", result: "饿", story: "อาหาร (饣) + เสียง wǒ/è (我) = หิวโหย (饿)" },
 
       // 心 (Heart / Mind)
-      { comp1: "心", comp2: "亡", result: "忘", story: "หัวใจ (心) + สาบสูญ (亡) = ลืมเลือน (忘)" },
-      { comp1: "心", comp2: "相", result: "想", story: "หัวใจ (心) + สายตามองต้นไม้ (相) = คิดถึง/จินตนาการ (想)" },
-      { comp1: "心", comp2: "田", result: "思", story: "หัวใจ (心) + ทุ่งนาเพาะปลูก (田) = ครุ่นคิด/พินิจ (思)" },
+      { comp1: "心", comp2: "亡", result: "忘", story: "หัวใจ/จิตใจ (心) + เสียง wáng/wàng (亡) = ลืมเลือน (忘)" },
+      { comp1: "心", comp2: "相", result: "想", story: "หัวใจ/จิตใจ (心) + เสียง xiāng/xiǎng (相) = คิดถึง/จินตนาการ (想)" },
+      { comp1: "心", comp2: "田", result: "思", story: "หัวใจ (心) + สมองครุ่นคิด (田/囟) = ครุ่นคิด/พินิจ (思)" },
 
       // 月 (Body / Flesh)
-      { comp1: "月", comp2: "半", result: "胖", story: "เนื้อตัว (月) + ผ่าครึ่ง (半) = อ้วนท้วน (胖)" },
-      { comp1: "月", comp2: "旦", result: "胆", story: "ร่างกาย (月) + แสงรุ่งอรุณ (旦) = ความกล้าหาญ/ถุงน้ำดี (胆)" },
-      { comp1: "月", comp2: "要", result: "腰", story: "ร่างกาย (月) + สิ่งสำคัญ (要) = บั้นเอว (腰)" },
+      { comp1: "月", comp2: "半", result: "胖", story: "ร่างกาย/เนื้อ (月) + เสียง bàn/pàng (半) = อ้วนท้วน (胖)" },
+      { comp1: "月", comp2: "佥", result: "脸", story: "ร่างกาย/เนื้อ (月) + เสียง qiān/liǎn (佥) = ใบหน้า (脸)" },
+      { comp1: "月", comp2: "要", result: "腰", story: "ร่างกาย (月) + เสียง yào/yāo (要) = บั้นเอว (腰)" },
 
       // Other Fun Fusions
       { comp1: "田", comp2: "力", result: "男", story: "ทุ่งนา (田) + พละกำลัง (力) = ผู้ชาย (男)" },
@@ -116,7 +116,7 @@ class RadicalFusionGame {
     this.popularPieces = [
       { char: "女", pinyin: "nǚ", label: "ผู้หญิง/แม่", cat: "human" },
       { char: "子", pinyin: "zǐ", label: "เด็ก/ลูก", cat: "human" },
-      { char: "马", pinyin: "mǎ", label: "ม้า", cat: "animal" },
+      { char: "马", pinyin: "mǎ", label: "ม้า/เสียง mǎ", cat: "animal" },
       { char: "宀", pinyin: "mián", label: "หลังคาบ้าน", cat: "object" },
       { char: "亻", pinyin: "rén", label: "คน/มนุษย์", cat: "human" },
       { char: "木", pinyin: "mù", label: "ต้นไม้", cat: "nature" },
@@ -124,7 +124,7 @@ class RadicalFusionGame {
       { char: "月", pinyin: "yuè", label: "พระจันทร์/เนื้อ", cat: "nature" },
       { char: "火", pinyin: "huǒ", label: "ไฟ", cat: "nature" },
       { char: "口", pinyin: "kǒu", label: "ปาก/ช่อง", cat: "human" },
-      { char: "乞", pinyin: "qǐ", label: "ขอกลืน", cat: "object" },
+      { char: "乞", pinyin: "qǐ", label: "ขอ/เสียง qǐ", cat: "human" },
       { char: "氵", pinyin: "shuǐ", label: "สายน้ำ", cat: "nature" },
       { char: "讠", pinyin: "yán", label: "คำพูด", cat: "object" },
       { char: "钅", pinyin: "jīn", label: "โลหะ/ทอง", cat: "object" },
@@ -132,21 +132,21 @@ class RadicalFusionGame {
       { char: "饣", pinyin: "shí", label: "อาหาร", cat: "object" },
       { char: "心", pinyin: "xīn", label: "หัวใจ", cat: "human" },
       { char: "禾", pinyin: "hé", label: "รวงข้าว", cat: "nature" },
-      { char: "田", pinyin: "tián", label: "ทุ่งนา", cat: "nature" },
+      { char: "田", pinyin: "tián", label: "ทุ่งนา/สมอง", cat: "nature" },
       { char: "力", pinyin: "lì", label: "พลังแรง", cat: "human" },
-      { char: "青", pinyin: "qīng", label: "เขียวสด", cat: "nature" },
+      { char: "青", pinyin: "qīng", label: "เขียวสด/เสียง qīng", cat: "nature" },
       { char: "舌", pinyin: "shé", label: "ลิ้น", cat: "human" },
       { char: "十", pinyin: "shí", label: "สิบ/สมบูรณ์", cat: "object" },
-      { char: "少", pinyin: "shǎo", label: "เล็กน้อย", cat: "nature" },
-      { char: "生", pinyin: "shēng", label: "กำเนิด", cat: "human" },
-      { char: "门", pinyin: "mén", label: "ประตู", cat: "object" },
-      { char: "包", pinyin: "bāo", label: "ห่อหุ้ม", cat: "object" },
-      { char: "反", pinyin: "fǎn", label: "กลับด้าน", cat: "object" },
-      { char: "寸", pinyin: "cùn", label: "นิ้ววัด", cat: "object" },
+      { char: "少", pinyin: "shǎo", label: "เล็กน้อย/เสียง shǎo", cat: "nature" },
+      { char: "生", pinyin: "shēng", label: "กำเนิด/เสียง shēng", cat: "human" },
+      { char: "门", pinyin: "mén", label: "ประตู/เสียง mén", cat: "object" },
+      { char: "包", pinyin: "bāo", label: "ห่อหุ้ม/เสียง bāo", cat: "object" },
+      { char: "反", pinyin: "fǎn", label: "กลับด้าน/เสียง fǎn", cat: "object" },
+      { char: "寸", pinyin: "cùn", label: "นิ้ววัด/เสียง cùn", cat: "object" },
       { char: "鸟", pinyin: "niǎo", label: "นก", cat: "animal" },
       { char: "山", pinyin: "shān", label: "ภูเขา", cat: "nature" },
       { char: "石", pinyin: "shí", label: "หิน", cat: "nature" },
-      { char: "王", pinyin: "wáng", label: "ราชา", cat: "human" },
+      { char: "王", pinyin: "wáng", label: "ราชา/หยก", cat: "human" },
       { char: "小", pinyin: "xiǎo", label: "เล็ก", cat: "nature" },
       { char: "大", pinyin: "dà", label: "ใหญ่", cat: "human" }
     ];
@@ -231,10 +231,54 @@ class RadicalFusionGame {
   }
 
   /**
+   * Dynamically build recipes from full characters database
+   */
+  ensureDynamicRecipes() {
+    if (typeof window !== 'undefined' && window.CHARACTERS_DATA) {
+      for (const [charKey, charData] of Object.entries(window.CHARACTERS_DATA)) {
+        if (charData.components && charData.components.length >= 2) {
+          const c1 = charData.components[0].char;
+          const c2 = charData.components[1].char;
+          const exists = this.recipes.some(r => 
+            r.result === charKey || 
+            (r.comp1 === c1 && r.comp2 === c2) || 
+            (r.comp1 === c2 && r.comp2 === c1)
+          );
+          if (!exists && c1 && c2) {
+            const comp1 = charData.components[0];
+            const comp2 = charData.components[1];
+            const isComp1Sound = comp1.role && (comp1.role.includes("声符") || comp1.role.includes("เสียง"));
+            const isComp2Sound = comp2.role && (comp2.role.includes("声符") || comp2.role.includes("เสียง"));
+
+            let desc1 = comp1.meaning || c1;
+            let desc2 = comp2.meaning || c2;
+            if (isComp1Sound) {
+              desc1 = `เสียง ${comp1.pinyin || c1}`;
+            }
+            if (isComp2Sound) {
+              desc2 = `เสียง ${comp2.pinyin || c2}`;
+            }
+
+            const story = `${desc1} (${c1}) + ${desc2} (${c2}) = ${charData.thaiMeaningShort || ''} (${charKey})`;
+
+            this.recipes.push({
+              comp1: c1,
+              comp2: c2,
+              result: charKey,
+              story: story
+            });
+          }
+        }
+      }
+    }
+  }
+
+  /**
    * Get valid partner characters for the currently selected slot 1
    */
   getValidPartnersForSlot1() {
     if (!this.slot1) return new Set();
+    this.ensureDynamicRecipes();
     const c1 = this.slot1.char;
     const partners = new Set();
 
@@ -249,6 +293,7 @@ class RadicalFusionGame {
   render() {
     if (!this.container) return;
 
+    this.ensureDynamicRecipes();
     const filteredPieces = this.getFilteredPieces();
     const validPartners = this.getValidPartnersForSlot1();
     const hasSlot1 = !!this.slot1;
@@ -352,7 +397,7 @@ class RadicalFusionGame {
               if (isSelected) {
                 statusClass = "selected-in-slot";
                 statusPill = `<span class="fuse-status-pill can">✓ ในช่อง</span>`;
-              } else if (hasSlot1 && !hasSlot2) {
+              } else if (hasSlot1) {
                 if (validPartners.has(piece.char)) {
                   statusClass = "can-fuse";
                   statusPill = `<span class="fuse-status-pill can">✨ ผสมได้</span>`;
@@ -417,14 +462,25 @@ class RadicalFusionGame {
   }
 
   selectPiece(char, pinyin, label) {
-    // If piece is incompatible when slot 1 is chosen
+    // If clicking on already selected piece in slot 1, clear slot 1
+    if (this.slot1 && this.slot1.char === char) {
+      this.clearSlot(1);
+      return;
+    }
+    // If clicking on already selected piece in slot 2, clear slot 2
+    if (this.slot2 && this.slot2.char === char) {
+      this.clearSlot(2);
+      return;
+    }
+
+    // If slot 1 is filled and user clicks on an incompatible piece
     if (this.slot1 && !this.slot2) {
       const validPartners = this.getValidPartnersForSlot1();
-      if (!validPartners.has(char) && this.slot1.char !== char) {
+      if (!validPartners.has(char)) {
         if (window.AudioEngine) {
           window.AudioEngine.playToneChime(200, 'sawtooth', 0.15);
         }
-        this.showFeedback(`⚠️ ชิ้นส่วน '${char}' ไม่สามารถผสมกับ '${this.slot1.char}' ได้ (สังเกตกรอบสีเขียวทองสำหรับตัวที่ผสมได้)`, "warning");
+        this.showFeedback(`⚠️ ชิ้นส่วน '${char}' ไม่สามารถผสมกับ '${this.slot1.char}' ได้ (แตะตัวกรอบสีเขียวเพื่อผสม หรือแตะช่องที่ 1 เพื่อเปลี่ยนตัวแรก)`, "warning");
         return;
       }
     }
@@ -439,8 +495,15 @@ class RadicalFusionGame {
     } else if (!this.slot2) {
       this.slot2 = { char, pinyin, label };
     } else {
-      // Replace slot 2
-      this.slot2 = { char, pinyin, label };
+      // If both slots were filled and user clicked a valid partner of slot 1, replace slot 2
+      const validPartners = this.getValidPartnersForSlot1();
+      if (validPartners.has(char)) {
+        this.slot2 = { char, pinyin, label };
+      } else {
+        // If not a partner of slot 1, start a brand new fusion with this piece as slot 1!
+        this.slot1 = { char, pinyin, label };
+        this.slot2 = null;
+      }
     }
     this.render();
   }

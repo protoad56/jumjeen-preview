@@ -35,13 +35,17 @@ class HanziMindApp {
     }
 
     // 2. Initialize Sub-modules
-    this.mindmap = new RadicalMindmap("mindmap-container", {
+    const MindmapClass = window.RadicalMindmap || RadicalMindmap;
+    this.mindmap = new MindmapClass("mindmap-container", {
       onSelectCharacter: (charId) => this.selectCharacter(charId, false),
       onSelectRadical: (radId) => this.selectRadical(radId, false)
     });
 
-    this.strokeAnimator = new StrokeAnimator("stroke-canvas");
-    this.fusionGame = new RadicalFusionGame("fusion-container");
+    const AnimatorClass = window.StrokeAnimator || StrokeAnimator;
+    this.strokeAnimator = new AnimatorClass("stroke-target-container");
+
+    const FusionClass = window.RadicalFusionGame || RadicalFusionGame;
+    this.fusionGame = new FusionClass("fusion-container");
     window.FusionGame = this.fusionGame;
     this.srsEngine = window.SRSEngine;
 
@@ -49,9 +53,17 @@ class HanziMindApp {
     this.bindUIEvents();
 
     // 4. Render initial views
+    const settings = this.getSettings();
+    if (this.mindmap && settings.hskLevel && settings.hskLevel !== "all") {
+      this.mindmap.setHskFilter(settings.hskLevel);
+    }
+    if (settings.theme === "dark") {
+      document.body.classList.add("theme-dark");
+    }
     this.renderRadicalPills();
     this.renderCharacterViews();
     this.setupSearch();
+    this.syncSettingsUI();
 
     // 5. Init RevenueCat in the background (no-op outside the native app, or
     // before API keys are configured) — re-render lock badges once it
@@ -327,9 +339,163 @@ class HanziMindApp {
   }
 
   /**
+   * Six Writings (六书) Linguistic Classifier
+   * Accurately categorizes characters into:
+   * 1. 象形 (Pictograph)
+   * 2. 指事 (Ideograph / Indicator)
+   * 3. 会意 (Compound Ideograph)
+   * 4. 形声 (Phono-Semantic: 意符 + 声符)
+   * 5. 假借 (Phonetic Loan)
+   * 6. 转注 (Mutually Explanatory)
+   */
+  analyzeSixWritings(charData) {
+    if (!charData) {
+      return {
+        type: "象形",
+        categoryKey: "pictograph",
+        label: "🖼️ 象形 (อักษรภาพ)",
+        desc: "วาดจำลองจากรูปทรงของสิ่งของดั้งเดิมตามธรรมชาติ",
+        badgeClass: "six-writings-pictograph",
+        isPhonoSemantic: false
+      };
+    }
+
+    // 1. Direct override if explicit metadata exists
+    if (charData.sixWritingsCategory) {
+      const explicitMap = {
+        "指事": { type: "指事", categoryKey: "ideograph", label: "💡 指事 (อักษรชี้สัญลักษณ์ / นามธรรม)", desc: "ใช้สัญลักษณ์ขีดแต้มชี้ตำแหน่งหรือสิ่งนามธรรม (เช่น '本' ขีดชี้ที่โคนต้นไม้ = รากฐาน)", badgeClass: "six-writings-ideograph", isPhonoSemantic: false },
+        "象形": { type: "象形", categoryKey: "pictograph", label: "🖼️ 象形 (อักษรภาพ)", desc: "วาดจำลองจากรูปทรงของสิ่งของดั้งเดิมตามธรรมชาติ (เช่น พระอาทิตย์ 日, ดวงจันทร์ 月, ภูเขา 山)", badgeClass: "six-writings-pictograph", isPhonoSemantic: false },
+        "会意": { type: "会意", categoryKey: "compound_ideograph", label: "🧩 会意 (ประสมความหมาย)", desc: "นำความหมายของชิ้นส่วน 2 ชิ้นขึ้นไปมารวมกันเกิดเป็นความหมายใหม่ (เช่น คน 休 พิงต้นไม้ = พักผ่อน)", badgeClass: "six-writings-compound", isPhonoSemantic: false },
+        "形声": { type: "形声", categoryKey: "phono_semantic", label: "🗣️ 形声 (อักษรเสียง-ความหมาย)", desc: "อักษรจีนกว่า 80% ใช้วิธีนี้ โดยชิ้นส่วนหนึ่งบอกหมวดความหมาย (意符) และอีกชิ้นส่วนบอกเสียงอ่าน (声符)", badgeClass: "six-writings-phono-semantic", isPhonoSemantic: true },
+        "假借": { type: "假借", categoryKey: "phonetic_loan", label: "🔄 假借 (อักษรยืมเสียง)", desc: "ยืมอักษรที่มีเสียงตรงกันมาใช้แทนความหมายใหม่", badgeClass: "six-writings-loan", isPhonoSemantic: false },
+        "转注": { type: "转注", categoryKey: "derivative_cognate", label: "🔀 转注 (อักษรสื่อความหมายสัมพันธ์)", desc: "อักษรที่สร้างขึ้นเพื่อขยายหรือสื่อความหมายสัมพันธ์กัน", badgeClass: "six-writings-cognate", isPhonoSemantic: false }
+      };
+      if (explicitMap[charData.sixWritingsCategory]) return explicitMap[charData.sixWritingsCategory];
+    }
+
+    // 2. Authoritative Indicator Characters (指事 - Abstract Pointers & Symbols)
+    const ZHISHI_SET = new Set([
+      "一", "二", "三", "四", "八", "十", "百", "千",
+      "上", "下", "中", "凸", "凹",
+      "本", "末", "刃", "寸", "甘", "旦", "立", "天", "亦", "牟", "血", "丹", "井",
+      "小", "少", "卜", "丈", "尺", "凶", "区", "贰", "术", "卡"
+    ]);
+    if (ZHISHI_SET.has(charData.char)) {
+      return {
+        type: "指事",
+        categoryKey: "ideograph",
+        label: "💡 指事 (อักษรชี้สัญลักษณ์ / นามธรรม)",
+        desc: "ใช้สัญลักษณ์ขีดแต้มชี้ตำแหน่งหรือสิ่งนามธรรม (เช่น '本' ขีดชี้ที่โคนต้นไม้ = รากฐาน, '上/下' ขีดบอกทิศทางบน-ล่าง)",
+        badgeClass: "six-writings-ideograph",
+        isPhonoSemantic: false
+      };
+    }
+
+    const components = charData.components || [];
+
+    // 3. Components with Explicit Indicative Role (加体指事)
+    if (components.some(c => c.role && (c.role.includes("指事") || c.role.includes("ขีดชี้สัญลักษณ์")))) {
+      return {
+        type: "指事",
+        categoryKey: "ideograph",
+        label: "💡 指事 (อักษรชี้สัญลักษณ์ / นามธรรม)",
+        desc: "ใช้อักษรภาพเดิมร่วมกับขีดชี้สัญลักษณ์เน้นตำแหน่งหรือความหมายจำเพาะ",
+        badgeClass: "six-writings-ideograph",
+        isPhonoSemantic: false
+      };
+    }
+
+    // 4. Classic Compound Ideograph Overrides (会意)
+    const HUIYI_OVERRIDE_SET = new Set([
+      "休", "明", "信", "男", "初", "友", "相", "取", "劣", "好", "妇", "妥", "委", "保", "集", "解"
+    ]);
+    if (HUIYI_OVERRIDE_SET.has(charData.char)) {
+      return {
+        type: "会意",
+        categoryKey: "compound_ideograph",
+        label: "🧩 会意 (ประสมความหมาย)",
+        desc: "นำความหมายของชิ้นส่วน 2 ชิ้นขึ้นไปมารวมกันเกิดเป็นความหมายใหม่ (เช่น คน 休 พิงต้นไม้ = พักผ่อน, อาทิตย์+จันทร์ 明 = สว่าง)",
+        badgeClass: "six-writings-compound",
+        isPhonoSemantic: false
+      };
+    }
+
+    // 5. Phono-semantic (形声 - Meaning Component + Sound Component)
+    const soundComp = components.find(c => c.role && (c.role.includes("声符") || c.role.includes("เสียง") || c.role.includes("Sound") || c.role.includes("Phonetic")));
+    let famInfo = null;
+    if (!soundComp && window.PHONETIC_FAMILIES) {
+      for (const [key, fam] of Object.entries(window.PHONETIC_FAMILIES)) {
+        if (fam.members && fam.members.some(m => m.char === charData.char)) {
+          famInfo = { key, fam };
+          break;
+        }
+      }
+    }
+
+    if (soundComp || famInfo || charData.char === "普") {
+      const meaningComp = components.find(c => c !== soundComp && c.char !== charData.char) || components[0] || { char: charData.radical, meaning: "หมวดความหมาย" };
+      return {
+        type: "形声",
+        categoryKey: "phono_semantic",
+        label: "🗣️ 形声 (อักษรเสียง-ความหมาย)",
+        desc: "อักษรจีนกว่า 80% ใช้วิธีนี้ โดยชิ้นส่วนหนึ่งบอกหมวดความหมาย (意符) และอีกชิ้นส่วนบอกเสียงอ่าน (声符)",
+        badgeClass: "six-writings-phono-semantic",
+        isPhonoSemantic: true,
+        soundComp: soundComp || (famInfo ? { char: famInfo.key, meaning: "ตระกูลเสียง " + famInfo.key } : (charData.char === "普" ? { char: "并", meaning: "ออกเสียงคล้ายกัน" } : { char: "เสียง", pinyin: "", meaning: "ยืมเสียงอ่าน" })),
+        meaningComp: meaningComp || { char: charData.radical, meaning: "หมวดความหมาย" }
+      };
+    }
+
+    // 6. Compound Structure Fallback -> 会意
+    if (components.length >= 2) {
+      return {
+        type: "会意",
+        categoryKey: "compound_ideograph",
+        label: "🧩 会意 (ประสมความหมาย)",
+        desc: "นำความหมายของชิ้นส่วน 2 ชิ้นขึ้นไปมารวมกันเกิดเป็นความหมายใหม่",
+        badgeClass: "six-writings-compound",
+        isPhonoSemantic: false
+      };
+    }
+
+    // 7. Single Character Fallback -> 象形
+    return {
+      type: "象形",
+      categoryKey: "pictograph",
+      label: "🖼️ 象形 (อักษรภาพ)",
+      desc: "วาดจำลองจากรูปทรงของสิ่งของดั้งเดิมตามธรรมชาติ (เช่น พระอาทิตย์ 日, ดวงจันทร์ 月, ภูเขา 山)",
+      badgeClass: "six-writings-pictograph",
+      isPhonoSemantic: false
+    };
+  }
+
+  /**
+   * Disambiguate Meat Radical (肉月旁) vs Moon Radical (日月)
+   */
+  getRadicalLinguisticMeta(charData) {
+    if (!charData) return null;
+    const meatChars = ["胖", "脸", "腿", "肚", "肝", "胃", "脚", "脑", "胸", "臂", "肌", "背", "腰", "肥", "服", "朋"];
+    if (charData.radical === "月" || (charData.components && charData.components.some(c => c.char === "月" || c.char === "肉"))) {
+      if (meatChars.includes(charData.char) || !["期", "朝", "明", "朗"].includes(charData.char)) {
+        return {
+          isMeat: true,
+          badge: "🥩 肉月旁 (ròuyuèpáng)",
+          desc: "รูปแปลงของ 'เนื้อ (肉)' สื่อถึงอวัยวะร่างกาย ไม่ใช่พระจันทร์"
+        };
+      } else {
+        return {
+          isMeat: false,
+          badge: "🌙 日月 (yuè)",
+          desc: "พระจันทร์ กาลเวลา และดวงดาว"
+        };
+      }
+    }
+    return null;
+  }
+
+  /**
    * Render Tab 2: Etymology & Mnemonic Storytelling
    * Content is split across 4 short panes (hero+stroke / components / story / vocab)
-   * instead of one long scrolling card.
    */
   renderEtymologyDetail() {
     const charData = window.CHARACTERS_DATA ? window.CHARACTERS_DATA[this.currentChar] : null;
@@ -339,7 +505,7 @@ class HanziMindApp {
     const vocabTarget = document.getElementById("etymology-vocab-card");
     if (!heroTarget) return;
 
-    // Keep the active sub-tab pane in sync (e.g. after switching character)
+    // Keep the active sub-tab pane in sync
     document.querySelectorAll(".etym-subtab-btn").forEach(btn => {
       btn.classList.toggle("active", btn.dataset.etymTab === this.currentEtymTab);
     });
@@ -377,14 +543,25 @@ class HanziMindApp {
       return;
     }
 
+    const settings = this.getSettings();
+    const sixWritings = this.analyzeSixWritings(charData);
+    const meatMeta = this.getRadicalLinguisticMeta(charData);
+    const tradData = (settings.showTraditional !== false && window.TRADITIONAL_MAP) ? window.TRADITIONAL_MAP[charData.char] : null;
+    const showSixWritings = settings.showSixWritings !== false;
+    const showSandhi = settings.showSandhi !== false;
+
     heroTarget.innerHTML = `
       <div class="char-hero-header">
         <div class="char-main-box">
-          <div class="char-large-hanzi">${charData.char}</div>
+          <div class="char-large-hanzi">
+            ${charData.char}
+            ${tradData ? `<span class="trad-char-tag" title="อักษรตัวเต็ม">[${tradData.trad}]</span>` : ''}
+          </div>
           <div class="char-meta-row">
             <span class="pinyin-tag">${charData.primaryPinyin}</span>
             <span class="hsk-badge">HSK ${charData.hskLevel}</span>
-            <span class="structure-badge">${charData.structure}</span>
+            ${showSixWritings ? `<span class="six-writings-badge ${sixWritings.badgeClass}" title="${sixWritings.desc}">${sixWritings.label}</span>` : ''}
+            ${meatMeta ? `<span class="meat-radical-badge" title="${meatMeta.desc}">${meatMeta.badge}</span>` : ''}
             <button class="audio-speak-btn" onclick="window.AudioEngine.speak('${charData.char}')">
               🔊 ฟังเสียง
             </button>
@@ -398,44 +575,123 @@ class HanziMindApp {
       </div>
     `;
 
+    // Check Phonetic Family (声旁字族)
+    let phoneticFamilyInfo = null;
+    let phoneticFamilyKey = null;
+    if (window.PHONETIC_FAMILIES) {
+      if (window.PHONETIC_FAMILIES[charData.char]) {
+        phoneticFamilyKey = charData.char;
+        phoneticFamilyInfo = window.PHONETIC_FAMILIES[charData.char];
+      } else {
+        for (const [key, fam] of Object.entries(window.PHONETIC_FAMILIES)) {
+          if (fam.members && fam.members.some(m => m.char === charData.char)) {
+            phoneticFamilyKey = key;
+            phoneticFamilyInfo = fam;
+            break;
+          }
+        }
+      }
+    }
+
     if (componentsTarget) {
       componentsTarget.innerHTML = `
         <!-- Component Breakdown Formula Box -->
         <div class="etymology-box component-fusion-box">
           <div class="box-title">
             <span class="icon">🧩</span>
-            <span>โครงสร้างรากศัพท์ & การประกอบตัวอักษร</span>
+            <span>โครงสร้าง & การวิเคราะห์ประเภทอักษร</span>
           </div>
-          <div class="components-formula-flow">
-            ${(charData.components || []).map(c => `
-              <div class="component-card">
-                <div class="c-char">${c.char}</div>
-                <div class="c-pinyin">${c.pinyin}</div>
-                <div class="c-role">${c.role}</div>
-                <div class="c-meaning">${c.meaning}</div>
-                <div class="c-desc">${c.desc}</div>
-              </div>
-            `).join('<div class="formula-plus">➕</div>')}
-            <div class="formula-equals">➔</div>
-            <div class="component-card result-card">
-              <div class="c-char">${charData.char}</div>
-              <div class="c-pinyin">${charData.primaryPinyin}</div>
-              <div class="c-role">ตัวอักษรที่สมบูรณ์</div>
-              <div class="c-meaning">${charData.thaiMeaningShort}</div>
+
+          ${showSixWritings ? `
+            <div class="six-writings-type-bar">
+              <span class="type-pill ${sixWritings.badgeClass}">${sixWritings.label}</span>
+              <p class="type-desc">${sixWritings.desc}</p>
             </div>
+          ` : ''}
+
+          <div class="components-formula-flow">
+            ${(charData.components || []).length <= 1 || (charData.components[0] && charData.components[0].char === charData.char) ? `
+              <div class="component-card result-card single-pictograph-card" style="width: 100%; max-width: 320px; margin: 0 auto;">
+                <div class="comp-role-badge">${charData.components[0]?.role || '🖼️ อักษรภาพเดี่ยว (独体字)'}</div>
+                <div class="c-char">${charData.char}</div>
+                <div class="c-pinyin">${charData.primaryPinyin}</div>
+                <div class="c-meaning">${charData.thaiMeaningShort}</div>
+                <div class="c-desc">${charData.components[0]?.desc || `รากศัพท์หมวด ${charData.radical}`}</div>
+              </div>
+            ` : `
+              ${(charData.components || []).map(c => {
+                const isPhonetic = c.role && (c.role.includes("声符") || c.role.includes("เสียง") || c.role.includes("Sound"));
+                const isSemantic = c.role && (c.role.includes("意符") || c.role.includes("ความหมาย") || c.role.includes("หมวด"));
+                const cardClass = isPhonetic ? 'phonetic-card' : (isSemantic ? 'semantic-card' : '');
+                return `
+                  <div class="component-card ${cardClass}">
+                    <div class="comp-role-badge">${c.role}</div>
+                    <div class="c-char">${c.char}</div>
+                    ${c.pinyin ? `<div class="c-pinyin">${c.pinyin}</div>` : ''}
+                    <div class="c-meaning">${c.meaning}</div>
+                    ${c.desc ? `<div class="c-desc">${c.desc}</div>` : ''}
+                  </div>
+                `;
+              }).join('<div class="formula-plus">➕</div>')}
+              <div class="formula-equals">➔</div>
+              <div class="component-card result-card">
+                <div class="comp-role-badge">ตัวอักษรที่สมบูรณ์</div>
+                <div class="c-char">${charData.char}</div>
+                <div class="c-pinyin">${charData.primaryPinyin}</div>
+                <div class="c-meaning">${charData.thaiMeaningShort}</div>
+                <div class="c-desc">สังกัดหมวด ${charData.radical}</div>
+              </div>
+            `}
           </div>
+
+          ${phoneticFamilyInfo ? `
+            <div class="phonetic-family-box">
+              <div class="fam-header">
+                <span class="fam-icon">🔔</span>
+                <span class="fam-title">ตระกูลเสียงอ่าน [${phoneticFamilyKey} ${phoneticFamilyInfo.pinyin}]</span>
+                <span class="fam-badge">${phoneticFamilyInfo.description}</span>
+              </div>
+              <p class="fam-desc">อักษรในตระกูลนี้ใช้ตัวช่วยออกเสียงเดียวกัน ทำให้จำคำศัพท์เป็นชุดได้เร็วขึ้น:</p>
+              <div class="fam-chips-grid">
+                ${phoneticFamilyInfo.members.map(m => `
+                  <button class="fam-chip-btn ${m.char === charData.char ? 'active-current' : ''}" onclick="window.App.openEtymologyDetail('${m.char}')">
+                    <span class="chip-char">${m.char}</span>
+                    <span class="chip-pinyin">${m.pinyin}</span>
+                    <span class="chip-thai">${m.thai}</span>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
         </div>
       `;
     }
 
     if (storyTarget) {
       storyTarget.innerHTML = `
-        <!-- Ancient Etymology & Story -->
+        <!-- DUAL-CARD 1: Ancient Etymology & Linguistic Fact -->
         <div class="etymology-box origin-story-box">
           <div class="box-title">
-            <span class="icon">📜</span>
-            <span>ความเป็นมาดั้งเดิม & ภาพอักษรโบราณ (甲骨文 / 金文)</span>
+            <span class="icon">🏛️</span>
+            <span>หลักฐานทางภาษาศาสตร์ & ภาพอักษรโบราณ (甲骨文 / 金文)</span>
           </div>
+
+          ${showSixWritings ? `
+            <div class="origin-category-badge-row">
+              <span class="six-writings-badge ${sixWritings.badgeClass}" title="${sixWritings.desc}">${sixWritings.label}</span>
+              <span class="origin-category-note">${sixWritings.desc}</span>
+            </div>
+            <div class="myth-dispeller-banner">
+              <div class="myth-header">
+                <span class="myth-icon">💡</span>
+                <strong>ความรู้ภาษาศาสตร์: ลบล้างความเชื่อผิดๆ "อักษรจีนทุกตัวคือภาพวาด"</strong>
+              </div>
+              <p class="myth-body">
+                ผู้เรียนส่วนใหญ่เข้าใจผิดว่าอักษรจีนทั้งหมดเป็นภาพวาด แต่ในความเป็นจริง <strong>อักษรภาพ (象形) มีเพียง ~4%</strong> เท่านั้น ส่วนอักษรจีนมากกว่า <strong>80-90% คืออักษรแบบ 形声 (Phono-Semantic)</strong> ที่ผสมระหว่าง <em>'หมวดนำบอกความหมาย (意符)'</em> + <em>'ตัวช่วยบอกเสียงอ่าน (声符)'</em>
+              </p>
+            </div>
+          ` : ''}
+
           <div class="oracle-script-quote">
             <strong>${charData.ancientEtymology ? charData.ancientEtymology.oracleScript : ''}</strong>
           </div>
@@ -445,13 +701,23 @@ class HanziMindApp {
           <div class="modern-evolution-note">
             <strong>วิวัฒนาการสู่ปัจจุบัน:</strong> ${charData.ancientEtymology ? charData.ancientEtymology.modernEvolution : ''}
           </div>
+
+          ${tradData ? `
+            <div class="traditional-insight-box">
+              <div class="trad-title">
+                <span class="trad-icon">🔀</span>
+                <strong>เกร็ดนิรุกติศาสตร์ตัวเต็ม [${tradData.trad}]</strong>
+              </div>
+              <p class="trad-text">${tradData.insight}</p>
+            </div>
+          ` : ''}
         </div>
 
-        <!-- Mnemonic Hook / Memory Trick -->
+        <!-- DUAL-CARD 2: Mnemonic Hook / Modern Memory Trick -->
         <div class="etymology-box mnemonic-hook-box">
           <div class="box-title">
             <span class="icon">💡</span>
-            <span>สูตรจำภาพในสมอง (Mnemonic Memory Hook)</span>
+            <span>เทคนิคจำภาพในสมอง (Modern Mnemonic Hook)</span>
           </div>
           <div class="hook-formula-banner">
             ${charData.mnemonicHook ? charData.mnemonicHook.formula : ''}
@@ -465,24 +731,33 @@ class HanziMindApp {
 
     if (vocabTarget) {
       vocabTarget.innerHTML = `
-        <!-- Compound Vocabulary List -->
+        <!-- Compound Vocabulary List with Tone Sandhi Realization -->
         <div class="etymology-box compounds-box">
           <div class="box-title">
             <span class="icon">🌿</span>
-            <span>คำศัพท์ที่แตกกิ่งก้านจากคำนี้ (Compound Words)</span>
+            <span>คำศัพท์ที่แตกกิ่งก้าน ${showSandhi ? '(พร้อมกฎการผันเสียงจริง Tone Sandhi)' : ''}</span>
           </div>
           <div class="compounds-grid">
-            ${(charData.compounds || []).map(comp => `
-              <div class="compound-item" onclick="window.AudioEngine.speak('${(comp.audioText || comp.word).replace(/'/g, "\\'")}')">
-                <div class="comp-header">
-                  <span class="comp-word">${comp.word}</span>
-                  <span class="comp-pinyin">${comp.pinyin}</span>
-                  <span class="comp-hsk">HSK ${comp.hsk}</span>
+            ${(charData.compounds || []).map(comp => {
+              const sandhi = (showSandhi && window.ToneSandhiEngine) ? window.ToneSandhiEngine.analyzeSandhi(comp.word, comp.pinyin) : { hasSandhi: false };
+              return `
+                <div class="compound-item" onclick="window.AudioEngine.speak('${(comp.audioText || comp.word).replace(/'/g, "\\'")}')">
+                  <div class="comp-header">
+                    <span class="comp-word">${comp.word}</span>
+                    <span class="comp-pinyin">${comp.pinyin}</span>
+                    <span class="comp-hsk">HSK ${comp.hsk}</span>
+                  </div>
+                  ${sandhi.hasSandhi ? `
+                    <div class="sandhi-pill" title="${sandhi.explanation}">
+                      <span class="sandhi-badge">🔊 พูดจริง: [${sandhi.spokenPinyin}]</span>
+                      <span class="sandhi-rule">${sandhi.ruleName}</span>
+                    </div>
+                  ` : ''}
+                  <div class="comp-thai">${comp.thai}</div>
+                  <div class="comp-audio-btn">🔊 ฟังเสียง</div>
                 </div>
-                <div class="comp-thai">${comp.thai}</div>
-                <div class="comp-audio-btn">🔊 ฟังเสียง</div>
-              </div>
-            `).join('')}
+              `;
+            }).join('')}
           </div>
         </div>
 
@@ -521,7 +796,7 @@ class HanziMindApp {
       const lexicon = window.HANZI_LEXICON ? window.HANZI_LEXICON[this.currentChar] : null;
       const displayPinyin = lexicon ? lexicon.pinyin : this.currentRadical;
       const displayThai = lexicon ? lexicon.thai : "รากศัพท์ภาษาจีน";
-      const displayTone = lexicon ? lexicon.tone : 1;
+      const displayTone = lexicon ? (lexicon.tone || 1) : 1;
 
       container.innerHTML = `
         <div class="pronounce-hero">
@@ -534,12 +809,43 @@ class HanziMindApp {
             </button>
           </div>
         </div>
+
+        <!-- Tone Pitch Curve Visualizer Canvas -->
+        <div class="tone-curve-card">
+          <div class="tone-card-header">
+            <div class="tone-card-title">📈 กราฟระดับเสียงวรรณยุกต์จีน (Mandarin Tone Pitch 55/35/214/51)</div>
+            <div class="tone-legend">
+              <span class="tone-leg t1">เสียง 1 (55)</span>
+              <span class="tone-leg t2">เสียง 2 (35)</span>
+              <span class="tone-leg t3">เสียง 3 (214)</span>
+              <span class="tone-leg t4">เสียง 4 (51)</span>
+            </div>
+          </div>
+          <div class="pitch-canvas-wrapper">
+            <canvas id="tone-pitch-canvas" width="340" height="150"></canvas>
+          </div>
+          <div class="tone-quick-selector">
+            <button class="tone-btn t1 ${displayTone === 1 ? 'active' : ''}" onclick="window.App.inspectTone(1)">เสียง 1 (High 55)</button>
+            <button class="tone-btn t2 ${displayTone === 2 ? 'active' : ''}" onclick="window.App.inspectTone(2)">เสียง 2 (Rising 35)</button>
+            <button class="tone-btn t3 ${displayTone === 3 ? 'active' : ''}" onclick="window.App.inspectTone(3)">เสียง 3 (Dipping 214)</button>
+            <button class="tone-btn t4 ${displayTone === 4 ? 'active' : ''}" onclick="window.App.inspectTone(4)">เสียง 4 (Falling 51)</button>
+            ${displayTone === 5 ? `<button class="tone-btn t5 active" onclick="window.App.inspectTone(5)">เสียงเบา (Neutral 31)</button>` : ''}
+          </div>
+        </div>
       `;
+
+      setTimeout(() => {
+        const canvas = document.getElementById("tone-pitch-canvas");
+        if (canvas && window.AudioEngine) {
+          window.AudioEngine.drawTonePitchCurve(canvas, displayTone);
+        }
+      }, 100);
       return;
     }
 
+    const activeTone = charData.primaryTone || 1;
     const pinyinItems = charData.pinyinList || [
-      { pinyin: charData.primaryPinyin, tone: charData.primaryTone, toneDescription: "เสียงหลัก", meaningThai: charData.thaiMeaningShort }
+      { pinyin: charData.primaryPinyin, tone: activeTone, toneDescription: "เสียงหลัก", meaningThai: charData.thaiMeaningShort }
     ];
 
     container.innerHTML = `
@@ -598,10 +904,11 @@ class HanziMindApp {
           <canvas id="tone-pitch-canvas" width="340" height="150"></canvas>
         </div>
         <div class="tone-quick-selector">
-          <button class="tone-btn t1" onclick="window.App.inspectTone(1)">เสียง 1 (High 55)</button>
-          <button class="tone-btn t2" onclick="window.App.inspectTone(2)">เสียง 2 (Rising 35)</button>
-          <button class="tone-btn t3 active" onclick="window.App.inspectTone(3)">เสียง 3 (Dipping 214)</button>
-          <button class="tone-btn t4" onclick="window.App.inspectTone(4)">เสียง 4 (Falling 51)</button>
+          <button class="tone-btn t1 ${activeTone === 1 ? 'active' : ''}" onclick="window.App.inspectTone(1)">เสียง 1 (High 55)</button>
+          <button class="tone-btn t2 ${activeTone === 2 ? 'active' : ''}" onclick="window.App.inspectTone(2)">เสียง 2 (Rising 35)</button>
+          <button class="tone-btn t3 ${activeTone === 3 ? 'active' : ''}" onclick="window.App.inspectTone(3)">เสียง 3 (Dipping 214)</button>
+          <button class="tone-btn t4 ${activeTone === 4 ? 'active' : ''}" onclick="window.App.inspectTone(4)">เสียง 4 (Falling 51)</button>
+          ${activeTone === 5 ? `<button class="tone-btn t5 active" onclick="window.App.inspectTone(5)">เสียงเบา (Neutral 31)</button>` : ''}
         </div>
       </div>
 
@@ -631,7 +938,7 @@ class HanziMindApp {
     setTimeout(() => {
       const canvas = document.getElementById("tone-pitch-canvas");
       if (canvas && window.AudioEngine) {
-        window.AudioEngine.drawTonePitchCurve(canvas, charData.primaryTone || 3);
+        window.AudioEngine.drawTonePitchCurve(canvas, activeTone);
       }
     }, 100);
   }
@@ -642,8 +949,8 @@ class HanziMindApp {
       window.AudioEngine.drawTonePitchCurve(canvas, toneNum);
       window.AudioEngine.playToneChime(250 + toneNum * 70, 'sine', 0.2);
     }
-    document.querySelectorAll(".tone-quick-selector .tone-btn").forEach((b, idx) => {
-      b.classList.toggle("active", (idx + 1) === toneNum);
+    document.querySelectorAll(".tone-quick-selector .tone-btn").forEach((b) => {
+      b.classList.toggle("active", b.classList.contains(`t${toneNum}`));
     });
   }
 
@@ -757,8 +1064,116 @@ class HanziMindApp {
     this.switchTab("etymology");
   }
 
-  openCharacterSheet(charId) {
-    this.showCharacterDetail(charId);
+  // ==========================================
+  // Settings & Difficulty Management
+  // ==========================================
+  openSettingsModal() {
+    const modal = document.getElementById("settings-modal");
+    if (modal) modal.classList.add("active");
+    this.syncSettingsUI();
+  }
+
+  closeSettingsModal() {
+    const modal = document.getElementById("settings-modal");
+    if (modal) modal.classList.remove("active");
+  }
+
+  getSettings() {
+    try {
+      const saved = localStorage.getItem("jumjeen_user_settings");
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    return {
+      hskLevel: "all",
+      showSandhi: true,
+      autoSpeak: true,
+      speechRate: 0.9,
+      showTraditional: true,
+      showSixWritings: true,
+      theme: "light"
+    };
+  }
+
+  saveSettings(settings) {
+    try {
+      localStorage.setItem("jumjeen_user_settings", JSON.stringify(settings));
+    } catch (e) {}
+  }
+
+  setDifficulty(hskLevel) {
+    const settings = this.getSettings();
+    settings.hskLevel = hskLevel;
+    this.saveSettings(settings);
+
+    if (this.mindmap) {
+      this.mindmap.setHskFilter(hskLevel);
+    }
+
+    document.querySelectorAll(".diff-option-btn").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.hsk === hskLevel);
+    });
+
+    this.renderCharacterViews();
+  }
+
+  updateSetting(key, val) {
+    const settings = this.getSettings();
+    settings[key] = val;
+    this.saveSettings(settings);
+    this.renderCharacterViews();
+  }
+
+  updateSpeechRate(rate) {
+    const r = parseFloat(rate);
+    if (window.AudioEngine) window.AudioEngine.currentRate = r;
+    this.updateSetting('speechRate', r);
+  }
+
+  setTheme(theme) {
+    const settings = this.getSettings();
+    settings.theme = theme;
+    this.saveSettings(settings);
+
+    if (theme === "dark") {
+      document.body.classList.add("theme-dark");
+    } else {
+      document.body.classList.remove("theme-dark");
+    }
+
+    document.querySelectorAll(".theme-option-card").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.theme === theme);
+    });
+  }
+
+  syncSettingsUI() {
+    const settings = this.getSettings();
+
+    document.querySelectorAll(".diff-option-btn").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.hsk === settings.hskLevel);
+    });
+
+    const sandhiToggle = document.getElementById("setting-toggle-sandhi");
+    if (sandhiToggle) sandhiToggle.checked = settings.showSandhi !== false;
+
+    const autoSpeakToggle = document.getElementById("setting-toggle-autospeak");
+    if (autoSpeakToggle) autoSpeakToggle.checked = settings.autoSpeak !== false;
+
+    const tradToggle = document.getElementById("setting-toggle-trad");
+    if (tradToggle) tradToggle.checked = settings.showTraditional !== false;
+
+    const sixToggle = document.getElementById("setting-toggle-sixwritings");
+    if (sixToggle) sixToggle.checked = settings.showSixWritings !== false;
+
+    const rateSlider = document.getElementById("setting-speech-rate");
+    if (rateSlider) {
+      rateSlider.value = settings.speechRate || 0.9;
+      const lbl = document.getElementById("lbl-speech-rate");
+      if (lbl) lbl.textContent = `${rateSlider.value}x`;
+    }
+
+    document.querySelectorAll(".theme-option-card").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.theme === settings.theme);
+    });
   }
 
   setupSearch() {
@@ -823,6 +1238,7 @@ class HanziMindApp {
 }
 
 // Global bootstrap
+window.HanziMindApp = HanziMindApp;
 window.addEventListener("DOMContentLoaded", () => {
   window.App = new HanziMindApp();
 });
