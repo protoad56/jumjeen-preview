@@ -121,7 +121,7 @@ class RadicalFusionGame {
       { char: "亻", pinyin: "rén", label: "คน/มนุษย์", cat: "human" },
       { char: "木", pinyin: "mù", label: "ต้นไม้", cat: "nature" },
       { char: "日", pinyin: "rì", label: "พระอาทิตย์", cat: "nature" },
-      { char: "月", pinyin: "yuè", label: "พระจันทร์/เนื้อ", cat: "nature" },
+      { char: "月", pinyin: "yuè", label: "พระจันทร์ (หรือ เนื้อ/ร่างกาย ในบางคำ)", cat: "nature" },
       { char: "火", pinyin: "huǒ", label: "ไฟ", cat: "nature" },
       { char: "口", pinyin: "kǒu", label: "ปาก/ช่อง", cat: "human" },
       { char: "乞", pinyin: "qǐ", label: "ขอ/เสียง qǐ", cat: "human" },

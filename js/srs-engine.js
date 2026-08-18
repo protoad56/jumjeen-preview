@@ -67,6 +67,11 @@ class SRSEngine {
       interval_days: interval,
       ease_factor: parseFloat(ef.toFixed(2)),
       mastery_level: mastery,
+      // Earned through actual tested recall (SM-2), as opposed to the
+      // self-report path in App.toggleCurrentMastery() — kept distinct so
+      // the mindmap badge and stats screen can be honest about which kind
+      // of "mastered" a given word is.
+      mastery_source: mastery === 'mastered' ? 'srs' : null,
       next_review_time: nextReviewTime,
       last_reviewed_time: Date.now(),
       total_reviews: (currentSRS.total_reviews || 0) + 1,
@@ -269,19 +274,19 @@ class SRSEngine {
     if (!window.DB || !window.DB.getFullMasteryReport) {
       return `<div class="etym-empty-notice">✨ ไม่พบข้อมูลสถิติ</div>`;
     }
-    const { byLevel, overallTotal, overallMastered } = window.DB.getFullMasteryReport();
+    const { byLevel, overallTotal, overallMastered, manualCount, srsVerifiedCount } = window.DB.getFullMasteryReport();
     const overallPct = overallTotal > 0 ? Math.round((overallMastered / overallTotal) * 100) : 0;
 
-    // "Current level" = the highest HSK level reached by unbroken mastery
-    // from level 1 up — e.g. HSK1 90%, HSK2 85%, HSK3 40% → estimated at
-    // HSK2, since HSK3 isn't solid yet even though a few HSK4 words might
-    // coincidentally already be mastered.
+    // "Current level" = the highest HSK level reached by unbroken *tested*
+    // mastery from level 1 up — deliberately counts only words proven by
+    // clearing SM-2 review cycles (srsVerified), not self-tapped "จำได้แล้ว"
+    // marks, so this estimate can't be inflated by optimistic self-report.
     const MASTERY_THRESHOLD = 70;
     let estimatedLevel = 0;
     for (let lvl = 1; lvl <= 6; lvl++) {
       const stat = byLevel[lvl];
       if (!stat || stat.total === 0) break;
-      const pct = (stat.mastered / stat.total) * 100;
+      const pct = (stat.srsVerified / stat.total) * 100;
       if (pct >= MASTERY_THRESHOLD) estimatedLevel = lvl;
       else break;
     }
@@ -322,6 +327,7 @@ class SRSEngine {
           <div class="srs-hero-icon">${estimatedLevel > 0 ? '🎓' : '🌱'}</div>
           <h3>${estimatedLevel > 0 ? `ระดับปัจจุบันโดยประมาณ: HSK ${estimatedLevel}` : 'ยังไม่ถึงระดับ HSK 1'}</h3>
           <p>จำได้ขึ้นใจแล้ว ${overallMastered} / ${overallTotal} คำ (${overallPct}%) จากคลังคำศัพท์ทั้งหมดในแอป</p>
+          <p class="mastery-source-split">✓ ผ่านทบทวนจริง ${srsVerifiedCount} คำ &nbsp;·&nbsp; ★ บันทึกเอง ${manualCount} คำ</p>
         </div>
 
         <div class="hsk-breakdown-box">
@@ -331,8 +337,9 @@ class SRSEngine {
         </div>
 
         <p class="stats-methodology-note">
-          * ประเมินจากคำที่กดปุ่ม "จำได้แล้ว" หรือทบทวนจนถึงรอบ ≥ 21 วันในระบบ SRS เท่านั้น
-          ไม่ได้วัดจากการสอบจริง ใช้เป็นแนวทางคร่าวๆ ก่อนตัดสินใจสอบ HSK จริงควรลองทำข้อสอบเก่า (真题) ประกอบด้วย
+          * "ระดับปัจจุบันโดยประมาณ" ด้านบนคำนวณจาก<strong>คำที่ผ่านทบทวนจริง (✓) เท่านั้น</strong>
+          ไม่นับคำที่กดปุ่ม "จำได้แล้ว" เอง (★) เพื่อไม่ให้ประเมินสูงเกินจริง — แถบความคืบหน้าตามระดับด้านบนนับรวมทั้งสองแบบ
+          ทั้งหมดนี้ไม่ได้วัดจากการสอบจริง ใช้เป็นแนวทางคร่าวๆ ก่อนตัดสินใจสอบ HSK จริงควรลองทำข้อสอบเก่า (真题) ประกอบด้วย
         </p>
       </div>
     `;

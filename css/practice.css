@@ -153,6 +153,11 @@
   transform: scale(0.95);
 }
 
+.audio-speak-btn.tone-chart-btn {
+  background: var(--c-indigo-soft);
+  color: var(--c-indigo);
+}
+
 .char-meaning-summary {
   background: var(--bg-surface-subtle);
   border-radius: var(--radius-sm);
@@ -570,12 +575,22 @@ body.dark-theme .hook-formula-banner {
 
 .stroke-canvas-box {
   position: relative;
+  /* Kept white on purpose (ink-on-paper metaphor, and HanziWriter's stroke/
+     outline colors are hardcoded in js/stroke-animator.js to work against a
+     light surface) — but in dark mode a plain white rectangle floating on
+     black chrome reads as a bug, not a paper sheet. The stronger drop shadow
+     under body.dark-theme is what sells "deliberately lit page," not a
+     color-scheme miss. */
   background: #ffffff;
   border-radius: var(--radius-sm);
   box-shadow: inset 0 0 0 1px var(--ink-border);
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+body.dark-theme .stroke-canvas-box {
+  box-shadow: inset 0 0 0 1px var(--ink-border), 0 6px 24px rgba(0, 0, 0, 0.55);
 }
 
 .stroke-controls-row {

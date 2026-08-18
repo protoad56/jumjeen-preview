@@ -315,6 +315,14 @@ class JumJeenDatabase {
     return !!srs && srs.mastery_level === 'mastered';
   }
 
+  /** 'manual' (self-reported via the mindmap's mastery button), 'srs'
+   *  (earned by actually clearing SM-2 review cycles), or null if not
+   *  mastered / predates this field existing. */
+  getMasterySource(charId) {
+    const srs = this.inMemoryCache.srs.get(charId);
+    return srs && srs.mastery_level === 'mastered' ? (srs.mastery_source || null) : null;
+  }
+
   /** Count how many of a radical's branch characters are mastered, for
    *  progress bars on the radical pills / library cards. */
   getRadicalMasteryProgress(characterIds) {
@@ -338,13 +346,20 @@ class JumJeenDatabase {
     const seen = new Set();
     const byLevel = {};
 
+    let manualCount = 0;
+    let srsVerifiedCount = 0;
+
     const addItem = (id, level) => {
       if (seen.has(id)) return;
       seen.add(id);
       const lvl = level || 0; // 0 = ungraded / no HSK tag
-      if (!byLevel[lvl]) byLevel[lvl] = { total: 0, mastered: 0 };
+      if (!byLevel[lvl]) byLevel[lvl] = { total: 0, mastered: 0, srsVerified: 0 };
       byLevel[lvl].total++;
-      if (this.isCharacterMastered(id)) byLevel[lvl].mastered++;
+      if (this.isCharacterMastered(id)) {
+        byLevel[lvl].mastered++;
+        if (this.getMasterySource(id) === 'manual') manualCount++;
+        else { srsVerifiedCount++; byLevel[lvl].srsVerified++; }
+      }
     };
 
     for (const [charId, cd] of Object.entries(chars)) {
@@ -355,9 +370,9 @@ class JumJeenDatabase {
     }
 
     const overallTotal = seen.size;
-    const overallMastered = Array.from(seen).filter(id => this.isCharacterMastered(id)).length;
+    const overallMastered = manualCount + srsVerifiedCount;
 
-    return { byLevel, overallTotal, overallMastered };
+    return { byLevel, overallTotal, overallMastered, manualCount, srsVerifiedCount };
   }
 
   async getSRSStatistics() {

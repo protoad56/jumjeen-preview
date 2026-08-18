@@ -265,6 +265,17 @@ body.dark-theme .back-mnemonic-box {
   margin-top: 4px;
 }
 
+/* Extra specificity (tag + 2 classes) on purpose: ".srs-stat-hero p" above
+   already targets every <p> in this card, including this one — a plain
+   ".mastery-source-split" class alone has lower specificity and would
+   silently lose the color/font-size tie regardless of source order. */
+.srs-stat-hero p.mastery-source-split {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-tertiary);
+  margin-top: 8px;
+}
+
 .srs-stats-matrix {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

@@ -342,11 +342,12 @@ class RadicalMindmap {
       const thai = charData ? charData.thaiMeaningShort.split('/')[0].trim() : (lexiconItem ? lexiconItem.thai.split(',')[0].trim() : (rad.thaiMeaning || ""));
       const tone = charData ? charData.primaryTone : (lexiconItem ? lexiconItem.tone : 1);
       const isMastered = window.DB ? window.DB.isCharacterMastered(charId) : false;
+      const masterySource = window.DB ? window.DB.getMasterySource(charId) : null;
 
       const charNode = {
         id: `char-${charId}`,
         charId: charId,
-        type: `char-node ${isSelected ? 'selected' : ''} ${isMastered ? 'mastered' : ''} ${hasActiveLeaves && !isSelected && count > 2 ? 'dimmed-node' : ''}`,
+        type: `char-node ${isSelected ? 'selected' : ''} ${isMastered ? 'mastered' : ''} ${masterySource === 'manual' ? 'mastered-manual' : ''} ${hasActiveLeaves && !isSelected && count > 2 ? 'dimmed-node' : ''}`,
         hanzi: charId,
         title: pinyin,
         subtitle: thai,
@@ -433,10 +434,11 @@ class RadicalMindmap {
         }
 
         const isLeafMastered = window.DB ? window.DB.isCharacterMastered(comp.word) : false;
+        const leafMasterySource = window.DB ? window.DB.getMasterySource(comp.word) : null;
 
         const leafNode = {
           id: `leaf-${comp.word}`,
-          type: `compound-leaf on-canvas-leaf ${isLeafMastered ? 'mastered' : ''}`,
+          type: `compound-leaf on-canvas-leaf ${isLeafMastered ? 'mastered' : ''} ${leafMasterySource === 'manual' ? 'mastered-manual' : ''}`,
           hanzi: comp.word,
           title: comp.pinyin,
           subtitle: comp.thai,

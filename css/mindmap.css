@@ -209,6 +209,16 @@
   box-shadow: 0 0 0 4px var(--c-jade-glow), var(--shadow-md);
 }
 
+/* Self-reported via the mastery button, not yet proven by actually
+   clearing SM-2 review cycles — a star instead of a checkmark, so it never
+   visually claims tested recall it hasn't earned. Extra class on top of
+   the .mastered selector on purpose: matches/exceeds that rule's
+   specificity so this doesn't silently lose the ::after content tie. */
+.mindmap-node.char-node.mastered.mastered-manual::after {
+  content: "★";
+  background: var(--c-amber);
+}
+
 .char-node .node-hanzi {
   font-family: var(--font-hanzi);
   font-size: 20px;
@@ -300,6 +310,14 @@
   line-height: 14px;
   text-align: center;
   box-shadow: var(--shadow-sm);
+}
+
+/* Self-reported, not yet SM-2-verified — same star-not-check distinction
+   as the char-node badge above. Three classes on purpose: beats the
+   2-class .on-canvas-leaf.mastered::after rule's specificity. */
+.on-canvas-leaf.mastered.mastered-manual::after {
+  content: "★";
+  color: var(--c-amber);
 }
 
 .on-canvas-leaf .node-hanzi {

@@ -515,8 +515,16 @@ class HanziMindApp {
     const masteryLabel = document.getElementById("quick-mastery-btn-label");
     if (!masteryBtn || !masteryLabel) return;
     const isMastered = window.DB && window.DB.isCharacterMastered(trackedId);
+    const isManual = window.DB && window.DB.getMasterySource(trackedId) === "manual";
     masteryBtn.classList.toggle("mastered", isMastered);
-    masteryLabel.textContent = isMastered ? "✓ จำได้แล้ว" : "☆ จำได้แล้ว";
+    if (!isMastered) {
+      masteryLabel.textContent = "☆ จำได้แล้ว";
+    } else {
+      // ★ = self-reported (tapped this button), ✓ = proven by clearing
+      // SM-2 review cycles in the ทบทวน tab — never claim tested recall
+      // this word hasn't actually earned.
+      masteryLabel.textContent = isManual ? "★ จำได้แล้ว (บันทึกเอง)" : "✓ จำได้แล้ว (ผ่านทบทวน)";
+    }
   }
 
   toggleCurrentMastery() {
@@ -541,6 +549,11 @@ class HanziMindApp {
         interval_days: 21,
         ease_factor: 2.5,
         mastery_level: "mastered",
+        // Distinguishes a self-report ("I already know this") from mastery
+        // earned by actually clearing SM-2 review cycles — the stats screen
+        // and mindmap badge both need to be honest about which is which,
+        // since only the latter is actually tested recall.
+        mastery_source: "manual",
         last_reviewed_time: Date.now(),
         next_review_time: Date.now() + 21 * 24 * 60 * 60 * 1000
       });
@@ -765,6 +778,9 @@ class HanziMindApp {
               <button class="audio-speak-btn" onclick="window.AudioEngine.speak('${this.currentChar}')">
                 🔊 ฟังเสียง
               </button>
+              <button class="audio-speak-btn tone-chart-btn" onclick="window.App.switchTab('pronunciation')">
+                📈 กราฟเสียงวรรณยุกต์
+              </button>
             </div>
           </div>
 
@@ -801,6 +817,9 @@ class HanziMindApp {
             ${meatMeta ? `<span class="meat-radical-badge" title="${meatMeta.desc}">${meatMeta.badge}</span>` : ''}
             <button class="audio-speak-btn" onclick="window.AudioEngine.speak('${charData.char}')">
               🔊 ฟังเสียง
+            </button>
+            <button class="audio-speak-btn tone-chart-btn" onclick="window.App.switchTab('pronunciation')">
+              📈 กราฟเสียงวรรณยุกต์
             </button>
           </div>
         </div>
@@ -1029,6 +1048,15 @@ class HanziMindApp {
     const container = document.getElementById("pronunciation-studio-content");
     if (!container) return;
 
+    // container.innerHTML fully replaces the static return-bar markup from
+    // index.html on every render, so it's re-added here each time too.
+    const returnBar = `
+      <div class="view-return-bar" onclick="window.App.switchTab('etymology')">
+        <span class="return-arrow">◀</span>
+        <span>กลับสู่รายละเอียดตัวอักษร</span>
+      </div>
+    `;
+
     if (!charData) {
       const lexicon = window.HANZI_LEXICON ? window.HANZI_LEXICON[this.currentChar] : null;
       const displayPinyin = lexicon ? lexicon.pinyin : this.currentRadical;
@@ -1036,6 +1064,7 @@ class HanziMindApp {
       const displayTone = lexicon ? (lexicon.tone || 1) : 1;
 
       container.innerHTML = `
+        ${returnBar}
         <div class="pronounce-hero">
           <div class="pronounce-char">${this.currentChar}</div>
           <div class="pronounce-pinyin-large">${displayPinyin}</div>
@@ -1086,6 +1115,7 @@ class HanziMindApp {
     ];
 
     container.innerHTML = `
+      ${returnBar}
       <div class="pronounce-hero">
         <div class="pronounce-char">${charData.char}</div>
         <div class="pronounce-pinyin-large">${charData.primaryPinyin}</div>
