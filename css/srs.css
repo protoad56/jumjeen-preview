@@ -11,6 +11,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
+}
+
+.srs-progress-header-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
 }
 
 .srs-counter {
@@ -43,20 +51,6 @@
   color: var(--c-indigo);
 }
 
-/* Flashcard Container */
-.srs-card {
-  background: var(--bg-surface);
-  border: 1.5px solid var(--ink-border);
-  border-radius: var(--radius-lg);
-  padding: 24px 18px;
-  box-shadow: var(--shadow-md);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  transition: all var(--duration-fast);
-}
-
 .srs-char-big {
   font-family: var(--font-hanzi);
   font-size: 80px;
@@ -71,32 +65,6 @@
   color: var(--ink-secondary);
   margin-bottom: 20px;
   line-height: 1.4;
-}
-
-.btn-reveal-answer {
-  background: var(--c-vermilion);
-  color: #ffffff;
-  border: none;
-  padding: 12px 24px;
-  border-radius: var(--radius-pill);
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 16px var(--c-vermilion-glow);
-  transition: transform var(--duration-fast);
-}
-
-.btn-reveal-answer:active {
-  transform: scale(0.96);
-}
-
-/* Revealed Back Face */
-.card-back {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  animation: fadeIn 0.2s ease;
 }
 
 .back-top-row {
@@ -166,69 +134,6 @@ body.dark-theme .back-mnemonic-box {
 .mnemonic-title {
   font-weight: 700;
   margin-bottom: 2px;
-}
-
-/* Rating Buttons Grid */
-.srs-rating-row {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.btn-rate {
-  border: 1px solid var(--ink-border);
-  border-radius: var(--radius-sm);
-  padding: 10px 6px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  cursor: pointer;
-  background: var(--bg-surface);
-  transition: all var(--duration-fast);
-}
-
-.btn-rate span {
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.btn-rate small {
-  font-size: 9px;
-  color: var(--ink-tertiary);
-}
-
-.btn-rate.rate-again {
-  border-color: #fca5a5;
-  color: #b91c1c;
-}
-.btn-rate.rate-again:hover {
-  background: #fef2f2;
-}
-
-.btn-rate.rate-hard {
-  border-color: #fed7aa;
-  color: #c2410c;
-}
-.btn-rate.rate-hard:hover {
-  background: #fff7ed;
-}
-
-.btn-rate.rate-good {
-  border-color: #86efac;
-  color: #15803d;
-}
-.btn-rate.rate-good:hover {
-  background: #f0fdf4;
-}
-
-.btn-rate.rate-easy {
-  border-color: #93c5fd;
-  color: #1d4ed8;
-}
-.btn-rate.rate-easy:hover {
-  background: #eff6ff;
 }
 
 /* Dashboard Summary */
@@ -429,4 +334,230 @@ body.dark-theme .back-mnemonic-box {
   color: var(--ink-tertiary);
   line-height: 1.5;
   padding: 0 4px;
+}
+
+/* Tinder-style Swipeable Review Card */
+.tinder-stack {
+  position: relative;
+  height: 440px;
+  perspective: 1400px;
+}
+
+.tinder-card {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+}
+
+.tinder-card-behind {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--ink-border);
+  box-shadow: var(--shadow-sm);
+  transform: scale(0.94) translateY(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.tinder-card-behind-char {
+  font-family: var(--font-hanzi);
+  font-size: 64px;
+  font-weight: 900;
+  color: var(--ink-tertiary);
+  opacity: 0.35;
+}
+
+.tinder-card-top {
+  z-index: 2;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.tinder-card-top:active {
+  cursor: grabbing;
+}
+
+.tinder-card-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform var(--duration-slow);
+}
+
+.tinder-card-flip-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.tinder-card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: var(--bg-surface);
+  border: 1.5px solid var(--ink-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 24px 18px;
+  overflow-y: auto;
+}
+
+.tinder-card-face-front {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.tinder-card-face-back {
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tinder-tap-hint {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-tertiary);
+  margin-top: 6px;
+}
+
+/* Swipe direction badges — opacity is driven inline by drag distance */
+.tinder-swipe-badge {
+  position: absolute;
+  top: 20px;
+  z-index: 3;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  border: 2px solid currentColor;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tinder-swipe-badge.left {
+  left: 16px;
+  color: var(--c-vermilion);
+  background: var(--c-vermilion-soft);
+  transform: rotate(-8deg);
+}
+
+.tinder-swipe-badge.right {
+  right: 16px;
+  color: var(--c-jade);
+  background: var(--c-jade-soft);
+  transform: rotate(8deg);
+}
+
+/* Grade / Swipe Action Bar — circular icon buttons, tinted to match the
+   swipe badges (vermilion = forgot, jade = remembered) so the buttons and
+   the drag gesture read as the same system. */
+.tinder-action-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 28px;
+}
+
+.tinder-action-btn {
+  border: none;
+  background: none;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.action-icon-circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-fast);
+}
+
+.action-icon-circle svg {
+  width: 24px;
+  height: 24px;
+}
+
+.action-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+}
+
+.tinder-action-btn:active .action-icon-circle {
+  transform: scale(0.9);
+}
+
+.tinder-action-btn.action-forgot .action-icon-circle {
+  background: var(--c-vermilion-soft);
+  color: var(--c-vermilion);
+}
+
+.tinder-action-btn.action-remember .action-icon-circle {
+  background: var(--c-jade-soft);
+  color: var(--c-jade);
+}
+
+.tinder-action-btn.action-flip .action-icon-circle {
+  width: 44px;
+  height: 44px;
+  background: var(--c-indigo-soft);
+  color: var(--c-indigo);
+}
+
+
+/* First-run Tutorial Overlay */
+.srs-tutorial-card {
+  max-width: 380px;
+}
+
+.srs-tutorial-body {
+  gap: 16px;
+}
+
+.srs-tutorial-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.srs-tutorial-emoji {
+  font-size: 26px;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+.srs-tutorial-step strong {
+  display: block;
+  font-size: 13px;
+  color: var(--ink-primary);
+  margin-bottom: 2px;
+}
+
+.srs-tutorial-step p {
+  font-size: 12px;
+  color: var(--ink-secondary);
+  line-height: 1.5;
+}
+
+.srs-tutorial-note {
+  font-size: 11.5px;
+  color: var(--ink-tertiary);
+  background: var(--bg-surface-subtle);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
 }

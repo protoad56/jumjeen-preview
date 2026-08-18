@@ -1,0 +1,145 @@
+/**
+ * Self-hosted webfonts (จำจีน / JumJeen)
+ *
+ * These replace the previous @import from fonts.googleapis.com. Reasons:
+ *   1. Offline. The native app must render correctly with no network. With the
+ *      CDN import, an offline launch silently fell back to system fonts.
+ *   2. Privacy/compliance. Every launch sent the user's IP to Google's font
+ *      servers, which is a GDPR liability for a paid app in the EU.
+ *   3. Startup cost. First paint previously waited on ~60 external requests.
+ *
+ * Each file is subset with pyftsubset to exactly the glyph inventory the app
+ * can render (2,274 Han + 65 Thai + Latin + pinyin tone marks), which is what
+ * keeps the CJK families viable to bundle at all: 90 MB of source TTFs
+ * compress to ~2.8 MB of woff2 here. Regenerating: re-run the subset against
+ * the current data files, since adding new characters to js/data/ will NOT
+ * automatically add their glyphs to these fonts.
+ *
+ * font-display: swap keeps text visible during load, matching the previous
+ * behaviour of the Google Fonts URL (which also requested display=swap).
+ */
+
+/* ---- Noto Serif SC — primary hanzi face (--font-hanzi) ---- */
+@font-face {
+  font-family: "Noto Serif SC";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/NotoSerifSC-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Noto Serif SC";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/NotoSerifSC-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Noto Serif SC";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/NotoSerifSC-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Noto Serif SC";
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("../fonts/NotoSerifSC-900.woff2") format("woff2");
+}
+
+/* ---- Noto Sans SC — hanzi face when the Settings font toggle is set to
+        "ตัวพิมพ์ (Sans-serif)" (--font-hanzi-sans) ---- */
+@font-face {
+  font-family: "Noto Sans SC";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/NotoSansSC-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Noto Sans SC";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/NotoSansSC-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Noto Sans SC";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/NotoSansSC-700.woff2") format("woff2");
+}
+
+/* ---- Plus Jakarta Sans — Latin UI face (--font-ui) ----
+   Note: this family has no ǎ/ǐ/ǒ/ǔ/ǖ/ǘ/ǚ/ǜ. That is a gap in the upstream
+   font, not the subset, and was equally true of the CDN build. Per-glyph
+   fallback resolves those from Sarabun below, which covers all 26. */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/PlusJakartaSans-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/PlusJakartaSans-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/PlusJakartaSans-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/PlusJakartaSans-700.woff2") format("woff2");
+}
+
+/* ---- Sarabun — Thai face (--font-thai), also the pinyin-diacritic
+        fallback for the Latin stack ---- */
+@font-face {
+  font-family: "Sarabun";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("../fonts/Sarabun-300.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Sarabun";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/Sarabun-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Sarabun";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/Sarabun-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Sarabun";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/Sarabun-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Sarabun";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/Sarabun-700.woff2") format("woff2");
+}

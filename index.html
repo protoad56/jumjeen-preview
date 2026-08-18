@@ -21,11 +21,12 @@
   <link rel="icon" type="image/webp" sizes="192x192" href="icons/icon-192.webp">
 
   <!-- CSS Stylesheets -->
-  <link rel="stylesheet" href="css/design-tokens.css?v=4.0">
-  <link rel="stylesheet" href="css/app.css?v=4.0">
-  <link rel="stylesheet" href="css/mindmap.css?v=4.0">
-  <link rel="stylesheet" href="css/practice.css?v=4.0">
-  <link rel="stylesheet" href="css/srs.css?v=4.0">
+  <link rel="stylesheet" href="css/fonts.css?v=4.3">
+  <link rel="stylesheet" href="css/design-tokens.css?v=4.3">
+  <link rel="stylesheet" href="css/app.css?v=4.3">
+  <link rel="stylesheet" href="css/mindmap.css?v=4.3">
+  <link rel="stylesheet" href="css/practice.css?v=4.3">
+  <link rel="stylesheet" href="css/srs.css?v=4.3">
 </head>
 <body>
 
@@ -233,13 +234,13 @@
             <div class="setting-block">
               <div class="setting-header">
                 <span class="setting-title">🎯 ระดับความยากของคำศัพท์ (HSK Level)</span>
-                <span class="setting-description">เลือกช่วงระดับคำศัพท์ที่ต้องการให้แสดงบนผัง Mindmap และการทบทวน</span>
+                <span class="setting-description">คลังคำศัพท์ระดับ HSK 1–4 ครบถ้วน พร้อมคำศัพท์สำคัญคัดสรรระดับ HSK 5–6</span>
               </div>
               <div class="difficulty-button-group">
-                <button class="diff-option-btn active" data-hsk="all" onclick="window.App.setDifficulty('all')">ทั้งหมด (HSK 1-6)</button>
+                <button class="diff-option-btn active" data-hsk="all" onclick="window.App.setDifficulty('all')">ทั้งหมด (HSK 1–4 + คัดสรร 5–6)</button>
                 <button class="diff-option-btn" data-hsk="1-2" onclick="window.App.setDifficulty('1-2')">เริ่มต้น (HSK 1-2)</button>
                 <button class="diff-option-btn" data-hsk="3-4" onclick="window.App.setDifficulty('3-4')">ปานกลาง (HSK 3-4)</button>
-                <button class="diff-option-btn" data-hsk="5+" onclick="window.App.setDifficulty('5+')">ขั้นสูง (HSK 5-6)</button>
+                <button class="diff-option-btn" data-hsk="5+" onclick="window.App.setDifficulty('5+')">คัดสรรขั้นสูง (HSK 5–6)</button>
               </div>
             </div>
 
@@ -375,22 +376,26 @@
   </div>
 
   <!-- JavaScript Engines & Datasets -->
-  <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
-  <script src="js/data/radicals_catalog.js?v=5.1"></script>
-  <script src="js/data/radicals.js?v=5.1"></script>
-  <script src="js/data/characters.js?v=5.1"></script>
-  <script src="js/data/traditional_map.js?v=5.1"></script>
-  <script src="js/data/phonetic_families.js?v=5.1"></script>
-  <script src="js/data/hanzi-lexicon.js?v=5.1"></script>
-  <script src="js/data/premium-config.js?v=5.1"></script>
-  <script src="js/db/database.js?v=5.1"></script>
-  <script src="js/srs-engine.js?v=5.1"></script>
-  <script src="js/audio-pronounce.js?v=5.1"></script>
-  <script src="js/stroke-animator.js?v=5.1"></script>
-  <script src="js/mindmap.js?v=5.1"></script>
-  <script src="js/radical-fusion.js?v=5.1"></script>
-  <script src="js/paywall.js?v=5.1"></script>
-  <script src="js/app.js?v=5.1"></script>
+  <!-- Vendored locally (MIT) rather than loaded from a CDN: the native app
+       must work offline, and App Store guideline 2.5.2 discourages pulling
+       executable code at runtime. Stroke data lives in js/vendor/hanzi-data/
+       and is wired up via charDataLoader in js/stroke-animator.js. -->
+  <script src="js/vendor/hanzi-writer.min.js?v=4.3"></script>
+  <script src="js/data/radicals_catalog.js?v=5.4"></script>
+  <script src="js/data/radicals.js?v=5.4"></script>
+  <script src="js/data/characters.js?v=5.4"></script>
+  <script src="js/data/traditional_map.js?v=5.4"></script>
+  <script src="js/data/phonetic_families.js?v=5.4"></script>
+  <script src="js/data/hanzi-lexicon.js?v=5.4"></script>
+  <script src="js/data/premium-config.js?v=5.4"></script>
+  <script src="js/db/database.js?v=5.4"></script>
+  <script src="js/srs-engine.js?v=5.4"></script>
+  <script src="js/audio-pronounce.js?v=5.4"></script>
+  <script src="js/stroke-animator.js?v=5.4"></script>
+  <script src="js/mindmap.js?v=5.4"></script>
+  <script src="js/radical-fusion.js?v=5.4"></script>
+  <script src="js/paywall.js?v=5.4"></script>
+  <script src="js/app.js?v=5.4"></script>
   <script>
     // Preview-build only: auto-unlock all radicals for testers.
     // (This file is unique to the jumjeen-preview deployment — the real

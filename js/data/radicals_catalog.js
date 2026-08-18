@@ -1,8 +1,3 @@
-/**
- * Official Kangxi 214 Radicals Catalog
- * จำจีน (JumJeen) - สารบัญรากศัพท์คังซี 214 หมวดมาตรฐานสากล 100%
- */
-
 const RADICALS_CATALOG = [
   {
     "num": 1,
@@ -496,7 +491,7 @@ const RADICALS_CATALOG = [
     "char": "廴",
     "pinyin": "yǐn",
     "thai": "การก้าวเดินยาว",
-    "strokes": 3,
+    "strokes": 2,
     "cat": "การกระทำและอาการ",
     "rank": "ปานกลาง"
   },
@@ -848,7 +843,7 @@ const RADICALS_CATALOG = [
     "char": "丬",
     "pinyin": "qiáng",
     "thai": "ท่อนไม้ผ่าซีก / เตียงนอน (丬)",
-    "strokes": 4,
+    "strokes": 3,
     "cat": "เครื่องมือและสิ่งของ",
     "rank": "ต่ำ"
   },
@@ -930,7 +925,7 @@ const RADICALS_CATALOG = [
     "char": "瓦",
     "pinyin": "wǎ",
     "thai": "กระเบื้องดินเผา / ภาชนะดิน",
-    "strokes": 5,
+    "strokes": 4,
     "cat": "สิ่งปลูกสร้าง",
     "rank": "ปานกลาง"
   },
@@ -975,7 +970,7 @@ const RADICALS_CATALOG = [
     "char": "匹",
     "pinyin": "pǐ",
     "thai": "ม้วนผ้า / เท้าก้าวเดิน (𤴔)",
-    "strokes": 5,
+    "strokes": 4,
     "cat": "เครื่องมือและสิ่งของ",
     "rank": "ปานกลาง"
   },
@@ -1079,7 +1074,7 @@ const RADICALS_CATALOG = [
     "char": "禸",
     "pinyin": "róu",
     "thai": "รอยเท้าสัตว์ป่า",
-    "strokes": 5,
+    "strokes": 4,
     "cat": "สัตว์และธรรมชาติ",
     "rank": "ต่ำ"
   },
@@ -1414,7 +1409,7 @@ const RADICALS_CATALOG = [
     "char": "见",
     "pinyin": "jiàn",
     "thai": "มองเห็น / พบเจอ (见)",
-    "strokes": 7,
+    "strokes": 4,
     "cat": "การกระทำและอาการ",
     "rank": "สูงมาก"
   },
@@ -1482,7 +1477,7 @@ const RADICALS_CATALOG = [
     "char": "贝",
     "pinyin": "bèi",
     "thai": "เปลือกหอยเบี้ย / เงินตรา (贝)",
-    "strokes": 7,
+    "strokes": 4,
     "cat": "การเงินและสิ่งมีค่า",
     "rank": "สูงที่สุด"
   },
@@ -1532,7 +1527,7 @@ const RADICALS_CATALOG = [
     "char": "车",
     "pinyin": "chē",
     "thai": "รถ / เกวียนล้อหมุน (车)",
-    "strokes": 7,
+    "strokes": 4,
     "cat": "ยานพาหนะและการเดินทาง",
     "rank": "สูงมาก"
   },
@@ -1628,7 +1623,7 @@ const RADICALS_CATALOG = [
     "char": "长",
     "pinyin": "cháng",
     "thai": "ยาว / เติบโต (长)",
-    "strokes": 8,
+    "strokes": 4,
     "cat": "สภาพและลักษณะ",
     "rank": "สูง"
   },
@@ -1637,7 +1632,7 @@ const RADICALS_CATALOG = [
     "char": "门",
     "pinyin": "mén",
     "thai": "ประตูคู่บานใหญ่ (门)",
-    "strokes": 8,
+    "strokes": 3,
     "cat": "สิ่งปลูกสร้าง",
     "rank": "สูงมาก"
   },
@@ -1723,7 +1718,7 @@ const RADICALS_CATALOG = [
     "char": "韦",
     "pinyin": "wéi",
     "thai": "หนังฟอกนุ่ม (韦)",
-    "strokes": 9,
+    "strokes": 4,
     "cat": "เครื่องมือและสิ่งของ",
     "rank": "ปานกลาง"
   },
@@ -1750,7 +1745,7 @@ const RADICALS_CATALOG = [
     "char": "页",
     "pinyin": "yè",
     "thai": "ศีรษะ / หน้ากระดาษ (页)",
-    "strokes": 9,
+    "strokes": 6,
     "cat": "ร่างกายและสิ่งของ",
     "rank": "สูงมาก"
   },
@@ -1759,7 +1754,7 @@ const RADICALS_CATALOG = [
     "char": "风",
     "pinyin": "fēng",
     "thai": "สายลม / ลมพัด (风)",
-    "strokes": 9,
+    "strokes": 4,
     "cat": "ดาราศาสตร์และธรรมชาติ",
     "rank": "สูงมาก"
   },
@@ -1768,7 +1763,7 @@ const RADICALS_CATALOG = [
     "char": "飞",
     "pinyin": "fēi",
     "thai": "โบยบิน / นกบิน (飞)",
-    "strokes": 9,
+    "strokes": 3,
     "cat": "การกระทำและอาการ",
     "rank": "สูง"
   },
@@ -1809,7 +1804,7 @@ const RADICALS_CATALOG = [
     "char": "马",
     "pinyin": "mǎ",
     "thai": "ม้า / ความรวดเร็ว (马)",
-    "strokes": 10,
+    "strokes": 3,
     "cat": "สัตว์และธรรมชาติ",
     "rank": "สูงมาก"
   },
@@ -1818,7 +1813,7 @@ const RADICALS_CATALOG = [
     "char": "骨",
     "pinyin": "gǔ",
     "thai": "กระดูก / โครงร่าง",
-    "strokes": 10,
+    "strokes": 9,
     "cat": "ร่างกายและสุขภาพ",
     "rank": "สูง"
   },
@@ -1839,6 +1834,15 @@ const RADICALS_CATALOG = [
     "strokes": 10,
     "cat": "ร่างกายและมนุษย์",
     "rank": "ปานกลาง"
+  },
+  {
+    "num": 191,
+    "char": "鬥",
+    "pinyin": "dòu",
+    "thai": "การต่อสู้ / ประลองกำลัง (鬥)",
+    "strokes": 10,
+    "cat": "การกระทำและอาการ",
+    "rank": "ต่ำ"
   },
   {
     "num": 192,
@@ -1863,7 +1867,7 @@ const RADICALS_CATALOG = [
     "char": "鬼",
     "pinyin": "guǐ",
     "thai": "ผี / วิญญาณ / สิ่งลี้ลับ",
-    "strokes": 10,
+    "strokes": 9,
     "cat": "ความเชื่อและวัฒนธรรม",
     "rank": "สูง"
   },
@@ -1872,7 +1876,7 @@ const RADICALS_CATALOG = [
     "char": "鱼",
     "pinyin": "yú",
     "thai": "ปลา / สัตว์น้ำ (鱼)",
-    "strokes": 11,
+    "strokes": 8,
     "cat": "สัตว์และธรรมชาติ",
     "rank": "สูงมาก"
   },
@@ -1881,7 +1885,7 @@ const RADICALS_CATALOG = [
     "char": "鸟",
     "pinyin": "niǎo",
     "thai": "นก / สัตว์ปีก (鸟)",
-    "strokes": 11,
+    "strokes": 5,
     "cat": "สัตว์และธรรมชาติ",
     "rank": "สูงมาก"
   },
@@ -1890,7 +1894,7 @@ const RADICALS_CATALOG = [
     "char": "卤",
     "pinyin": "lǔ",
     "thai": "เกลือสินเธาว์ / ด่าง (卤)",
-    "strokes": 11,
+    "strokes": 7,
     "cat": "อาหารและแร่ธาตุ",
     "rank": "ต่ำ"
   },
@@ -1908,7 +1912,7 @@ const RADICALS_CATALOG = [
     "char": "麦",
     "pinyin": "mài",
     "thai": "ข้าวสาลี / ข้าวบาร์เลย์ (麦)",
-    "strokes": 11,
+    "strokes": 7,
     "cat": "อาหารและพืช",
     "rank": "สูง"
   },
@@ -1926,7 +1930,7 @@ const RADICALS_CATALOG = [
     "char": "黄",
     "pinyin": "huáng",
     "thai": "สีเหลืองทอง (黄)",
-    "strokes": 12,
+    "strokes": 11,
     "cat": "สีสันและสภาพ",
     "rank": "สูงมาก"
   },
@@ -1962,7 +1966,7 @@ const RADICALS_CATALOG = [
     "char": "黾",
     "pinyin": "mǐn",
     "thai": "คางคก / กบ (黾)",
-    "strokes": 13,
+    "strokes": 8,
     "cat": "สัตว์และธรรมชาติ",
     "rank": "ต่ำ"
   },
@@ -1971,7 +1975,7 @@ const RADICALS_CATALOG = [
     "char": "鼎",
     "pinyin": "dǐng",
     "thai": "กระถางธูปสามขา / อำนาจรัฐ",
-    "strokes": 13,
+    "strokes": 12,
     "cat": "เครื่องมือและวัฒนธรรม",
     "rank": "ปานกลาง"
   },
@@ -2007,7 +2011,7 @@ const RADICALS_CATALOG = [
     "char": "齐",
     "pinyin": "qí",
     "thai": "เรียบร้อย / สม่ำเสมอ (齐)",
-    "strokes": 14,
+    "strokes": 6,
     "cat": "ปรัชญาและสภาพ",
     "rank": "สูง"
   },
@@ -2016,7 +2020,7 @@ const RADICALS_CATALOG = [
     "char": "齿",
     "pinyin": "chǐ",
     "thai": "ฟัน / ซี่ฟัน (齿)",
-    "strokes": 15,
+    "strokes": 8,
     "cat": "ร่างกายและสุขภาพ",
     "rank": "สูง"
   },
@@ -2025,7 +2029,7 @@ const RADICALS_CATALOG = [
     "char": "龙",
     "pinyin": "lóng",
     "thai": "มังกร / สัตว์มงคลเทพ (龙)",
-    "strokes": 16,
+    "strokes": 5,
     "cat": "ความเชื่อและวัฒนธรรม",
     "rank": "สูง"
   },
@@ -2034,7 +2038,7 @@ const RADICALS_CATALOG = [
     "char": "龟",
     "pinyin": "guī",
     "thai": "เต่า / สัตว์อายุยืน (龟)",
-    "strokes": 16,
+    "strokes": 7,
     "cat": "สัตว์และธรรมชาติ",
     "rank": "สูง"
   },

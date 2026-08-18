@@ -605,36 +605,37 @@ class HanziMindApp {
    * 6. 转注 (Mutually Explanatory)
    */
   analyzeSixWritings(charData) {
+    // 1. Safety check
     if (!charData) {
       return {
-        type: "象形",
-        categoryKey: "pictograph",
-        label: "🖼️ 象形 (อักษรภาพ)",
-        desc: "วาดจำลองจากรูปทรงของสิ่งของดั้งเดิมตามธรรมชาติ",
-        badgeClass: "six-writings-pictograph",
+        type: "未定 / 待考",
+        categoryKey: "undetermined",
+        label: "❓ 未定 / 待考 (ยังไม่ระบุ)",
+        desc: "อยู่ระหว่างการศึกษาหลักฐานทางนิรุกติศาสตร์และอักษรโบราณ",
+        badgeClass: "six-writings-undetermined",
         isPhonoSemantic: false
       };
     }
 
-    // 1. Direct override if explicit metadata exists
+    // 2. Explicit metadata check
     if (charData.sixWritingsCategory) {
       const explicitMap = {
-        "指事": { type: "指事", categoryKey: "ideograph", label: "💡 指事 (อักษรชี้สัญลักษณ์ / นามธรรม)", desc: "ใช้สัญลักษณ์ขีดแต้มชี้ตำแหน่งหรือสิ่งนามธรรม (เช่น '本' ขีดชี้ที่โคนต้นไม้ = รากฐาน)", badgeClass: "six-writings-ideograph", isPhonoSemantic: false },
+        "指事": { type: "指事", categoryKey: "ideograph", label: "💡 指事 (อักษรชี้สัญลักษณ์ / นามธรรม)", desc: "ใช้สัญลักษณ์ขีดแต้มชี้ตำแหน่งหรือสิ่งนามธรรม (เช่น '本' ขีดชี้ที่โคนต้นไม้ = รากฐาน, '上/下' ขีดบอกทิศทางบน-ล่าง)", badgeClass: "six-writings-ideograph", isPhonoSemantic: false },
         "象形": { type: "象形", categoryKey: "pictograph", label: "🖼️ 象形 (อักษรภาพ)", desc: "วาดจำลองจากรูปทรงของสิ่งของดั้งเดิมตามธรรมชาติ (เช่น พระอาทิตย์ 日, ดวงจันทร์ 月, ภูเขา 山)", badgeClass: "six-writings-pictograph", isPhonoSemantic: false },
-        "会意": { type: "会意", categoryKey: "compound_ideograph", label: "🧩 会意 (ประสมความหมาย)", desc: "นำความหมายของชิ้นส่วน 2 ชิ้นขึ้นไปมารวมกันเกิดเป็นความหมายใหม่ (เช่น คน 休 พิงต้นไม้ = พักผ่อน)", badgeClass: "six-writings-compound", isPhonoSemantic: false },
+        "会意": { type: "会意", categoryKey: "compound_ideograph", label: "🧩 会意 (ประสมความหมาย)", desc: "นำความหมายของชิ้นส่วน 2 ชิ้นขึ้นไปมารวมกันเกิดเป็นความหมายใหม่ (เช่น คน 休 พิงต้นไม้ = พักผ่อน, อาทิตย์+จันทร์ 明 = สว่าง)", badgeClass: "six-writings-compound", isPhonoSemantic: false },
         "形声": { type: "形声", categoryKey: "phono_semantic", label: "🗣️ 形声 (อักษรเสียง-ความหมาย)", desc: "อักษรจีนกว่า 80% ใช้วิธีนี้ โดยชิ้นส่วนหนึ่งบอกหมวดความหมาย (意符) และอีกชิ้นส่วนบอกเสียงอ่าน (声符)", badgeClass: "six-writings-phono-semantic", isPhonoSemantic: true },
-        "假借": { type: "假借", categoryKey: "phonetic_loan", label: "🔄 假借 (อักษรยืมเสียง)", desc: "ยืมอักษรที่มีเสียงตรงกันมาใช้แทนความหมายใหม่", badgeClass: "six-writings-loan", isPhonoSemantic: false },
-        "转注": { type: "转注", categoryKey: "derivative_cognate", label: "🔀 转注 (อักษรสื่อความหมายสัมพันธ์)", desc: "อักษรที่สร้างขึ้นเพื่อขยายหรือสื่อความหมายสัมพันธ์กัน", badgeClass: "six-writings-cognate", isPhonoSemantic: false }
+        "假借": { type: "假借", categoryKey: "phonetic_loan", label: "🔄 假借 (อักษรยืมเสียง)", desc: "ยืมอักษรที่มีเสียงตรงกันมาใช้แทนความหมายใหม่ (เช่น ตัวเลข สรรพนาม และคำช่วยทางไวยากรณ์)", badgeClass: "six-writings-loan", isPhonoSemantic: false },
+        "转注": { type: "转注", categoryKey: "derivative_cognate", label: "🔀 转注 (อักษรสื่อความหมายสัมพันธ์)", desc: "อักษรที่สร้างขึ้นเพื่อขยายหรือสื่อความหมายสัมพันธ์กัน", badgeClass: "six-writings-cognate", isPhonoSemantic: false },
+        "未定 / 待考": { type: "未定 / 待考", categoryKey: "undetermined", label: "❓ 未定 / 待考 (ยังไม่ระบุ)", desc: "อยู่ระหว่างการศึกษาหลักฐานทางนิรุกติศาสตร์และอักษรโบราณ", badgeClass: "six-writings-undetermined", isPhonoSemantic: false }
       };
       if (explicitMap[charData.sixWritingsCategory]) return explicitMap[charData.sixWritingsCategory];
     }
 
-    // 2. Authoritative Indicator Characters (指事 - Abstract Pointers & Symbols)
+    const components = charData.components || [];
+
+    // 3. Strict Authoritative ZHISHI_SET (Indicator / Abstract Pointers)
     const ZHISHI_SET = new Set([
-      "一", "二", "三", "四", "八", "十", "百", "千",
-      "上", "下", "中", "凸", "凹",
-      "本", "末", "刃", "寸", "甘", "旦", "立", "天", "亦", "牟", "血", "丹", "井",
-      "小", "少", "卜", "丈", "尺", "凶", "区", "贰", "术", "卡"
+      "一", "二", "三", "上", "下", "中", "凸", "凹", "本", "末", "刃", "寸", "甘", "亦", "血", "丹", "凶", "尺", "丈"
     ]);
     if (ZHISHI_SET.has(charData.char)) {
       return {
@@ -647,9 +648,109 @@ class HanziMindApp {
       };
     }
 
-    const components = charData.components || [];
+    // 4. Authoritative XIANGXING_SET (Canonical Physical Pictographs Whitelist)
+    const XIANGXING_SET = new Set([
+      "日", "月", "山", "水", "木", "火", "土", "田", "石", "雨", "气", "泉", "川",
+      "鸟", "鱼", "鹿", "羊", "牛", "犬", "豕", "鼠", "黾", "龟", "虎", "兔", "虫", "龙", "马",
+      "角", "爪", "毛", "羽", "皮", "禾", "米", "竹", "瓜", "豆", "韭", "麻", "麦", "黍",
+      "人", "大", "女", "子", "目", "耳", "口", "舌", "齿", "手", "又", "足", "止", "身", "自", "面", "首", "骨", "心", "肉", "尸", "儿", "欠",
+      "门", "户", "舟", "车", "网", "衣", "巾", "皿", "鼎", "鬲", "缶", "瓦", "壶", "臼",
+      "戈", "矛", "矢", "弓", "刀", "斤", "戊", "干", "鼓", "龠",
+      "玉", "贝", "串", "井", "卜", "伞", "象", "匕", "几", "凵", "匚", "厂", "卩", "厶", "幺", "屮", "巛", "彡", "攴", "殳", "毋", "爻", "片", "牙", "玄", "疒", "癶", "聿", "襾", "釆", "髟", "鬯", "卤", "黹"
+    ]);
+    if (XIANGXING_SET.has(charData.char)) {
+      return {
+        type: "象形",
+        categoryKey: "pictograph",
+        label: "🖼️ 象形 (อักษรภาพ)",
+        desc: "วาดจำลองจากรูปทรงของสิ่งของดั้งเดิมตามธรรมชาติ (เช่น พระอาทิตย์ 日, ดวงจันทร์ 月, ภูเขา 山)",
+        badgeClass: "six-writings-pictograph",
+        isPhonoSemantic: false
+      };
+    }
 
-    // 3. Components with Explicit Indicative Role (加体指事)
+    // 5. Authoritative JIAJIE_SET (Phonetic Loans)
+    const JIAJIE_SET = new Set([
+      "万", "九", "七", "八", "四", "五", "六", "千", "不", "我", "其", "之", "也", "乃", "而", "莫", "然", "西", "北", "东", "南", "久", "予", "于", "已", "非", "无", "亡"
+    ]);
+    if (JIAJIE_SET.has(charData.char)) {
+      return {
+        type: "假借",
+        categoryKey: "phonetic_loan",
+        label: "🔄 假借 (อักษรยืมเสียง)",
+        desc: "ยืมอักษรที่มีเสียงตรงกันมาใช้แทนความหมายใหม่ (เช่น ตัวเลข สรรพนาม และคำช่วยทางไวยากรณ์)",
+        badgeClass: "six-writings-loan",
+        isPhonoSemantic: false
+      };
+    }
+
+    // 6. Authoritative HUIYI_SET (Compound Ideographs)
+    const HUIYI_SET = new Set([
+      "休", "明", "信", "男", "初", "友", "相", "取", "劣", "好", "妇", "妥", "委", "保", "集", "解",
+      "卡", "尖", "兵", "戒", "算", "出", "看", "步", "从", "众", "林", "森", "品", "晶", "炎", "双",
+      "立", "旦", "早", "家", "安", "武", "析", "伐", "采", "雀", "尘", "灾", "灭", "泪", "歪", "晃",
+      "内", "公", "共", "同", "军", "击", "化", "医", "危", "原", "去", "备", "夏", "外", "多", "夜",
+      "及", "买", "市", "京", "鸣", "苗"
+    ]);
+    if (HUIYI_SET.has(charData.char)) {
+      return {
+        type: "会意",
+        categoryKey: "compound_ideograph",
+        label: "🧩 会意 (ประสมความหมาย)",
+        desc: "นำความหมายของชิ้นส่วน 2 ชิ้นขึ้นไปมารวมกันเกิดเป็นความหมายใหม่ (เช่น คน 休 พิงต้นไม้ = พักผ่อน, อาทิตย์+จันทร์ 明 = สว่าง)",
+        badgeClass: "six-writings-compound",
+        isPhonoSemantic: false
+      };
+    }
+
+    // 7. Single-Structure Phono-Semantic Whitelist
+    const PHONO_SINGLE_SET = new Set([
+      "百", "区", "术", "贰", "牟", "卫", "开", "关", "发", "礼", "云", "头", "华", "产",
+      "进", "运", "远", "边", "过", "达", "选", "还", "违", "普", "更", "成", "正", "民",
+      "永", "甩", "习", "生", "用", "长", "老", "音", "页", "风", "飞", "食",
+      "没", "觉", "住", "桌", "猫", "漂", "苹", "喂", "椅"
+    ]);
+    if (PHONO_SINGLE_SET.has(charData.char)) {
+      const meaningComp = components.find(c => c.char !== charData.char) || { char: charData.radical || "", meaning: "หมวดความหมาย" };
+      return {
+        type: "形声",
+        categoryKey: "phono_semantic",
+        label: "🗣️ 形声 (อักษรเสียง-ความหมาย)",
+        desc: "อักษรจีนกว่า 80% ใช้วิธีนี้ โดยชิ้นส่วนหนึ่งบอกหมวดความหมาย (意符) และอีกชิ้นส่วนบอกเสียงอ่าน (声符)",
+        badgeClass: "six-writings-phono-semantic",
+        isPhonoSemantic: true,
+        soundComp: { char: charData.char, meaning: "ชิ้นส่วนเสียงในประวัติศาสตร์อักษร" },
+        meaningComp: meaningComp
+      };
+    }
+
+    // 8. Dynamic Phono-Semantic Check (role contains 声符 or found in PHONETIC_FAMILIES)
+    const soundComp = components.find(c => c.role && (c.role.includes("声符") || c.role.includes("เสียง") || c.role.includes("Sound") || c.role.includes("Phonetic")));
+    let famInfo = null;
+    if (!soundComp && typeof window !== "undefined" && window.PHONETIC_FAMILIES) {
+      for (const [key, fam] of Object.entries(window.PHONETIC_FAMILIES)) {
+        if (fam.members && fam.members.some(m => m.char === charData.char)) {
+          famInfo = { key, fam };
+          break;
+        }
+      }
+    }
+
+    if (soundComp || famInfo) {
+      const meaningComp = components.find(c => c !== soundComp && c.char !== charData.char) || components[0] || { char: charData.radical || "", meaning: "หมวดความหมาย" };
+      return {
+        type: "形声",
+        categoryKey: "phono_semantic",
+        label: "🗣️ 形声 (อักษรเสียง-ความหมาย)",
+        desc: "อักษรจีนกว่า 80% ใช้วิธีนี้ โดยชิ้นส่วนหนึ่งบอกหมวดความหมาย (意符) และอีกชิ้นส่วนบอกเสียงอ่าน (声符)",
+        badgeClass: "six-writings-phono-semantic",
+        isPhonoSemantic: true,
+        soundComp: soundComp || (famInfo ? { char: famInfo.key, meaning: "ตระกูลเสียง " + famInfo.key } : { char: "เสียง", pinyin: "", meaning: "ยืมเสียงอ่าน" }),
+        meaningComp: meaningComp || { char: charData.radical || "", meaning: "หมวดความหมาย" }
+      };
+    }
+
+    // 9. Components with Explicit Indicative Role
     if (components.some(c => c.role && (c.role.includes("指事") || c.role.includes("ขีดชี้สัญลักษณ์")))) {
       return {
         type: "指事",
@@ -661,48 +762,7 @@ class HanziMindApp {
       };
     }
 
-    // 4. Classic Compound Ideograph Overrides (会意)
-    const HUIYI_OVERRIDE_SET = new Set([
-      "休", "明", "信", "男", "初", "友", "相", "取", "劣", "好", "妇", "妥", "委", "保", "集", "解"
-    ]);
-    if (HUIYI_OVERRIDE_SET.has(charData.char)) {
-      return {
-        type: "会意",
-        categoryKey: "compound_ideograph",
-        label: "🧩 会意 (ประสมความหมาย)",
-        desc: "นำความหมายของชิ้นส่วน 2 ชิ้นขึ้นไปมารวมกันเกิดเป็นความหมายใหม่ (เช่น คน 休 พิงต้นไม้ = พักผ่อน, อาทิตย์+จันทร์ 明 = สว่าง)",
-        badgeClass: "six-writings-compound",
-        isPhonoSemantic: false
-      };
-    }
-
-    // 5. Phono-semantic (形声 - Meaning Component + Sound Component)
-    const soundComp = components.find(c => c.role && (c.role.includes("声符") || c.role.includes("เสียง") || c.role.includes("Sound") || c.role.includes("Phonetic")));
-    let famInfo = null;
-    if (!soundComp && window.PHONETIC_FAMILIES) {
-      for (const [key, fam] of Object.entries(window.PHONETIC_FAMILIES)) {
-        if (fam.members && fam.members.some(m => m.char === charData.char)) {
-          famInfo = { key, fam };
-          break;
-        }
-      }
-    }
-
-    if (soundComp || famInfo || charData.char === "普") {
-      const meaningComp = components.find(c => c !== soundComp && c.char !== charData.char) || components[0] || { char: charData.radical, meaning: "หมวดความหมาย" };
-      return {
-        type: "形声",
-        categoryKey: "phono_semantic",
-        label: "🗣️ 形声 (อักษรเสียง-ความหมาย)",
-        desc: "อักษรจีนกว่า 80% ใช้วิธีนี้ โดยชิ้นส่วนหนึ่งบอกหมวดความหมาย (意符) และอีกชิ้นส่วนบอกเสียงอ่าน (声符)",
-        badgeClass: "six-writings-phono-semantic",
-        isPhonoSemantic: true,
-        soundComp: soundComp || (famInfo ? { char: famInfo.key, meaning: "ตระกูลเสียง " + famInfo.key } : (charData.char === "普" ? { char: "并", meaning: "ออกเสียงคล้ายกัน" } : { char: "เสียง", pinyin: "", meaning: "ยืมเสียงอ่าน" })),
-        meaningComp: meaningComp || { char: charData.radical, meaning: "หมวดความหมาย" }
-      };
-    }
-
-    // 6. Compound Structure Fallback -> 会意
+    // 10. Multi-Component Fallback -> 会意
     if (components.length >= 2) {
       return {
         type: "会意",
@@ -714,39 +774,96 @@ class HanziMindApp {
       };
     }
 
-    // 7. Single Character Fallback -> 象形
+    // 11. Single Character / Undetermined Fallback -> 未定 / 待考
     return {
-      type: "象形",
-      categoryKey: "pictograph",
-      label: "🖼️ 象形 (อักษรภาพ)",
-      desc: "วาดจำลองจากรูปทรงของสิ่งของดั้งเดิมตามธรรมชาติ (เช่น พระอาทิตย์ 日, ดวงจันทร์ 月, ภูเขา 山)",
-      badgeClass: "six-writings-pictograph",
+      type: "未定 / 待考",
+      categoryKey: "undetermined",
+      label: "❓ 未定 / 待考 (ยังไม่ระบุ)",
+      desc: "อยู่ระหว่างการศึกษาหลักฐานทางนิรุกติศาสตร์และอักษรโบราณ",
+      badgeClass: "six-writings-undetermined",
       isPhonoSemantic: false
     };
   }
 
   /**
-   * Disambiguate Meat Radical (肉月旁) vs Moon Radical (日月)
+   * Disambiguate Meat Radical (肉月旁) vs Moon Radical (日月) vs Boat/Cowrie origins
    */
   getRadicalLinguisticMeta(charData) {
     if (!charData) return null;
-    const meatChars = ["胖", "脸", "腿", "肚", "肝", "胃", "脚", "脑", "胸", "臂", "肌", "背", "腰", "肥", "服", "朋"];
-    if (charData.radical === "月" || (charData.components && charData.components.some(c => c.char === "月" || c.char === "肉"))) {
-      if (meatChars.includes(charData.char) || !["期", "朝", "明", "朗"].includes(charData.char)) {
-        return {
-          isMeat: true,
-          badge: "🥩 肉月旁 (ròuyuèpáng)",
-          desc: "รูปแปลงของ 'เนื้อ (肉)' สื่อถึงอวัยวะร่างกาย ไม่ใช่พระจันทร์"
-        };
-      } else {
-        return {
-          isMeat: false,
-          badge: "🌙 日月 (yuè)",
-          desc: "พระจันทร์ กาลเวลา และดวงดาว"
-        };
-      }
+    const char = charData.char;
+
+    // Explicit whitelist of authentic meat/body-part characters (肉/⺼)
+    const meatChars = new Set([
+      "胖", "脸", "腿", "肚", "肝", "肠", "胃", "脖", "膀", "股", "胆", "臂",
+      "胸", "脑", "脏", "肌", "肤", "育", "胎", "脂", "肪", "肋", "胳", "膊",
+      "胶", "脆", "脱", "膨", "胀", "肿", "脚", "肥", "腐", "脉", "肢", "腰",
+      "背", "肩", "肉", "腼", "胰", "脾", "肾", "腑", "腺", "腱", "胚", "脓",
+      "胴", "脊", "腩", "腋", "胯", "腮", "腹", "膜", "脯", "腔", "膝", "肺",
+      "胡", "肯", "膏", "肴", "肖", "胁", "胭", "胛", "脘", "胫", "脬", "腕",
+      "腥", "腴", "膘", "膛", "膳", "膻", "臀", "臃", "臆"
+    ]);
+
+    // Check if character contains 月 / 肉 / ⺼ radical or component or is in meat list
+    const hasMoonOrMeat = charData.radical === "月" ||
+      charData.radical === "肉" ||
+      charData.radical === "⺼" ||
+      (charData.components && charData.components.some(c => c.char === "月" || c.char === "肉" || c.char === "⺼")) ||
+      meatChars.has(char) ||
+      ["月", "望", "阴", "朋", "服", "有", "能", "明", "期", "朝", "朗", "朔", "朦", "胧", "钥"].includes(char);
+
+    if (!hasMoonOrMeat) return null;
+
+    // 1. Meat Whitelist (肉月旁)
+    if (meatChars.has(char)) {
+      return {
+        isMeat: true,
+        badge: "🥩 肉月旁 (ròuyuèpáng)",
+        desc: "รูปแปลงของ 'เนื้อ (肉)' สื่อถึงอวัยวะร่างกาย กล้ามเนื้อ หรือชิ้นเนื้อ"
+      };
     }
-    return null;
+
+    // 2. Cowrie currency string origin (贝串)
+    if (char === "朋") {
+      return {
+        isMeat: false,
+        badge: "🐚 贝串 (péng)",
+        desc: "ร้อยเปลือกหอยเบี้ยโบราณ 2 พวงคู่กัน (สื่อถึงเพื่อน/มิตรสหาย ไม่ใช่เนื้อหรือพระจันทร์)"
+      };
+    }
+
+    // 3. Boat derivative origin (舟部衍生)
+    if (char === "服" || char === "朕" || char === "胜" || char === "俞") {
+      return {
+        isMeat: false,
+        badge: "⛵ 舟部衍生 (fú)",
+        desc: "วิวัฒนาการจากรูปเรือ (舟) และมือ (又) สื่อถึงการบังคับเรือ/ยอมจำนน/เครื่องนุ่งห่ม ไม่ใช่เนื้อ"
+      };
+    }
+
+    // 4. Hand holding sacrificial meat (又+肉)
+    if (char === "有") {
+      return {
+        isMeat: false,
+        badge: "✋ 又+肉 (yǒu)",
+        desc: "ภาพมือ (又) ถือชิ้นเนื้อเพื่อทำพิธีบวงสรวง สื่อถึงการมีอยู่/ครอบครอง"
+      };
+    }
+
+    // 5. Bear pictograph derivative (熊形)
+    if (char === "能") {
+      return {
+        isMeat: false,
+        badge: "🐻 熊形 (néng)",
+        desc: "ภาพหมีโบราณ สื่อถึงพละกำลังและความสามารถ"
+      };
+    }
+
+    // 6. True Moon / Astronomy / Calendar / Default Moon
+    return {
+      isMeat: false,
+      badge: "🌙 日月 (yuè)",
+      desc: "พระจันทร์ แสงจันทร์ กาลเวลา และดวงดาว"
+    };
   }
 
   /**

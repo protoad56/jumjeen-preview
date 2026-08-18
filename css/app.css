@@ -1,5 +1,8 @@
 /* App Styles & Mobile Frame Shell */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@500;600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap');
+/* Fonts are self-hosted and subset — see css/fonts.css, loaded from
+   index.html before this file. (Previously an @import from
+   fonts.googleapis.com, which broke offline rendering and leaked the
+   user's IP to Google on every launch.) */
 
 * {
   box-sizing: border-box;

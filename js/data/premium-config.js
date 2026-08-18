@@ -25,7 +25,13 @@ const FREE_RADICALS = ["女", "氵", "讠", "辶", "日", "口", "心", "亻", "
 
 const PremiumGate = {
   STORAGE_KEY: "jumjeen_premium_unlocked",
-  DEV_PREVIEW_ALL_UNLOCKED: true, // Set to true to unlock all 214 radicals for system testing
+  // MUST stay false in any build that ships to the App Store / Play Store —
+  // when true it short-circuits isUnlocked() and canAccessRadical() for
+  // everyone, so every user gets all 214 radicals free and the in-app
+  // purchase becomes unsellable. Only flip to true for local system testing.
+  // (The jumjeen-preview tester build unlocks via its own inline script
+  // instead, so it does not need this flag.)
+  DEV_PREVIEW_ALL_UNLOCKED: false,
   _ready: false,
 
   isFreeRadical(radChar) {

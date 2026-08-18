@@ -47,6 +47,24 @@ class StrokeAnimator {
     if (window.HanziWriter) {
       try {
         this.writer = window.HanziWriter.create(this.containerId, this.currentChar, {
+          // Without this, HanziWriter falls back to fetching every character's
+          // stroke JSON from its CDN — which breaks the whole feature offline.
+          // Data for all 214 radicals + every taught character is bundled in
+          // js/vendor/hanzi-data/. A few rare component glyphs have no entry
+          // upstream; those reject here and fall through to renderFallback().
+          charDataLoader: (char, onComplete, onError) => {
+            fetch(`js/vendor/hanzi-data/${encodeURIComponent(char)}.json`)
+              .then(res => {
+                if (!res.ok) throw new Error(`no stroke data for ${char}`);
+                return res.json();
+              })
+              .then(onComplete)
+              .catch(onError);
+          },
+          onLoadCharDataError: () => {
+            const container = document.getElementById(this.containerId);
+            if (container) this.renderFallback(container);
+          },
           width: 210,
           height: 210,
           padding: 10,

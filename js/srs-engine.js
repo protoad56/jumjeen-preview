@@ -3,6 +3,16 @@
  * จำจีน (JumJeen) - ระบบช่วยจำระยะยาว
  */
 
+const SRS_TUTORIAL_SEEN_KEY = "jumjeen_srs_tutorial_seen";
+const SRS_SWIPE_THRESHOLD = 100;
+const SRS_TAP_THRESHOLD = 6;
+
+// Line-style action icons (currentColor-driven) so the grading buttons read
+// as one visual system with the app's palette instead of mismatched emoji.
+const SRS_ICON_FORGOT = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`;
+const SRS_ICON_REMEMBER = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6"/></svg>`;
+const SRS_ICON_FLIP = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 00-14.9-3.5"/><path d="M4 4v5h5"/><path d="M4 13a8 8 0 0014.9 3.5"/><path d="M20 20v-5h-5"/></svg>`;
+
 class SRSEngine {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
@@ -12,6 +22,11 @@ class SRSEngine {
     this.activeCard = null;
     this.stats = { total: 0, reviewedThisSession: 0, correctStreak: 0 };
     this.showStatsView = false;
+    this.showTutorial = false;
+    // Guards against the pointerup tap-to-flip handler firing again while
+    // a swiped card is still mid fly-off animation and its grade hasn't
+    // been persisted yet.
+    this.isAnimatingSwipe = false;
     window.SRSEngine = this;
   }
 
@@ -94,7 +109,39 @@ class SRSEngine {
     this.currentQueue = queue;
     this.currentIndex = 0;
     this.isAnswerRevealed = false;
+    if (this.currentQueue.length > 0 && !this.hasSeenTutorial()) {
+      this.showTutorial = true;
+    }
     this.render();
+  }
+
+  hasSeenTutorial() {
+    try {
+      return localStorage.getItem(SRS_TUTORIAL_SEEN_KEY) === "true";
+    } catch (e) {
+      return false;
+    }
+  }
+
+  dismissTutorial() {
+    this.showTutorial = false;
+    try {
+      localStorage.setItem(SRS_TUTORIAL_SEEN_KEY, "true");
+    } catch (e) {}
+    this.render();
+  }
+
+  openTutorial() {
+    this.showTutorial = true;
+    this.render();
+  }
+
+  /** Jumps to this card's character on the radical mindmap — reuses
+   *  App.jumpToComponent(), the same "see it in context" navigation the
+   *  compound-word breakdown view already uses. */
+  goToMindmap() {
+    if (!this.activeCard || !window.App) return;
+    window.App.jumpToComponent(this.activeCard.character.char);
   }
 
   revealAnswer() {
@@ -103,6 +150,121 @@ class SRSEngine {
       window.AudioEngine.speak(this.activeCard.character.char);
     }
     this.render();
+  }
+
+  hideAnswer() {
+    this.isAnswerRevealed = false;
+    this.render();
+  }
+
+  /** Tap-to-flip: front shows the character to test recall, tapping again
+   *  flips back. Distinct from swiping, which grades and advances. */
+  toggleFlip() {
+    if (this.isAnswerRevealed) {
+      this.hideAnswer();
+    } else {
+      this.revealAnswer();
+    }
+  }
+
+  /** Fallback for the on-screen buttons (non-touch input, or users who
+   *  don't want to drag) — grades via the same fly-off animation as a
+   *  real swipe so the two interaction paths feel identical. */
+  buttonGrade(direction) {
+    if (this.isAnimatingSwipe) return;
+    const card = this.container.querySelector("#srs-active-card");
+    if (!card) return;
+    this.flyOutAndGrade(card, direction);
+  }
+
+  /** direction: 'left' = ยังจำไม่ได้ (forgot), 'right' = จำได้แล้ว (remembered) */
+  flyOutAndGrade(card, direction) {
+    if (this.isAnimatingSwipe) return;
+    this.isAnimatingSwipe = true;
+    const flyX = direction === "left" ? -(window.innerWidth || 500) : (window.innerWidth || 500);
+    card.style.transition = "transform 0.35s ease-out, opacity 0.35s ease-out";
+    card.style.transform = `translate(${flyX}px, -30px) rotate(${direction === "left" ? -28 : 28}deg)`;
+    card.style.opacity = "0";
+    // 4 = "Good" (จำได้แล้ว), 0 = "Again" (ยังจำไม่ได้) — reuses the SM-2
+    // quality scale calculateNextReview() already expects.
+    const quality = direction === "left" ? 0 : 4;
+    window.setTimeout(() => {
+      this.isAnimatingSwipe = false;
+      this.submitAnswer(quality);
+    }, 320);
+  }
+
+  /** Binds drag-to-swipe + tap-to-flip to the freshly rendered top card.
+   *  Called at the end of render() — the card element is rebuilt every
+   *  render, so listeners must be reattached each time. */
+  attachCardGestures() {
+    const card = this.container.querySelector("#srs-active-card");
+    if (!card) return;
+    const badgeLeft = card.querySelector(".tinder-swipe-badge.left");
+    const badgeRight = card.querySelector(".tinder-swipe-badge.right");
+
+    let dragging = false;
+    let pointerId = null;
+    let startX = 0, startY = 0, dx = 0, dy = 0;
+
+    const resetPosition = () => {
+      card.style.transition = "transform 0.25s ease";
+      card.style.transform = "";
+      if (badgeLeft) badgeLeft.style.opacity = 0;
+      if (badgeRight) badgeRight.style.opacity = 0;
+    };
+
+    const onPointerDown = (e) => {
+      if (this.isAnimatingSwipe) return;
+      // Let the in-card "listen" button behave like a normal button
+      // instead of starting a drag / triggering tap-to-flip on release.
+      if (e.target.closest(".btn-listen-mini")) return;
+      dragging = true;
+      pointerId = e.pointerId;
+      try { card.setPointerCapture(pointerId); } catch (err) {}
+      startX = e.clientX;
+      startY = e.clientY;
+      dx = 0; dy = 0;
+      card.style.transition = "none";
+    };
+
+    const onPointerMove = (e) => {
+      if (!dragging) return;
+      dx = e.clientX - startX;
+      dy = e.clientY - startY;
+      const rotate = dx / 14;
+      card.style.transform = `translate(${dx}px, ${dy * 0.15}px) rotate(${rotate}deg)`;
+      const progress = Math.min(Math.abs(dx) / SRS_SWIPE_THRESHOLD, 1);
+      if (dx < 0) {
+        if (badgeLeft) badgeLeft.style.opacity = progress;
+        if (badgeRight) badgeRight.style.opacity = 0;
+      } else if (dx > 0) {
+        if (badgeRight) badgeRight.style.opacity = progress;
+        if (badgeLeft) badgeLeft.style.opacity = 0;
+      }
+    };
+
+    const onPointerUp = () => {
+      if (!dragging) return;
+      dragging = false;
+      try { card.releasePointerCapture(pointerId); } catch (err) {}
+
+      if (Math.abs(dx) < SRS_TAP_THRESHOLD && Math.abs(dy) < SRS_TAP_THRESHOLD) {
+        resetPosition();
+        this.toggleFlip();
+        return;
+      }
+      if (Math.abs(dx) >= SRS_SWIPE_THRESHOLD) {
+        this.flyOutAndGrade(card, dx < 0 ? "left" : "right");
+      } else {
+        resetPosition();
+      }
+    };
+
+    card.addEventListener("pointerdown", onPointerDown);
+    card.addEventListener("pointermove", onPointerMove);
+    card.addEventListener("pointerup", onPointerUp);
+    card.addEventListener("pointercancel", onPointerUp);
   }
 
   async submitAnswer(qualityRating) {
@@ -186,72 +348,128 @@ class SRSEngine {
     this.activeCard = this.currentQueue[this.currentIndex];
     const c = this.activeCard.character;
     const srs = this.activeCard.srs;
+    const nextCard = this.currentQueue[this.currentIndex + 1];
 
     this.container.innerHTML = `
       <div class="srs-session-wrapper">
         <!-- Progress Bar -->
         <div class="srs-progress-header">
-          <span class="srs-counter">คำที่ ${this.currentIndex + 1} / ${this.currentQueue.length}</span>
-          <span class="srs-badge ${srs.mastery_level}">ระดับ: ${this.getMasteryLabel(srs.mastery_level)}</span>
-          <button class="btn-stats-mini" onclick="window.SRSEngine.toggleStatsView()" title="ดูสถิติแบบละเอียด">📊</button>
+          <div class="srs-progress-header-group">
+            <span class="srs-counter">คำที่ ${this.currentIndex + 1} / ${this.currentQueue.length}</span>
+            <span class="srs-badge ${srs.mastery_level}">ระดับ: ${this.getMasteryLabel(srs.mastery_level)}</span>
+          </div>
+          <div class="srs-progress-header-group">
+            <button class="btn-stats-mini" onclick="window.SRSEngine.goToMindmap()" title="ดูตำแหน่งในผังรากศัพท์">🌿</button>
+            <button class="btn-stats-mini" onclick="window.SRSEngine.openTutorial()" title="วิธีใช้งานการ์ด">❓</button>
+            <button class="btn-stats-mini" onclick="window.SRSEngine.toggleStatsView()" title="ดูสถิติแบบละเอียด">📊</button>
+          </div>
         </div>
 
-        <!-- Flip Flashcard -->
-        <div class="srs-card ${this.isAnswerRevealed ? 'revealed' : ''}">
-          
-          <!-- Front Face -->
-          <div class="card-face card-front">
-            <div class="srs-char-big">${c.char}</div>
-            <div class="srs-prompt-text">คุณจำรากศัพท์ ความหมาย และวิธีออกเสียงคำนี้ได้ไหม?</div>
-            <button class="btn-reveal-answer" onclick="window.SRSEngine.revealAnswer()">
-              👁️ แตะเพื่อเฉลยคำตอบ & เสียงอ่าน
-            </button>
-          </div>
-
-          <!-- Back Face (Revealed Details) -->
-          ${this.isAnswerRevealed ? `
-            <div class="card-face card-back">
-              <div class="back-top-row">
-                <span class="back-char">${c.char}</span>
-                <span class="back-pinyin">${c.primaryPinyin}</span>
-                <button class="btn-listen-mini" onclick="window.AudioEngine.speak('${c.char}')">🔊 ฟังเสียง</button>
-              </div>
-
-              <div class="back-meaning">${c.thaiMeaningShort}</div>
-
-              <!-- Component Breakdown -->
-              <div class="back-components-pill">
-                <strong>รากศัพท์:</strong> ${c.components.map(cp => `${cp.char} (${cp.meaning})`).join(' + ')}
-              </div>
-
-              <!-- Mnemonic Trick -->
-              <div class="back-mnemonic-box">
-                <div class="mnemonic-title">💡 สูตรช่วยจำภาพ:</div>
-                <div>${c.mnemonicHook ? c.mnemonicHook.formula : ''}</div>
-              </div>
-
-              <!-- SM-2 Rating Buttons -->
-              <div class="srs-rating-row">
-                <button class="btn-rate rate-again" onclick="window.SRSEngine.submitAnswer(0)">
-                  <span>❌ ลืม</span>
-                  <small>ทบทวนใหม่ 1 วัน</small>
-                </button>
-                <button class="btn-rate rate-hard" onclick="window.SRSEngine.submitAnswer(3)">
-                  <span>🤔 พอนึกออก</span>
-                  <small>ทบทวนใน 2-3 วัน</small>
-                </button>
-                <button class="btn-rate rate-good" onclick="window.SRSEngine.submitAnswer(4)">
-                  <span>✅ จำได้</span>
-                  <small>ทบทวนใน 4-7 วัน</small>
-                </button>
-                <button class="btn-rate rate-easy" onclick="window.SRSEngine.submitAnswer(5)">
-                  <span>⚡ จำแม่นมาก</span>
-                  <small>ทบทวนใน 14-21 วัน</small>
-                </button>
-              </div>
+        <!-- Tinder-style Swipeable Card Stack -->
+        <div class="tinder-stack">
+          ${nextCard ? `
+            <div class="tinder-card tinder-card-behind">
+              <div class="tinder-card-behind-char">${nextCard.character.char}</div>
             </div>
           ` : ''}
 
+          <div class="tinder-card tinder-card-top" id="srs-active-card">
+            <div class="tinder-swipe-badge left">❌ ยังไม่ได้</div>
+            <div class="tinder-swipe-badge right">✅ จำได้</div>
+
+            <div class="tinder-card-flip-inner ${this.isAnswerRevealed ? 'is-flipped' : ''}">
+              <!-- Front Face -->
+              <div class="tinder-card-face tinder-card-face-front">
+                <div class="srs-char-big">${c.char}</div>
+                <div class="srs-prompt-text">คุณจำรากศัพท์ ความหมาย และวิธีออกเสียงคำนี้ได้ไหม?</div>
+                <div class="tinder-tap-hint">👆 แตะการ์ดเพื่อดูเฉลย</div>
+              </div>
+
+              <!-- Back Face (Revealed Details) -->
+              <div class="tinder-card-face tinder-card-face-back">
+                <div class="back-top-row">
+                  <span class="back-char">${c.char}</span>
+                  <span class="back-pinyin">${c.primaryPinyin}</span>
+                  <button class="btn-listen-mini" onclick="event.stopPropagation(); window.AudioEngine.speak('${c.char}')">🔊 ฟังเสียง</button>
+                </div>
+
+                <div class="back-meaning">${c.thaiMeaningShort}</div>
+
+                <!-- Component Breakdown -->
+                <div class="back-components-pill">
+                  <strong>รากศัพท์:</strong> ${c.components.map(cp => `${cp.char} (${cp.meaning})`).join(' + ')}
+                </div>
+
+                <!-- Mnemonic Trick -->
+                <div class="back-mnemonic-box">
+                  <div class="mnemonic-title">💡 สูตรช่วยจำภาพ:</div>
+                  <div>${c.mnemonicHook ? c.mnemonicHook.formula : ''}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Swipe / Grade Action Bar -->
+        <div class="tinder-action-row">
+          <button class="tinder-action-btn action-forgot" onclick="window.SRSEngine.buttonGrade('left')">
+            <span class="action-icon-circle">${SRS_ICON_FORGOT}</span>
+            <span class="action-label">ยังไม่ได้</span>
+          </button>
+          <button class="tinder-action-btn action-flip" onclick="window.SRSEngine.toggleFlip()">
+            <span class="action-icon-circle">${SRS_ICON_FLIP}</span>
+            <span class="action-label">ดูเฉลย</span>
+          </button>
+          <button class="tinder-action-btn action-remember" onclick="window.SRSEngine.buttonGrade('right')">
+            <span class="action-icon-circle">${SRS_ICON_REMEMBER}</span>
+            <span class="action-label">จำได้</span>
+          </button>
+        </div>
+      </div>
+      ${this.showTutorial ? this.renderTutorialOverlay() : ''}
+    `;
+
+    this.attachCardGestures();
+  }
+
+  renderTutorialOverlay() {
+    return `
+      <div class="modal-overlay active srs-tutorial-overlay">
+        <div class="settings-modal-card srs-tutorial-card">
+          <div class="modal-header">
+            <div class="modal-title-group">
+              <span class="modal-header-icon">🎴</span>
+              <h3 class="modal-heading">วิธีใช้การ์ดทบทวน</h3>
+            </div>
+            <button class="modal-close-icon-btn" onclick="window.SRSEngine.dismissTutorial()">✕</button>
+          </div>
+          <div class="settings-modal-body srs-tutorial-body">
+            <div class="srs-tutorial-step">
+              <span class="srs-tutorial-emoji">👆</span>
+              <div>
+                <strong>แตะที่การ์ด</strong>
+                <p>เพื่อเปิดดูคำอ่าน ความหมาย และสูตรช่วยจำ</p>
+              </div>
+            </div>
+            <div class="srs-tutorial-step">
+              <span class="srs-tutorial-emoji">⬅️</span>
+              <div>
+                <strong>ปัดการ์ดไปทางซ้าย</strong>
+                <p>ถ้า<b>ยังจำไม่ได้</b> ระบบจะให้ทบทวนคำนี้อีกครั้งเร็วๆ นี้</p>
+              </div>
+            </div>
+            <div class="srs-tutorial-step">
+              <span class="srs-tutorial-emoji">➡️</span>
+              <div>
+                <strong>ปัดการ์ดไปทางขวา</strong>
+                <p>ถ้า<b>จำได้แล้ว</b> ระบบจะเว้นระยะให้ทบทวนครั้งถัดไปนานขึ้น</p>
+              </div>
+            </div>
+            <p class="srs-tutorial-note">💡 ไม่ถนัดการปัดหน้าจอ? ใช้ปุ่มด้านล่างการ์ดแทนได้เช่นกัน</p>
+          </div>
+          <div class="modal-footer-action">
+            <button class="btn-restart-srs" onclick="window.SRSEngine.dismissTutorial()">เข้าใจแล้ว เริ่มทบทวน!</button>
+          </div>
         </div>
       </div>
     `;

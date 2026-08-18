@@ -36,8 +36,8 @@ class RadicalFusionGame {
 
       // 日 & 月 (Sun & Moon)
       { comp1: "日", comp2: "月", result: "明", story: "พระอาทิตย์ (日) + พระจันทร์ (月) = สว่างไสวแจ่มแจ้ง (明)" },
-      { comp1: "日", comp2: "十", result: "早", story: "พระอาทิตย์ (日) + สิบ/ประกาย (十) = ยามเช้า (早)" },
-      { comp1: "日", comp2: "生", result: "星", story: "ดวงดาว/ท้องฟ้า (日) + เสียง shēng/xīng (生) = ดวงดาว (星)" },
+      { comp1: "日", comp2: "十", result: "早", story: "日在甲上 — พระอาทิตย์ (日) โผล่พ้นขอบฟ้า/หมวกเกราะในยามเช้าตรู่ (十 แปลงรูปมาจาก 甲 / ฐานรองรับ ไม่ใช่เลขสิบ) = ยามเช้าตรู่ (早)" },
+      { comp1: "日", comp2: "生", result: "星", story: "从晶从生 — เดิมเขียนด้วยดวงอาทิตย์ซ้อนกันหลายดวง (晶) แทนดวงดาวระยิบระยับ ภายหลังลดรูปเหลือ日ดวงเดียว + 生 (声符 บอกเสียงอ่าน shēng ➔ xīng) = ดวงดาว (星)" },
       { comp1: "日", comp2: "青", result: "晴", story: "พระอาทิตย์ (日) + เสียง qīng (青) = ท้องฟ้าแจ่มใส (晴)" },
 
       // 木 (Tree / Wood)
@@ -99,7 +99,7 @@ class RadicalFusionGame {
       // 心 (Heart / Mind)
       { comp1: "心", comp2: "亡", result: "忘", story: "หัวใจ/จิตใจ (心) + เสียง wáng/wàng (亡) = ลืมเลือน (忘)" },
       { comp1: "心", comp2: "相", result: "想", story: "หัวใจ/จิตใจ (心) + เสียง xiāng/xiǎng (相) = คิดถึง/จินตนาการ (想)" },
-      { comp1: "心", comp2: "田", result: "思", story: "หัวใจ (心) + สมองครุ่นคิด (田/囟) = ครุ่นคิด/พินิจ (思)" },
+      { comp1: "心", comp2: "田", result: "思", story: "จากใจและสมอง (从心囟声) — หัวใจ (心) + กะโหลกศีรษะ/สมอง (田 กลายรูปมาจาก 囟 สมอง) = ครุ่นคิด/พินิจ (思)" },
 
       // 月 (Body / Flesh)
       { comp1: "月", comp2: "半", result: "胖", story: "ร่างกาย/เนื้อ (月) + เสียง bàn/pàng (半) = อ้วนท้วน (胖)" },
@@ -132,11 +132,11 @@ class RadicalFusionGame {
       { char: "饣", pinyin: "shí", label: "อาหาร", cat: "object" },
       { char: "心", pinyin: "xīn", label: "หัวใจ", cat: "human" },
       { char: "禾", pinyin: "hé", label: "รวงข้าว", cat: "nature" },
-      { char: "田", pinyin: "tián", label: "ทุ่งนา/สมอง", cat: "nature" },
+      { char: "田", pinyin: "tián", label: "ทุ่งนา (แปลงจาก 囟 สมอง)", note: "田 หมายถึงทุ่งนา แต่ในอักษรโบราณบางตัวเช่น 思 แปลงรูปมาจาก 囟 (สมอง/กระหม่อม)", cat: "nature" },
       { char: "力", pinyin: "lì", label: "พลังแรง", cat: "human" },
       { char: "青", pinyin: "qīng", label: "เขียวสด/เสียง qīng", cat: "nature" },
       { char: "舌", pinyin: "shé", label: "ลิ้น", cat: "human" },
-      { char: "十", pinyin: "shí", label: "สิบ/สมบูรณ์", cat: "object" },
+      { char: "十", pinyin: "shí", label: "สิบ (ตัวเลข 10)", cat: "object" },
       { char: "少", pinyin: "shǎo", label: "เล็กน้อย/เสียง shǎo", cat: "nature" },
       { char: "生", pinyin: "shēng", label: "กำเนิด/เสียง shēng", cat: "human" },
       { char: "门", pinyin: "mén", label: "ประตู/เสียง mén", cat: "object" },
@@ -146,7 +146,7 @@ class RadicalFusionGame {
       { char: "鸟", pinyin: "niǎo", label: "นก", cat: "animal" },
       { char: "山", pinyin: "shān", label: "ภูเขา", cat: "nature" },
       { char: "石", pinyin: "shí", label: "หิน", cat: "nature" },
-      { char: "王", pinyin: "wáng", label: "ราชา/หยก", cat: "human" },
+      { char: "王", pinyin: "wáng", label: "ราชา (คนละความหมายกับ 玉 หยก แม้รูปคล้ายกัน)", cat: "human" },
       { char: "小", pinyin: "xiǎo", label: "เล็ก", cat: "nature" },
       { char: "大", pinyin: "dà", label: "ใหญ่", cat: "human" }
     ];
