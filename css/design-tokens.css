@@ -19,6 +19,11 @@
   --c-vermilion: #d33828;      /* 硃砂红 - Cinnabar/Vermilion */
   --c-vermilion-soft: #fdeee9;
   --c-vermilion-glow: rgba(211, 56, 40, 0.15);
+  --c-vermilion-dark: #a82a1d; /* hover shade — was referenced but never
+                                   defined, so on hover the undefined var()
+                                   made `background` invalid and it fell
+                                   back to transparent: a white button with
+                                   white text, invisible against the page. */
   
   --c-jade: #21835f;           /* 翡翠绿 - Imperial Jade */
   --c-jade-soft: #eaf6f1;
@@ -32,6 +37,7 @@
 
   --c-plum: #7e3b6a;           /* 黛紫 - Plum Orchid */
   --c-plum-soft: #fbf0f8;
+  --c-plum-glow: rgba(126, 59, 106, 0.15);
 
   /* Tone Colors for Chinese Learning */
   --tone-1: #e11d48; /* Tone 1 - High Flat 55 (Red/Coral) */

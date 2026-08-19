@@ -15,9 +15,14 @@
  */
 
 // ---- RevenueCat setup (fill in once you've done the steps above) ----
+// These are RevenueCat *public* SDK keys. They are designed to be shipped
+// inside the client app — they can only start a purchase and read the
+// current device's own entitlements. Never put a secret key (sk_...) or the
+// App Store .p8 here; those are server-side credentials and belong only in
+// the RevenueCat dashboard.
 const REVENUECAT_API_KEYS = {
-  ios: "REPLACE_WITH_REVENUECAT_IOS_PUBLIC_SDK_KEY",
-  android: "REPLACE_WITH_REVENUECAT_ANDROID_PUBLIC_SDK_KEY",
+  ios: "appl_oCTlzvOfYWsKatlQFyrOfxPDZhx",
+  android: "goog_FHpobgwgtrAsAMWpQqJWeJXWukS",
 };
 const ENTITLEMENT_ID = "premium"; // must match the Entitlement identifier in the RevenueCat dashboard
 

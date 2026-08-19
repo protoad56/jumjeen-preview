@@ -196,7 +196,16 @@ class SRSEngine {
 
   /** Binds drag-to-swipe + tap-to-flip to the freshly rendered top card.
    *  Called at the end of render() — the card element is rebuilt every
-   *  render, so listeners must be reattached each time. */
+   *  render, so listeners must be reattached each time.
+   *
+   *  Uses separate mouse + touch handlers (like mindmap.js's pan-drag)
+   *  instead of unified Pointer Events — the Capacitor WebViews this app
+   *  ships in (older Android System WebView especially) have historically
+   *  flaky Pointer Event support, so this app's other drag gesture never
+   *  relied on it either. touchmove also calls preventDefault() while a
+   *  drag is active so a real finger swipe (which always has some
+   *  vertical drift) can't get hijacked as native page scroll partway
+   *  through — that hijack is what silently killed the swipe before. */
   attachCardGestures() {
     const card = this.container.querySelector("#srs-active-card");
     if (!card) return;
@@ -204,7 +213,6 @@ class SRSEngine {
     const badgeRight = card.querySelector(".tinder-swipe-badge.right");
 
     let dragging = false;
-    let pointerId = null;
     let startX = 0, startY = 0, dx = 0, dy = 0;
 
     const resetPosition = () => {
@@ -214,24 +222,22 @@ class SRSEngine {
       if (badgeRight) badgeRight.style.opacity = 0;
     };
 
-    const onPointerDown = (e) => {
+    const onStart = (clientX, clientY, target) => {
       if (this.isAnimatingSwipe) return;
-      // Let the in-card "listen" button behave like a normal button
-      // instead of starting a drag / triggering tap-to-flip on release.
-      if (e.target.closest(".btn-listen-mini")) return;
+      // Let in-card buttons (listen, jump-to-mindmap) behave like normal
+      // buttons instead of starting a drag / triggering tap-to-flip.
+      if (target && target.closest && target.closest(".btn-listen-mini, .btn-goto-mindmap")) return;
       dragging = true;
-      pointerId = e.pointerId;
-      try { card.setPointerCapture(pointerId); } catch (err) {}
-      startX = e.clientX;
-      startY = e.clientY;
+      startX = clientX;
+      startY = clientY;
       dx = 0; dy = 0;
       card.style.transition = "none";
     };
 
-    const onPointerMove = (e) => {
+    const onMove = (clientX, clientY) => {
       if (!dragging) return;
-      dx = e.clientX - startX;
-      dy = e.clientY - startY;
+      dx = clientX - startX;
+      dy = clientY - startY;
       const rotate = dx / 14;
       card.style.transform = `translate(${dx}px, ${dy * 0.15}px) rotate(${rotate}deg)`;
       const progress = Math.min(Math.abs(dx) / SRS_SWIPE_THRESHOLD, 1);
@@ -244,10 +250,9 @@ class SRSEngine {
       }
     };
 
-    const onPointerUp = () => {
+    const onEnd = () => {
       if (!dragging) return;
       dragging = false;
-      try { card.releasePointerCapture(pointerId); } catch (err) {}
 
       if (Math.abs(dx) < SRS_TAP_THRESHOLD && Math.abs(dy) < SRS_TAP_THRESHOLD) {
         resetPosition();
@@ -261,10 +266,33 @@ class SRSEngine {
       }
     };
 
-    card.addEventListener("pointerdown", onPointerDown);
-    card.addEventListener("pointermove", onPointerMove);
-    card.addEventListener("pointerup", onPointerUp);
-    card.addEventListener("pointercancel", onPointerUp);
+    // Mouse (desktop / trackpad) — mousemove/mouseup must live on window
+    // (a fast drag can leave the card's bounds), but this fires on every
+    // card render, so the previous card's listeners must be torn down
+    // first or they'd pile up on window for the rest of the session.
+    if (this._srsMouseMove) window.removeEventListener("mousemove", this._srsMouseMove);
+    if (this._srsMouseUp) window.removeEventListener("mouseup", this._srsMouseUp);
+    this._srsMouseMove = (e) => onMove(e.clientX, e.clientY);
+    this._srsMouseUp = onEnd;
+
+    card.addEventListener("mousedown", (e) => onStart(e.clientX, e.clientY, e.target));
+    window.addEventListener("mousemove", this._srsMouseMove);
+    window.addEventListener("mouseup", this._srsMouseUp);
+
+    // Touch (real phones)
+    card.addEventListener("touchstart", (e) => {
+      if (e.touches.length !== 1) return;
+      onStart(e.touches[0].clientX, e.touches[0].clientY, e.target);
+    }, { passive: true });
+
+    card.addEventListener("touchmove", (e) => {
+      if (!dragging || e.touches.length !== 1) return;
+      e.preventDefault();
+      onMove(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: false });
+
+    card.addEventListener("touchend", onEnd);
+    card.addEventListener("touchcancel", onEnd);
   }
 
   async submitAnswer(qualityRating) {
@@ -359,7 +387,6 @@ class SRSEngine {
             <span class="srs-badge ${srs.mastery_level}">ระดับ: ${this.getMasteryLabel(srs.mastery_level)}</span>
           </div>
           <div class="srs-progress-header-group">
-            <button class="btn-stats-mini" onclick="window.SRSEngine.goToMindmap()" title="ดูตำแหน่งในผังรากศัพท์">🌿</button>
             <button class="btn-stats-mini" onclick="window.SRSEngine.openTutorial()" title="วิธีใช้งานการ์ด">❓</button>
             <button class="btn-stats-mini" onclick="window.SRSEngine.toggleStatsView()" title="ดูสถิติแบบละเอียด">📊</button>
           </div>
@@ -392,6 +419,10 @@ class SRSEngine {
                   <span class="back-pinyin">${c.primaryPinyin}</span>
                   <button class="btn-listen-mini" onclick="event.stopPropagation(); window.AudioEngine.speak('${c.char}')">🔊 ฟังเสียง</button>
                 </div>
+
+                <button class="btn-goto-mindmap" onclick="event.stopPropagation(); window.SRSEngine.goToMindmap()">
+                  🌿 ดูตำแหน่งในผังรากศัพท์
+                </button>
 
                 <div class="back-meaning">${c.thaiMeaningShort}</div>
 

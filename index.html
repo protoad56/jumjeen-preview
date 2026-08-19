@@ -21,12 +21,12 @@
   <link rel="icon" type="image/webp" sizes="192x192" href="icons/icon-192.webp">
 
   <!-- CSS Stylesheets -->
-  <link rel="stylesheet" href="css/fonts.css?v=4.3">
-  <link rel="stylesheet" href="css/design-tokens.css?v=4.3">
-  <link rel="stylesheet" href="css/app.css?v=4.3">
-  <link rel="stylesheet" href="css/mindmap.css?v=4.3">
-  <link rel="stylesheet" href="css/practice.css?v=4.3">
-  <link rel="stylesheet" href="css/srs.css?v=4.3">
+  <link rel="stylesheet" href="css/fonts.css?v=5.1">
+  <link rel="stylesheet" href="css/design-tokens.css?v=5.1">
+  <link rel="stylesheet" href="css/app.css?v=5.1">
+  <link rel="stylesheet" href="css/mindmap.css?v=5.1">
+  <link rel="stylesheet" href="css/practice.css?v=5.1">
+  <link rel="stylesheet" href="css/srs.css?v=5.1">
 </head>
 <body>
 
@@ -127,8 +127,10 @@
         <section class="view-section" id="section-etymology">
           <div class="etymology-scroll-view">
 
-            <!-- Top Return Header to Mindmap -->
-            <div class="view-return-bar" onclick="window.App.switchTab('mindmap')">
+            <!-- Top Return Header to Mindmap (or, in fullscreen split view,
+                 closes the docked panel — see backFromEtymology() in
+                 js/app.js) -->
+            <div class="view-return-bar" onclick="window.App.backFromEtymology()">
               <span class="return-arrow">◀</span>
               <span>กลับสู่ผังรากศัพท์</span>
             </div>
@@ -150,6 +152,12 @@
                   <span class="icon">✍️</span>
                   <span>แอนิเมชันลำดับการเขียนขีด (Stroke Order & Anatomy)</span>
                 </div>
+
+                <!-- Only populated (by js/app.js) when the current item is a
+                     compound word — lets you pick which of its characters'
+                     stroke order to view, since the canvas below only ever
+                     shows one character at a time. -->
+                <div class="stroke-char-picker" id="stroke-char-picker"></div>
 
                 <div class="stroke-canvas-box" id="stroke-target-container"></div>
 
@@ -381,26 +389,20 @@
        executable code at runtime. Stroke data lives in js/vendor/hanzi-data/
        and is wired up via charDataLoader in js/stroke-animator.js. -->
   <script src="js/vendor/hanzi-writer.min.js?v=4.3"></script>
-  <script src="js/data/radicals_catalog.js?v=5.4"></script>
-  <script src="js/data/radicals.js?v=5.4"></script>
-  <script src="js/data/characters.js?v=5.4"></script>
-  <script src="js/data/traditional_map.js?v=5.4"></script>
-  <script src="js/data/phonetic_families.js?v=5.4"></script>
-  <script src="js/data/hanzi-lexicon.js?v=5.4"></script>
-  <script src="js/data/premium-config.js?v=5.4"></script>
-  <script src="js/db/database.js?v=5.4"></script>
-  <script src="js/srs-engine.js?v=5.4"></script>
-  <script src="js/audio-pronounce.js?v=5.4"></script>
-  <script src="js/stroke-animator.js?v=5.4"></script>
-  <script src="js/mindmap.js?v=5.4"></script>
-  <script src="js/radical-fusion.js?v=5.4"></script>
-  <script src="js/paywall.js?v=5.4"></script>
-  <script src="js/app.js?v=5.4"></script>
-  <script>
-    // Preview-build only: auto-unlock all radicals for testers.
-    // (This file is unique to the jumjeen-preview deployment — the real
-    // app's source keeps the actual paywall gate untouched.)
-    if (window.PremiumGate) window.PremiumGate.unlock();
-  </script>
+  <script src="js/data/radicals_catalog.js?v=6.0"></script>
+  <script src="js/data/radicals.js?v=6.0"></script>
+  <script src="js/data/characters.js?v=6.0"></script>
+  <script src="js/data/traditional_map.js?v=6.0"></script>
+  <script src="js/data/phonetic_families.js?v=6.0"></script>
+  <script src="js/data/hanzi-lexicon.js?v=6.0"></script>
+  <script src="js/data/premium-config.js?v=6.0"></script>
+  <script src="js/db/database.js?v=6.0"></script>
+  <script src="js/srs-engine.js?v=6.0"></script>
+  <script src="js/audio-pronounce.js?v=6.0"></script>
+  <script src="js/stroke-animator.js?v=6.0"></script>
+  <script src="js/mindmap.js?v=6.0"></script>
+  <script src="js/radical-fusion.js?v=6.0"></script>
+  <script src="js/paywall.js?v=6.0"></script>
+  <script src="js/app.js?v=6.0"></script>
 </body>
 </html>

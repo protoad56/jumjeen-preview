@@ -111,7 +111,27 @@ class HanziMindApp {
         appWrapper.classList.toggle("full-screen-mode");
         const isFull = appWrapper.classList.contains("full-screen-mode");
         frameBtn.innerHTML = isFull ? "📱 มุมมองมือถือ" : "💻 มุมมองเต็มจอ";
-        setTimeout(() => this.mindmap.render(), 200);
+        if (!isFull) this.closeSplitView();
+
+        // Re-render once the frame's own resize actually finishes, not at
+        // a fixed delay — a magic-number setTimeout either fires too early
+        // (canvas pops mid-resize, before the frame has reached its new
+        // width) or leaves a stale layout on screen after it's settled.
+        // transitionend is the real signal; the setTimeout below is only a
+        // safety net for when the transition is skipped (prefers-reduced-
+        // motion, or a dropped frame here or there).
+        let rerendered = false;
+        const rerender = () => {
+          if (rerendered) return;
+          rerendered = true;
+          appWrapper.removeEventListener("transitionend", onTransitionEnd);
+          this.mindmap.render();
+        };
+        const onTransitionEnd = (e) => {
+          if (e.target === appWrapper && e.propertyName === "max-width") rerender();
+        };
+        appWrapper.addEventListener("transitionend", onTransitionEnd);
+        setTimeout(rerender, 450);
       });
     }
 
@@ -139,6 +159,12 @@ class HanziMindApp {
   switchTab(tabId) {
     this.activeTab = tabId;
 
+    // A real tab switch always collapses the split story panel (if open) —
+    // it's a two-column layout for exactly mindmap+etymology, so leaving it
+    // on while navigating elsewhere would try to squeeze a third section
+    // into that same row.
+    this.closeSplitView();
+
     // Close any leftover Eureka modal so it never floats over a different tab
     const eurekaModal = document.querySelector(".eureka-modal-backdrop");
     if (eurekaModal) eurekaModal.remove();
@@ -162,7 +188,7 @@ class HanziMindApp {
       setTimeout(() => this.mindmap.render(), 50);
     } else if (tabId === "etymology") {
       this.renderEtymologyDetail();
-      this.strokeAnimator.loadCharacter(this.currentChar);
+      this.loadStrokeStudioFor(this.currentQuickWord || this.currentChar);
     } else if (tabId === "pronunciation") {
       this.renderPronunciationStudio();
     } else if (tabId === "srs") {
@@ -213,6 +239,17 @@ class HanziMindApp {
     if (this.mindmap) {
       this.mindmap.setHskFilter(filter);
     }
+  }
+
+  /** Memory-aid emoji for one of the 214 Kangxi radicals — looked up from
+   *  RADICALS_CATALOG (js/data/radicals_catalog.js), which is the only
+   *  place this is curated. Returns '' for anything that isn't one of the
+   *  214 (e.g. an ordinary character component that happens not to be a
+   *  radical itself), so callers can just no-op on empty string. */
+  getRadicalEmoji(char) {
+    if (!char || !window.RADICALS_CATALOG) return "";
+    const entry = window.RADICALS_CATALOG.find(r => r.char === char);
+    return entry ? entry.emoji || "" : "";
   }
 
   /** Resolve which radical a character belongs to, even for characters that
@@ -327,7 +364,35 @@ class HanziMindApp {
     this.updateQuickInspectBar();
     this.renderEtymologyDetail();
     this.renderPronunciationStudio();
-    this.strokeAnimator.loadCharacter(this.currentChar);
+    this.loadStrokeStudioFor(this.currentChar);
+  }
+
+  /** Populates the stroke-order canvas for either a single character or a
+   *  compound word. For a compound (2+ characters), also renders a small
+   *  chip row so every character's stroke order is reachable — the
+   *  HanziWriter canvas below can only ever animate one character at a
+   *  time, so a 2-3 character word needs a way to switch between them
+   *  instead of silently only ever showing the first one. */
+  loadStrokeStudioFor(item) {
+    const picker = document.getElementById("stroke-char-picker");
+    const chars = item ? Array.from(item) : [];
+
+    if (!picker || chars.length <= 1) {
+      if (picker) picker.innerHTML = "";
+      this.strokeAnimator.loadCharacter(item);
+      return;
+    }
+
+    picker.innerHTML = chars.map((ch, i) => `
+      <button class="stroke-char-chip ${i === 0 ? 'active' : ''}" onclick="window.App.pickStrokeChar(this, '${ch}')">${ch}</button>
+    `).join('');
+    this.strokeAnimator.loadCharacter(chars[0]);
+  }
+
+  pickStrokeChar(btn, char) {
+    document.querySelectorAll(".stroke-char-chip").forEach(el => el.classList.remove("active"));
+    btn.classList.add("active");
+    this.strokeAnimator.loadCharacter(char);
   }
 
   updateQuickInspectBar(customItem = null) {
@@ -360,9 +425,78 @@ class HanziMindApp {
   /** Shared handler for the story button and the tappable hanzi/pinyin area
    *  of the quick-inspect bar. Etymology tab itself branches on
    *  this.currentQuickWord to render a compound breakdown instead of a
-   *  single character's page, so this can always navigate safely now. */
+   *  single character's page, so this can always navigate safely now.
+   *  In fullscreen mode, open it as a docked split panel instead of a full
+   *  navigation — see openStorySplitView(). */
   goToStoryPage() {
-    this.switchTab("etymology");
+    const wrapper = document.getElementById("app-viewport-wrapper");
+    if (wrapper && wrapper.classList.contains("full-screen-mode")) {
+      this.openStorySplitView();
+    } else {
+      this.switchTab("etymology");
+    }
+  }
+
+  /** Docks the etymology pane beside the mindmap (fullscreen mode only)
+   *  instead of navigating away from it — this.activeTab deliberately
+   *  stays "mindmap" so the bottom tab bar keeps showing mindmap as
+   *  current. Unlike switchTab("etymology"), #section-etymology is made
+   *  visible via the .split-view-active CSS rule in app.css rather than
+   *  the .active class, so it can be visible at the same time as
+   *  #section-mindmap. */
+  openStorySplitView() {
+    const wrapper = document.getElementById("app-viewport-wrapper");
+    if (!wrapper) { this.switchTab("etymology"); return; }
+
+    wrapper.classList.add("split-view-active");
+    document.querySelectorAll(".etym-subtab-btn").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.etymTab === this.currentEtymTab);
+    });
+    document.querySelectorAll(".etym-pane").forEach(pane => {
+      pane.classList.toggle("active", pane.id === `etym-pane-${this.currentEtymTab}`);
+    });
+    this.renderEtymologyDetail();
+    this.loadStrokeStudioFor(this.currentQuickWord || this.currentChar);
+
+    const returnLabel = document.querySelector("#section-etymology .view-return-bar span:last-child");
+    if (returnLabel) returnLabel.textContent = "ปิดแผงเรื่องราว";
+    const returnArrow = document.querySelector("#section-etymology .return-arrow");
+    if (returnArrow) returnArrow.textContent = "✕";
+
+    // The mindmap's own container just halved in width (flex-basis: 50%) —
+    // it needs to re-lay-out its nodes for the new size, not just redraw
+    // at the old one. Timed to the CSS transition on #section-mindmap
+    // above so the canvas settles right as the resize finishes instead of
+    // popping mid-animation.
+    setTimeout(() => this.mindmap.render(), 340);
+  }
+
+  /** Collapses the split story panel back to mindmap-only. Safe to call
+   *  even when no split panel is open (switchTab() calls this
+   *  unconditionally on every navigation). */
+  closeSplitView() {
+    const wrapper = document.getElementById("app-viewport-wrapper");
+    if (!wrapper || !wrapper.classList.contains("split-view-active")) return;
+
+    wrapper.classList.remove("split-view-active");
+    const returnLabel = document.querySelector("#section-etymology .view-return-bar span:last-child");
+    if (returnLabel) returnLabel.textContent = "กลับสู่ผังรากศัพท์";
+    const returnArrow = document.querySelector("#section-etymology .return-arrow");
+    if (returnArrow) returnArrow.textContent = "◀";
+
+    setTimeout(() => this.mindmap.render(), 50);
+  }
+
+  /** The etymology pane's own "◀ กลับสู่ผังรากศัพท์" bar: closes the split
+   *  panel if that's how we got here, otherwise falls back to a normal
+   *  tab switch (non-fullscreen / non-split navigation). */
+  backFromEtymology() {
+    const wrapper = document.getElementById("app-viewport-wrapper");
+    if (wrapper && wrapper.classList.contains("split-view-active")) {
+      this.closeSplitView();
+    } else {
+      this.switchTab("mindmap");
+    }
   }
 
   /** For a compound word (e.g. 你好), find its own {word, pinyin, thai, hsk}
@@ -421,7 +555,7 @@ class HanziMindApp {
     heroTarget.innerHTML = `
       <div class="char-hero-header">
         <div class="char-main-box">
-          <div class="char-large-hanzi">${word}</div>
+          <div class="char-large-hanzi" style="--char-count: ${Array.from(word).length}">${word}</div>
           <div class="char-meta-row">
             <span class="pinyin-tag">${pinyin}</span>
             <span class="hsk-badge">คำผสมจาก ${compChars.length} ตัวอักษร</span>
@@ -450,6 +584,7 @@ class HanziMindApp {
                    ${c.hasOwnPage ? `onclick="window.App.jumpToComponent('${c.char}')"` : ''}>
                 <div class="comp-role-badge">${c.radical ? `ราก ${c.radical}` : 'อักษร'}</div>
                 <div class="c-char">${c.char}</div>
+                ${this.getRadicalEmoji(c.char) ? `<div class="c-emoji" title="ตัวช่วยจำ">${this.getRadicalEmoji(c.char)}</div>` : ''}
                 <div class="c-pinyin">${c.pinyin}</div>
                 <div class="c-meaning">${c.thai}</div>
               </div>
@@ -998,6 +1133,7 @@ class HanziMindApp {
               <div class="component-card result-card single-pictograph-card" style="width: 100%; max-width: 320px; margin: 0 auto;">
                 <div class="comp-role-badge">${charData.components[0]?.role || '🖼️ อักษรภาพเดี่ยว (独体字)'}</div>
                 <div class="c-char">${charData.char}</div>
+                ${this.getRadicalEmoji(charData.char) ? `<div class="c-emoji" title="ตัวช่วยจำ">${this.getRadicalEmoji(charData.char)}</div>` : ''}
                 <div class="c-pinyin">${charData.primaryPinyin}</div>
                 <div class="c-meaning">${charData.thaiMeaningShort}</div>
                 <div class="c-desc">${charData.components[0]?.desc || `รากศัพท์หมวด ${charData.radical}`}</div>
@@ -1007,10 +1143,12 @@ class HanziMindApp {
                 const isPhonetic = c.role && (c.role.includes("声符") || c.role.includes("เสียง") || c.role.includes("Sound"));
                 const isSemantic = c.role && (c.role.includes("意符") || c.role.includes("ความหมาย") || c.role.includes("หมวด"));
                 const cardClass = isPhonetic ? 'phonetic-card' : (isSemantic ? 'semantic-card' : '');
+                const compEmoji = this.getRadicalEmoji(c.char);
                 return `
                   <div class="component-card ${cardClass}">
                     <div class="comp-role-badge">${c.role}</div>
                     <div class="c-char">${c.char}</div>
+                    ${compEmoji ? `<div class="c-emoji" title="ตัวช่วยจำ">${compEmoji}</div>` : ''}
                     ${c.pinyin ? `<div class="c-pinyin">${c.pinyin}</div>` : ''}
                     <div class="c-meaning">${c.meaning}</div>
                     ${c.desc ? `<div class="c-desc">${c.desc}</div>` : ''}
@@ -1023,7 +1161,7 @@ class HanziMindApp {
                 <div class="c-char">${charData.char}</div>
                 <div class="c-pinyin">${charData.primaryPinyin}</div>
                 <div class="c-meaning">${charData.thaiMeaningShort}</div>
-                <div class="c-desc">สังกัดหมวด ${charData.radical}</div>
+                <div class="c-desc">สังกัดหมวด ${charData.radical} ${this.getRadicalEmoji(charData.radical)}</div>
               </div>
             `}
           </div>
@@ -1052,6 +1190,7 @@ class HanziMindApp {
     }
 
     if (storyTarget) {
+      const showMythBanner = showSixWritings && !this.hasMythBannerBeenSeen();
       storyTarget.innerHTML = `
         <!-- DUAL-CARD 1: Ancient Etymology & Linguistic Fact -->
         <div class="etymology-box origin-story-box">
@@ -1065,7 +1204,11 @@ class HanziMindApp {
               <span class="six-writings-badge ${sixWritings.badgeClass}" title="${sixWritings.desc}">${sixWritings.label}</span>
               <span class="origin-category-note">${sixWritings.desc}</span>
             </div>
+          ` : ''}
+
+          ${showMythBanner ? `
             <div class="myth-dispeller-banner">
+              <button class="myth-dismiss-btn" onclick="window.App.dismissMythBanner()" aria-label="ปิดคำแนะนำนี้" title="ปิด — จะไม่แสดงอีก">✕</button>
               <div class="myth-header">
                 <span class="myth-icon">💡</span>
                 <strong>ความรู้ภาษาศาสตร์: ลบล้างความเชื่อผิดๆ "อักษรจีนทุกตัวคือภาพวาด"</strong>
@@ -1076,14 +1219,21 @@ class HanziMindApp {
             </div>
           ` : ''}
 
-          <div class="oracle-script-quote">
-            <strong>${charData.ancientEtymology ? charData.ancientEtymology.oracleScript : ''}</strong>
+          <div class="origin-subsection">
+            <div class="origin-subsection-label"><span>📜</span> ภาพจากอักษรโบราณ</div>
+            <div class="oracle-script-quote">
+              <strong>${charData.ancientEtymology ? charData.ancientEtymology.oracleScript : ''}</strong>
+            </div>
+            <p class="origin-story-text">
+              ${charData.ancientEtymology ? charData.ancientEtymology.originStory : ''}
+            </p>
           </div>
-          <p class="origin-story-text">
-            ${charData.ancientEtymology ? charData.ancientEtymology.originStory : ''}
-          </p>
-          <div class="modern-evolution-note">
-            <strong>วิวัฒนาการสู่ปัจจุบัน:</strong> ${charData.ancientEtymology ? charData.ancientEtymology.modernEvolution : ''}
+
+          <div class="origin-subsection">
+            <div class="origin-subsection-label"><span>🔄</span> วิวัฒนาการสู่ปัจจุบัน</div>
+            <div class="modern-evolution-note">
+              ${charData.ancientEtymology ? charData.ancientEtymology.modernEvolution : ''}
+            </div>
           </div>
 
           ${tradData ? `
@@ -1446,6 +1596,7 @@ class HanziMindApp {
               ${isLocked ? '<span class="lock-badge">🔒</span>' : ''}
               <div class="rad-lib-top">
                 <div class="rad-lib-hanzi">${rad.char}</div>
+                ${rad.emoji ? `<span class="rad-lib-emoji" title="ตัวช่วยจำ">${rad.emoji}</span>` : ''}
                 <div class="rad-lib-meta">
                   <span class="rad-lib-pinyin">#${rad.num} · ${rad.pinyin}</span>
                   <span class="rad-lib-cat">${rad.strokes} ขีด · ${rad.cat.split('และ')[0]}</span>
@@ -1538,6 +1689,26 @@ class HanziMindApp {
     try {
       localStorage.setItem("jumjeen_user_settings", JSON.stringify(settings));
     } catch (e) {}
+  }
+
+  /** The "อักษรจีนทุกตัวคือภาพวาด" myth-dispeller banner is a one-time
+   *  linguistic tip, not per-character content — it used to redraw on the
+   *  ที่มา pane of every single character, which just reads as the same
+   *  paragraph repeating forever. Show it once, remember it was seen. */
+  hasMythBannerBeenSeen() {
+    try {
+      return localStorage.getItem("jumjeen_myth_banner_seen") === "1";
+    } catch (e) {
+      return false;
+    }
+  }
+
+  dismissMythBanner() {
+    try {
+      localStorage.setItem("jumjeen_myth_banner_seen", "1");
+    } catch (e) {}
+    const banner = document.querySelector(".myth-dispeller-banner");
+    if (banner) banner.remove();
   }
 
   setDifficulty(hskLevel) {

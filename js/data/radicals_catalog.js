@@ -2,6 +2,7 @@ const RADICALS_CATALOG = [
   {
     "num": 1,
     "char": "一",
+    "emoji": "1️⃣",
     "pinyin": "yī",
     "thai": "หนึ่ง / เส้นขวาง",
     "strokes": 1,
@@ -11,6 +12,7 @@ const RADICALS_CATALOG = [
   {
     "num": 2,
     "char": "丨",
+    "emoji": "🔗",
     "pinyin": "gǔn",
     "thai": "เส้นตั้ง / การเชื่อมต่อ",
     "strokes": 1,
@@ -20,6 +22,7 @@ const RADICALS_CATALOG = [
   {
     "num": 3,
     "char": "丶",
+    "emoji": "💧",
     "pinyin": "zhǔ",
     "thai": "จุด / หยดน้ำ",
     "strokes": 1,
@@ -29,6 +32,7 @@ const RADICALS_CATALOG = [
   {
     "num": 4,
     "char": "丿",
+    "emoji": "↙️",
     "pinyin": "piě",
     "thai": "เส้นปัดซ้าย",
     "strokes": 1,
@@ -38,6 +42,7 @@ const RADICALS_CATALOG = [
   {
     "num": 5,
     "char": "乙",
+    "emoji": "🌱",
     "pinyin": "yǐ",
     "thai": "ต้นกล้า / อ่อนช้อย (乚)",
     "strokes": 1,
@@ -47,6 +52,7 @@ const RADICALS_CATALOG = [
   {
     "num": 6,
     "char": "亅",
+    "emoji": "🪝",
     "pinyin": "jué",
     "thai": "ขอเบ็ด",
     "strokes": 1,
@@ -56,6 +62,7 @@ const RADICALS_CATALOG = [
   {
     "num": 7,
     "char": "二",
+    "emoji": "2️⃣",
     "pinyin": "èr",
     "thai": "สอง / ฟ้าและดิน",
     "strokes": 2,
@@ -65,6 +72,7 @@ const RADICALS_CATALOG = [
   {
     "num": 8,
     "char": "亠",
+    "emoji": "🎩",
     "pinyin": "tóu",
     "thai": "หลังคา / ฝาครอบ",
     "strokes": 2,
@@ -74,6 +82,7 @@ const RADICALS_CATALOG = [
   {
     "num": 9,
     "char": "人",
+    "emoji": "🧑",
     "pinyin": "rén",
     "thai": "คน / มนุษย์ (亻)",
     "strokes": 2,
@@ -88,6 +97,7 @@ const RADICALS_CATALOG = [
   {
     "num": 10,
     "char": "儿",
+    "emoji": "🚶",
     "pinyin": "ér",
     "thai": "ขาคน / เด็ก / บุตร",
     "strokes": 2,
@@ -97,6 +107,7 @@ const RADICALS_CATALOG = [
   {
     "num": 11,
     "char": "入",
+    "emoji": "📥",
     "pinyin": "rù",
     "thai": "เข้า / เข้าสู่",
     "strokes": 2,
@@ -106,6 +117,7 @@ const RADICALS_CATALOG = [
   {
     "num": 12,
     "char": "八",
+    "emoji": "8️⃣",
     "pinyin": "bā",
     "thai": "แปด / การแยกออก",
     "strokes": 2,
@@ -115,6 +127,7 @@ const RADICALS_CATALOG = [
   {
     "num": 13,
     "char": "冂",
+    "emoji": "🗺️",
     "pinyin": "jiōng",
     "thai": "ขอบเขต / อาณาเขต",
     "strokes": 2,
@@ -124,6 +137,7 @@ const RADICALS_CATALOG = [
   {
     "num": 14,
     "char": "冖",
+    "emoji": "🧢",
     "pinyin": "mì",
     "thai": "ผ้าคลุม / ปกปิด",
     "strokes": 2,
@@ -133,6 +147,7 @@ const RADICALS_CATALOG = [
   {
     "num": 15,
     "char": "冫",
+    "emoji": "🧊",
     "pinyin": "bīng",
     "thai": "น้ำแข็ง (สองหยดน้ำ)",
     "strokes": 2,
@@ -142,6 +157,7 @@ const RADICALS_CATALOG = [
   {
     "num": 16,
     "char": "几",
+    "emoji": "🪑",
     "pinyin": "jī",
     "thai": "โต๊ะเล็ก / เก้าอี้ม้านั่ง",
     "strokes": 2,
@@ -151,6 +167,7 @@ const RADICALS_CATALOG = [
   {
     "num": 17,
     "char": "凵",
+    "emoji": "🪣",
     "pinyin": "qū",
     "thai": "ภาชนะเปิด / หลุม",
     "strokes": 2,
@@ -160,6 +177,7 @@ const RADICALS_CATALOG = [
   {
     "num": 18,
     "char": "刀",
+    "emoji": "🔪",
     "pinyin": "dāo",
     "thai": "มีด / คมดาบ (刂)",
     "strokes": 2,
@@ -174,6 +192,7 @@ const RADICALS_CATALOG = [
   {
     "num": 19,
     "char": "力",
+    "emoji": "💪",
     "pinyin": "lì",
     "thai": "พละกำลัง / แรงกล้ามเนื้อ",
     "strokes": 2,
@@ -183,6 +202,7 @@ const RADICALS_CATALOG = [
   {
     "num": 20,
     "char": "勹",
+    "emoji": "🎁",
     "pinyin": "bāo",
     "thai": "การห่อหุ้ม / โอบอุ้ม",
     "strokes": 2,
@@ -192,6 +212,7 @@ const RADICALS_CATALOG = [
   {
     "num": 21,
     "char": "匕",
+    "emoji": "🥄",
     "pinyin": "bǐ",
     "thai": "ช้อน / กริชสั้น",
     "strokes": 2,
@@ -201,6 +222,7 @@ const RADICALS_CATALOG = [
   {
     "num": 22,
     "char": "匚",
+    "emoji": "📦",
     "pinyin": "fāng",
     "thai": "กล่อง / ลังใส่ของ",
     "strokes": 2,
@@ -210,6 +232,7 @@ const RADICALS_CATALOG = [
   {
     "num": 23,
     "char": "匸",
+    "emoji": "🗃️",
     "pinyin": "xì",
     "thai": "การซ่อนของ / หีบมิดชิด",
     "strokes": 2,
@@ -219,6 +242,7 @@ const RADICALS_CATALOG = [
   {
     "num": 24,
     "char": "十",
+    "emoji": "🔟",
     "pinyin": "shí",
     "thai": "สิบ / สมบูรณ์พร้อม",
     "strokes": 2,
@@ -228,6 +252,7 @@ const RADICALS_CATALOG = [
   {
     "num": 25,
     "char": "卜",
+    "emoji": "🔮",
     "pinyin": "bǔ",
     "thai": "การเสี่ยงทาย / รอยแตกกระดูก",
     "strokes": 2,
@@ -237,6 +262,7 @@ const RADICALS_CATALOG = [
   {
     "num": 26,
     "char": "卩",
+    "emoji": "🧎",
     "pinyin": "jié",
     "thai": "ตราประทับ / คนคุกเข่า",
     "strokes": 2,
@@ -246,6 +272,7 @@ const RADICALS_CATALOG = [
   {
     "num": 27,
     "char": "厂",
+    "emoji": "🏚️",
     "pinyin": "chǎng",
     "thai": "หน้าผา / เพิงพัก",
     "strokes": 2,
@@ -255,6 +282,7 @@ const RADICALS_CATALOG = [
   {
     "num": 28,
     "char": "厶",
+    "emoji": "🤫",
     "pinyin": "sī",
     "thai": "ส่วนตัว / ซ่อนเร้น",
     "strokes": 2,
@@ -264,6 +292,7 @@ const RADICALS_CATALOG = [
   {
     "num": 29,
     "char": "又",
+    "emoji": "🔁",
     "pinyin": "yòu",
     "thai": "มือขวา / ซ้ำอีกครั้ง",
     "strokes": 2,
@@ -273,6 +302,7 @@ const RADICALS_CATALOG = [
   {
     "num": 30,
     "char": "口",
+    "emoji": "👄",
     "pinyin": "kǒu",
     "thai": "ปาก / ช่อง / การพูด",
     "strokes": 3,
@@ -282,6 +312,7 @@ const RADICALS_CATALOG = [
   {
     "num": 31,
     "char": "囗",
+    "emoji": "🧱",
     "pinyin": "wéi",
     "thai": "ล้อมรอบ / กำแพงเมือง",
     "strokes": 3,
@@ -291,6 +322,7 @@ const RADICALS_CATALOG = [
   {
     "num": 32,
     "char": "土",
+    "emoji": "🟫",
     "pinyin": "tǔ",
     "thai": "ดิน / พื้นดิน / แผ่นดิน",
     "strokes": 3,
@@ -300,6 +332,7 @@ const RADICALS_CATALOG = [
   {
     "num": 33,
     "char": "士",
+    "emoji": "🎓",
     "pinyin": "shì",
     "thai": "ปราชญ์ / นักรบ / ขุนนาง",
     "strokes": 3,
@@ -309,6 +342,7 @@ const RADICALS_CATALOG = [
   {
     "num": 34,
     "char": "夂",
+    "emoji": "👣",
     "pinyin": "zhǐ",
     "thai": "ก้าวเดินช้าๆ / ตามหลัง",
     "strokes": 3,
@@ -318,6 +352,7 @@ const RADICALS_CATALOG = [
   {
     "num": 35,
     "char": "夊",
+    "emoji": "🐌",
     "pinyin": "suī",
     "thai": "เดินลากเท้า",
     "strokes": 3,
@@ -327,6 +362,7 @@ const RADICALS_CATALOG = [
   {
     "num": 36,
     "char": "夕",
+    "emoji": "🌆",
     "pinyin": "xī",
     "thai": "ยามเย็น / จันทร์พลบค่ำ",
     "strokes": 3,
@@ -336,6 +372,7 @@ const RADICALS_CATALOG = [
   {
     "num": 37,
     "char": "大",
+    "emoji": "🙆",
     "pinyin": "dà",
     "thai": "ใหญ่ / กว้างขวาง / ผู้ใหญ่",
     "strokes": 3,
@@ -345,6 +382,7 @@ const RADICALS_CATALOG = [
   {
     "num": 38,
     "char": "女",
+    "emoji": "👩",
     "pinyin": "nǚ",
     "thai": "ผู้หญิง / แม่ / ความอ่อนโยน",
     "strokes": 3,
@@ -354,6 +392,7 @@ const RADICALS_CATALOG = [
   {
     "num": 39,
     "char": "子",
+    "emoji": "👶",
     "pinyin": "zǐ",
     "thai": "เด็ก / ลูก / เมล็ดพันธุ์",
     "strokes": 3,
@@ -363,6 +402,7 @@ const RADICALS_CATALOG = [
   {
     "num": 40,
     "char": "宀",
+    "emoji": "🏠",
     "pinyin": "mián",
     "thai": "หลังคาบ้าน / ที่อยู่อาศัย",
     "strokes": 3,
@@ -372,6 +412,7 @@ const RADICALS_CATALOG = [
   {
     "num": 41,
     "char": "寸",
+    "emoji": "📏",
     "pinyin": "cùn",
     "thai": "นิ้ว (มาตราวัด) / ข้อมือ",
     "strokes": 3,
@@ -381,6 +422,7 @@ const RADICALS_CATALOG = [
   {
     "num": 42,
     "char": "小",
+    "emoji": "🤏",
     "pinyin": "xiǎo",
     "thai": "เล็ก / น้อย / ละเอียด",
     "strokes": 3,
@@ -390,6 +432,7 @@ const RADICALS_CATALOG = [
   {
     "num": 43,
     "char": "尢",
+    "emoji": "🦵",
     "pinyin": "wāng",
     "thai": "คนขาพิการ / ขาโก่ง",
     "strokes": 3,
@@ -399,6 +442,7 @@ const RADICALS_CATALOG = [
   {
     "num": 44,
     "char": "尸",
+    "emoji": "🛌",
     "pinyin": "shī",
     "thai": "ร่างกาย / ท่านอนเอน",
     "strokes": 3,
@@ -408,6 +452,7 @@ const RADICALS_CATALOG = [
   {
     "num": 45,
     "char": "屮",
+    "emoji": "🌿",
     "pinyin": "chè",
     "thai": "ต้นหญ้าผลิใบอ่อน",
     "strokes": 3,
@@ -417,6 +462,7 @@ const RADICALS_CATALOG = [
   {
     "num": 46,
     "char": "山",
+    "emoji": "⛰️",
     "pinyin": "shān",
     "thai": "ภูเขา / เทือกเขา",
     "strokes": 3,
@@ -426,6 +472,7 @@ const RADICALS_CATALOG = [
   {
     "num": 47,
     "char": "巛",
+    "emoji": "🏞️",
     "pinyin": "chuān",
     "thai": "แม่น้ำสายยาว / ลำธาร (川)",
     "strokes": 3,
@@ -435,6 +482,7 @@ const RADICALS_CATALOG = [
   {
     "num": 48,
     "char": "工",
+    "emoji": "🔨",
     "pinyin": "gōng",
     "thai": "งานช่าง / งานฝีมือ",
     "strokes": 3,
@@ -444,6 +492,7 @@ const RADICALS_CATALOG = [
   {
     "num": 49,
     "char": "己",
+    "emoji": "🙋",
     "pinyin": "jǐ",
     "thai": "ตนเอง / ตัวเอง (已/巳)",
     "strokes": 3,
@@ -453,6 +502,7 @@ const RADICALS_CATALOG = [
   {
     "num": 50,
     "char": "巾",
+    "emoji": "🏳️",
     "pinyin": "jīn",
     "thai": "ผ้า / ผ้าเช็ดหน้า / ธง",
     "strokes": 3,
@@ -462,6 +512,7 @@ const RADICALS_CATALOG = [
   {
     "num": 51,
     "char": "干",
+    "emoji": "🛡️",
     "pinyin": "gān",
     "thai": "โล่ป้องกัน / การกระทำ",
     "strokes": 3,
@@ -471,6 +522,7 @@ const RADICALS_CATALOG = [
   {
     "num": 52,
     "char": "幺",
+    "emoji": "🧵",
     "pinyin": "yāo",
     "thai": "เล็กจิ๋ว / เส้นด้ายสั้น",
     "strokes": 3,
@@ -480,6 +532,7 @@ const RADICALS_CATALOG = [
   {
     "num": 53,
     "char": "广",
+    "emoji": "🏛️",
     "pinyin": "guǎng",
     "thai": "อาคารกว้าง / โรงเรือน",
     "strokes": 3,
@@ -489,6 +542,7 @@ const RADICALS_CATALOG = [
   {
     "num": 54,
     "char": "廴",
+    "emoji": "➡️",
     "pinyin": "yǐn",
     "thai": "การก้าวเดินยาว",
     "strokes": 2,
@@ -498,6 +552,7 @@ const RADICALS_CATALOG = [
   {
     "num": 55,
     "char": "廾",
+    "emoji": "🙌",
     "pinyin": "gǒng",
     "thai": "สองมือประสานยกขึ้น",
     "strokes": 3,
@@ -507,6 +562,7 @@ const RADICALS_CATALOG = [
   {
     "num": 56,
     "char": "弋",
+    "emoji": "📌",
     "pinyin": "yì",
     "thai": "ลูกศรผูกเชือก / เสาหลัก",
     "strokes": 3,
@@ -516,6 +572,7 @@ const RADICALS_CATALOG = [
   {
     "num": 57,
     "char": "弓",
+    "emoji": "🏹",
     "pinyin": "gōng",
     "thai": "คันธนู / เส้นโค้ง",
     "strokes": 3,
@@ -525,6 +582,7 @@ const RADICALS_CATALOG = [
   {
     "num": 58,
     "char": "彐",
+    "emoji": "🐗",
     "pinyin": "jì",
     "thai": "หัวหมูป่า / กรงเล็บ (彑)",
     "strokes": 3,
@@ -534,6 +592,7 @@ const RADICALS_CATALOG = [
   {
     "num": 59,
     "char": "彡",
+    "emoji": "🎨",
     "pinyin": "shān",
     "thai": "ลวดลาย / ขนยาวสลวย",
     "strokes": 3,
@@ -543,6 +602,7 @@ const RADICALS_CATALOG = [
   {
     "num": 60,
     "char": "彳",
+    "emoji": "🛤️",
     "pinyin": "chì",
     "thai": "ก้าวเดินซ้าย / ทางเดินข้างถนน",
     "strokes": 3,
@@ -552,6 +612,7 @@ const RADICALS_CATALOG = [
   {
     "num": 61,
     "char": "心",
+    "emoji": "❤️",
     "pinyin": "xīn",
     "thai": "หัวใจ / จิตใจ / อารมณ์ (忄)",
     "strokes": 4,
@@ -567,6 +628,7 @@ const RADICALS_CATALOG = [
   {
     "num": 62,
     "char": "戈",
+    "emoji": "⚔️",
     "pinyin": "gē",
     "thai": "หอกยาว / อาวุธโบราณ",
     "strokes": 4,
@@ -576,6 +638,7 @@ const RADICALS_CATALOG = [
   {
     "num": 63,
     "char": "户",
+    "emoji": "🚪",
     "pinyin": "hù",
     "thai": "ประตูบานเดี่ยว / ครัวเรือน (户)",
     "strokes": 4,
@@ -585,6 +648,7 @@ const RADICALS_CATALOG = [
   {
     "num": 64,
     "char": "手",
+    "emoji": "✋",
     "pinyin": "shǒu",
     "thai": "มือ / การหยิบจับ (扌)",
     "strokes": 4,
@@ -600,6 +664,7 @@ const RADICALS_CATALOG = [
   {
     "num": 65,
     "char": "支",
+    "emoji": "➗",
     "pinyin": "zhī",
     "thai": "กิ่งไม้ / ค้ำจุน / แยกย่อย",
     "strokes": 4,
@@ -609,6 +674,7 @@ const RADICALS_CATALOG = [
   {
     "num": 66,
     "char": "攴",
+    "emoji": "👊",
     "pinyin": "pū",
     "thai": "การตี / เคาะเบาๆ (攵)",
     "strokes": 4,
@@ -623,6 +689,7 @@ const RADICALS_CATALOG = [
   {
     "num": 67,
     "char": "文",
+    "emoji": "📜",
     "pinyin": "wén",
     "thai": "อักษร / ลายลักษณ์ / วัฒนธรรม",
     "strokes": 4,
@@ -632,6 +699,7 @@ const RADICALS_CATALOG = [
   {
     "num": 68,
     "char": "斗",
+    "emoji": "🥣",
     "pinyin": "dǒu",
     "thai": "กระบวยตัก / ขันตวงข้าว",
     "strokes": 4,
@@ -641,6 +709,7 @@ const RADICALS_CATALOG = [
   {
     "num": 69,
     "char": "斤",
+    "emoji": "🪓",
     "pinyin": "jīn",
     "thai": "ขวาน / หน่วยชั่งน้ำหนักจิน",
     "strokes": 4,
@@ -650,6 +719,7 @@ const RADICALS_CATALOG = [
   {
     "num": 70,
     "char": "方",
+    "emoji": "🧭",
     "pinyin": "fāng",
     "thai": "สี่เหลี่ยม / ทิศทาง / วิธีการ",
     "strokes": 4,
@@ -659,6 +729,7 @@ const RADICALS_CATALOG = [
   {
     "num": 71,
     "char": "无",
+    "emoji": "🚫",
     "pinyin": "wú",
     "thai": "ไม่มี / ความว่างเปล่า (旡)",
     "strokes": 4,
@@ -668,6 +739,7 @@ const RADICALS_CATALOG = [
   {
     "num": 72,
     "char": "日",
+    "emoji": "☀️",
     "pinyin": "rì",
     "thai": "พระอาทิตย์ / กลางวัน / เวลา",
     "strokes": 4,
@@ -677,6 +749,7 @@ const RADICALS_CATALOG = [
   {
     "num": 73,
     "char": "曰",
+    "emoji": "💬",
     "pinyin": "yuē",
     "thai": "กล่าวว่า / เอ่ยคำพูด",
     "strokes": 4,
@@ -686,6 +759,7 @@ const RADICALS_CATALOG = [
   {
     "num": 74,
     "char": "月",
+    "emoji": "🌙",
     "pinyin": "yuè",
     "thai": "พระจันทร์ / เนื้อหนังร่างกาย (⺼)",
     "strokes": 4,
@@ -695,6 +769,7 @@ const RADICALS_CATALOG = [
   {
     "num": 75,
     "char": "木",
+    "emoji": "🌳",
     "pinyin": "mù",
     "thai": "ไม้ / ต้นไม้ / พืชพันธุ์",
     "strokes": 4,
@@ -704,6 +779,7 @@ const RADICALS_CATALOG = [
   {
     "num": 76,
     "char": "欠",
+    "emoji": "🥱",
     "pinyin": "qiàn",
     "thai": "หาว / ขาดแคลน / อ้าปาก",
     "strokes": 4,
@@ -713,6 +789,7 @@ const RADICALS_CATALOG = [
   {
     "num": 77,
     "char": "止",
+    "emoji": "🛑",
     "pinyin": "zhǐ",
     "thai": "หยุด / เท้ายืนนิ่ง",
     "strokes": 4,
@@ -722,6 +799,7 @@ const RADICALS_CATALOG = [
   {
     "num": 78,
     "char": "歹",
+    "emoji": "💀",
     "pinyin": "dǎi",
     "thai": "ความตาย / กระดูกแตกหัก (歺)",
     "strokes": 4,
@@ -731,6 +809,7 @@ const RADICALS_CATALOG = [
   {
     "num": 79,
     "char": "殳",
+    "emoji": "🏏",
     "pinyin": "shū",
     "thai": "กระบอง / การทุบตี",
     "strokes": 4,
@@ -740,6 +819,7 @@ const RADICALS_CATALOG = [
   {
     "num": 80,
     "char": "毋",
+    "emoji": "🙅",
     "pinyin": "wú",
     "thai": "อย่า / มารดาห้ามปราม (母)",
     "strokes": 4,
@@ -749,6 +829,7 @@ const RADICALS_CATALOG = [
   {
     "num": 81,
     "char": "比",
+    "emoji": "⚖️",
     "pinyin": "bǐ",
     "thai": "เปรียบเทียบ / คนยืนเคียงข้าง",
     "strokes": 4,
@@ -758,6 +839,7 @@ const RADICALS_CATALOG = [
   {
     "num": 82,
     "char": "毛",
+    "emoji": "🪶",
     "pinyin": "máo",
     "thai": "ขนสัตว์ / เส้นผม",
     "strokes": 4,
@@ -767,6 +849,7 @@ const RADICALS_CATALOG = [
   {
     "num": 83,
     "char": "氏",
+    "emoji": "👪",
     "pinyin": "shì",
     "thai": "ตระกูล / แซ่ / ชนเผ่า",
     "strokes": 4,
@@ -776,6 +859,7 @@ const RADICALS_CATALOG = [
   {
     "num": 84,
     "char": "气",
+    "emoji": "💨",
     "pinyin": "qì",
     "thai": "อากาศ / ก๊าซ / ลมปราณ",
     "strokes": 4,
@@ -785,6 +869,7 @@ const RADICALS_CATALOG = [
   {
     "num": 85,
     "char": "水",
+    "emoji": "🌊",
     "pinyin": "shuǐ",
     "thai": "น้ำ / ของเหลว (氵/氺)",
     "strokes": 4,
@@ -800,6 +885,7 @@ const RADICALS_CATALOG = [
   {
     "num": 86,
     "char": "火",
+    "emoji": "🔥",
     "pinyin": "huǒ",
     "thai": "ไฟ / ความร้อน / ปรุงสุก (灬)",
     "strokes": 4,
@@ -814,6 +900,7 @@ const RADICALS_CATALOG = [
   {
     "num": 87,
     "char": "爪",
+    "emoji": "🐾",
     "pinyin": "zhǎo",
     "thai": "กรงเล็บ / อุ้งมือ (爫)",
     "strokes": 4,
@@ -823,6 +910,7 @@ const RADICALS_CATALOG = [
   {
     "num": 88,
     "char": "父",
+    "emoji": "👨",
     "pinyin": "fù",
     "thai": "พ่อ / บิดา / ผู้ทำงานหนัก",
     "strokes": 4,
@@ -832,6 +920,7 @@ const RADICALS_CATALOG = [
   {
     "num": 89,
     "char": "爻",
+    "emoji": "☯️",
     "pinyin": "yáo",
     "thai": "เส้นผูกโยง / ยันต์ปากัว",
     "strokes": 4,
@@ -841,6 +930,7 @@ const RADICALS_CATALOG = [
   {
     "num": 90,
     "char": "丬",
+    "emoji": "🛏️",
     "pinyin": "qiáng",
     "thai": "ท่อนไม้ผ่าซีก / เตียงนอน (丬)",
     "strokes": 3,
@@ -850,6 +940,7 @@ const RADICALS_CATALOG = [
   {
     "num": 91,
     "char": "片",
+    "emoji": "🪵",
     "pinyin": "piàn",
     "thai": "แผ่นไม้บาง / แผ่นชิ้นส่วน",
     "strokes": 4,
@@ -859,6 +950,7 @@ const RADICALS_CATALOG = [
   {
     "num": 92,
     "char": "牙",
+    "emoji": "🦷",
     "pinyin": "yá",
     "thai": "ฟันกราม / เขี้ยวสัตว์",
     "strokes": 4,
@@ -868,6 +960,7 @@ const RADICALS_CATALOG = [
   {
     "num": 93,
     "char": "牛",
+    "emoji": "🐂",
     "pinyin": "niú",
     "thai": "วัว / โค (牜)",
     "strokes": 4,
@@ -877,6 +970,7 @@ const RADICALS_CATALOG = [
   {
     "num": 94,
     "char": "犬",
+    "emoji": "🐕",
     "pinyin": "quǎn",
     "thai": "สุนัข / สัตว์สี่เท้า (犭)",
     "strokes": 4,
@@ -891,6 +985,7 @@ const RADICALS_CATALOG = [
   {
     "num": 95,
     "char": "玄",
+    "emoji": "🌌",
     "pinyin": "xuán",
     "thai": "สีดำลึกล้ำ / ปริศนาลี้ลับ",
     "strokes": 5,
@@ -900,6 +995,7 @@ const RADICALS_CATALOG = [
   {
     "num": 96,
     "char": "玉",
+    "emoji": "💎",
     "pinyin": "yù",
     "thai": "หยก / อัญมณีล้ำค่า (王/玊)",
     "strokes": 5,
@@ -914,6 +1010,7 @@ const RADICALS_CATALOG = [
   {
     "num": 97,
     "char": "瓜",
+    "emoji": "🍈",
     "pinyin": "guā",
     "thai": "ผลแตง / พืชเถาเลื้อย",
     "strokes": 5,
@@ -923,6 +1020,7 @@ const RADICALS_CATALOG = [
   {
     "num": 98,
     "char": "瓦",
+    "emoji": "🏺",
     "pinyin": "wǎ",
     "thai": "กระเบื้องดินเผา / ภาชนะดิน",
     "strokes": 4,
@@ -932,6 +1030,7 @@ const RADICALS_CATALOG = [
   {
     "num": 99,
     "char": "甘",
+    "emoji": "🍯",
     "pinyin": "gān",
     "thai": "รสหวาน / รื่นรมย์",
     "strokes": 5,
@@ -941,6 +1040,7 @@ const RADICALS_CATALOG = [
   {
     "num": 100,
     "char": "生",
+    "emoji": "🐣",
     "pinyin": "shēng",
     "thai": "เกิด / เติบโต / ชีวิต",
     "strokes": 5,
@@ -950,6 +1050,7 @@ const RADICALS_CATALOG = [
   {
     "num": 101,
     "char": "用",
+    "emoji": "✅",
     "pinyin": "yòng",
     "thai": "ใช้สอย / ประโยชน์",
     "strokes": 5,
@@ -959,6 +1060,7 @@ const RADICALS_CATALOG = [
   {
     "num": 102,
     "char": "田",
+    "emoji": "🟩",
     "pinyin": "tián",
     "thai": "ทุ่งนา / ไร่นาเกษตร",
     "strokes": 5,
@@ -968,6 +1070,7 @@ const RADICALS_CATALOG = [
   {
     "num": 103,
     "char": "匹",
+    "emoji": "🧻",
     "pinyin": "pǐ",
     "thai": "ม้วนผ้า / เท้าก้าวเดิน (𤴔)",
     "strokes": 4,
@@ -977,6 +1080,7 @@ const RADICALS_CATALOG = [
   {
     "num": 104,
     "char": "疒",
+    "emoji": "🤒",
     "pinyin": "nè",
     "thai": "ความเจ็บป่วย / คนนอนป่วย",
     "strokes": 5,
@@ -986,6 +1090,7 @@ const RADICALS_CATALOG = [
   {
     "num": 105,
     "char": "癶",
+    "emoji": "🤸",
     "pinyin": "bō",
     "thai": "สองเท้าก้าวแยกออก",
     "strokes": 5,
@@ -995,6 +1100,7 @@ const RADICALS_CATALOG = [
   {
     "num": 106,
     "char": "白",
+    "emoji": "⚪",
     "pinyin": "bái",
     "thai": "สีขาว / ชัดเจน / บริสุทธิ์",
     "strokes": 5,
@@ -1004,6 +1110,7 @@ const RADICALS_CATALOG = [
   {
     "num": 107,
     "char": "皮",
+    "emoji": "🩹",
     "pinyin": "pí",
     "thai": "ผิวหนัง / เปลือกไม้",
     "strokes": 5,
@@ -1013,6 +1120,7 @@ const RADICALS_CATALOG = [
   {
     "num": 108,
     "char": "皿",
+    "emoji": "🍽️",
     "pinyin": "mǐn",
     "thai": "จานชาม / ภาชนะใส่อาหาร",
     "strokes": 5,
@@ -1022,6 +1130,7 @@ const RADICALS_CATALOG = [
   {
     "num": 109,
     "char": "目",
+    "emoji": "👁️",
     "pinyin": "mù",
     "thai": "ดวงตา / การมองเห็น",
     "strokes": 5,
@@ -1031,6 +1140,7 @@ const RADICALS_CATALOG = [
   {
     "num": 110,
     "char": "矛",
+    "emoji": "🔱",
     "pinyin": "máo",
     "thai": "หอกโบราณ",
     "strokes": 5,
@@ -1040,6 +1150,7 @@ const RADICALS_CATALOG = [
   {
     "num": 111,
     "char": "矢",
+    "emoji": "🎯",
     "pinyin": "shǐ",
     "thai": "ลูกศรธนู / ตรงแน่ว",
     "strokes": 5,
@@ -1049,6 +1160,7 @@ const RADICALS_CATALOG = [
   {
     "num": 112,
     "char": "石",
+    "emoji": "🪨",
     "pinyin": "shí",
     "thai": "หิน / ก้อนศิลา",
     "strokes": 5,
@@ -1058,6 +1170,7 @@ const RADICALS_CATALOG = [
   {
     "num": 113,
     "char": "示",
+    "emoji": "⛩️",
     "pinyin": "shì",
     "thai": "แท่นบูชา / เทพเจ้า (礻)",
     "strokes": 5,
@@ -1072,6 +1185,7 @@ const RADICALS_CATALOG = [
   {
     "num": 114,
     "char": "禸",
+    "emoji": "🐆",
     "pinyin": "róu",
     "thai": "รอยเท้าสัตว์ป่า",
     "strokes": 4,
@@ -1081,6 +1195,7 @@ const RADICALS_CATALOG = [
   {
     "num": 115,
     "char": "禾",
+    "emoji": "🌾",
     "pinyin": "hé",
     "thai": "ต้นข้าว / ธัญพืชรวงทอง",
     "strokes": 5,
@@ -1090,6 +1205,7 @@ const RADICALS_CATALOG = [
   {
     "num": 116,
     "char": "穴",
+    "emoji": "🕳️",
     "pinyin": "xué",
     "thai": "ถ้ำ / โพรงดิน / รู",
     "strokes": 5,
@@ -1099,6 +1215,7 @@ const RADICALS_CATALOG = [
   {
     "num": 117,
     "char": "立",
+    "emoji": "🧍",
     "pinyin": "lì",
     "thai": "ยืนตรง / ตั้งมั่น",
     "strokes": 5,
@@ -1108,6 +1225,7 @@ const RADICALS_CATALOG = [
   {
     "num": 118,
     "char": "竹",
+    "emoji": "🎋",
     "pinyin": "zhú",
     "thai": "ต้นไผ่ / ไม้ไผ่ (⺮)",
     "strokes": 6,
@@ -1122,6 +1240,7 @@ const RADICALS_CATALOG = [
   {
     "num": 119,
     "char": "米",
+    "emoji": "🍚",
     "pinyin": "mǐ",
     "thai": "ข้าวสาร / เมล็ดข้าว",
     "strokes": 6,
@@ -1131,6 +1250,7 @@ const RADICALS_CATALOG = [
   {
     "num": 120,
     "char": "糸",
+    "emoji": "🧶",
     "pinyin": "mì",
     "thai": "เส้นด้าย / ผ้าไหม (纟)",
     "strokes": 6,
@@ -1145,6 +1265,7 @@ const RADICALS_CATALOG = [
   {
     "num": 121,
     "char": "缶",
+    "emoji": "🫙",
     "pinyin": "fǒu",
     "thai": "ไหดินเผา / หม้อดิน",
     "strokes": 6,
@@ -1154,6 +1275,7 @@ const RADICALS_CATALOG = [
   {
     "num": 122,
     "char": "网",
+    "emoji": "🕸️",
     "pinyin": "wǎng",
     "thai": "ตาข่ายดักสัตว์ / ร่างแห (罒/⺳)",
     "strokes": 6,
@@ -1169,6 +1291,7 @@ const RADICALS_CATALOG = [
   {
     "num": 123,
     "char": "羊",
+    "emoji": "🐑",
     "pinyin": "yáng",
     "thai": "แพะ / แกะ / มงคล (⺶/⺷)",
     "strokes": 6,
@@ -1184,6 +1307,7 @@ const RADICALS_CATALOG = [
   {
     "num": 124,
     "char": "羽",
+    "emoji": "🕊️",
     "pinyin": "yǔ",
     "thai": "ขนนก / ปีกบิน",
     "strokes": 6,
@@ -1193,6 +1317,7 @@ const RADICALS_CATALOG = [
   {
     "num": 125,
     "char": "老",
+    "emoji": "👴",
     "pinyin": "lǎo",
     "thai": "คนชรา / ผู้อาวุโส (耂)",
     "strokes": 6,
@@ -1207,6 +1332,7 @@ const RADICALS_CATALOG = [
   {
     "num": 126,
     "char": "而",
+    "emoji": "🧔",
     "pinyin": "ér",
     "thai": "เคราคาง / และ, แต่",
     "strokes": 6,
@@ -1216,6 +1342,7 @@ const RADICALS_CATALOG = [
   {
     "num": 127,
     "char": "耒",
+    "emoji": "🚜",
     "pinyin": "lěi",
     "thai": "คันไถดิน",
     "strokes": 6,
@@ -1225,6 +1352,7 @@ const RADICALS_CATALOG = [
   {
     "num": 128,
     "char": "耳",
+    "emoji": "👂",
     "pinyin": "ěr",
     "thai": "หู / การได้ยิน",
     "strokes": 6,
@@ -1234,6 +1362,7 @@ const RADICALS_CATALOG = [
   {
     "num": 129,
     "char": "聿",
+    "emoji": "🖌️",
     "pinyin": "yù",
     "thai": "พู่กันเขียนหนังสือ (⺻)",
     "strokes": 6,
@@ -1243,6 +1372,7 @@ const RADICALS_CATALOG = [
   {
     "num": 130,
     "char": "肉",
+    "emoji": "🍖",
     "pinyin": "ròu",
     "thai": "เนื้อสัตว์ / กล้ามเนื้อ (⺼)",
     "strokes": 6,
@@ -1258,6 +1388,7 @@ const RADICALS_CATALOG = [
   {
     "num": 131,
     "char": "臣",
+    "emoji": "🫡",
     "pinyin": "chén",
     "thai": "ข้าราชบริพาร / ก้มคำนับ",
     "strokes": 6,
@@ -1267,6 +1398,7 @@ const RADICALS_CATALOG = [
   {
     "num": 132,
     "char": "自",
+    "emoji": "👃",
     "pinyin": "zì",
     "thai": "จมูก / ตนเอง / เริ่มต้น",
     "strokes": 6,
@@ -1276,6 +1408,7 @@ const RADICALS_CATALOG = [
   {
     "num": 133,
     "char": "至",
+    "emoji": "🏁",
     "pinyin": "zhì",
     "thai": "มาถึง / ปลายทาง",
     "strokes": 6,
@@ -1285,6 +1418,7 @@ const RADICALS_CATALOG = [
   {
     "num": 134,
     "char": "臼",
+    "emoji": "🥘",
     "pinyin": "jiù",
     "thai": "ครกตำข้าว",
     "strokes": 6,
@@ -1294,6 +1428,7 @@ const RADICALS_CATALOG = [
   {
     "num": 135,
     "char": "舌",
+    "emoji": "👅",
     "pinyin": "shé",
     "thai": "ลิ้น / รสสัมผัสและการพูด",
     "strokes": 6,
@@ -1303,6 +1438,7 @@ const RADICALS_CATALOG = [
   {
     "num": 136,
     "char": "舛",
+    "emoji": "🔀",
     "pinyin": "chuǎn",
     "thai": "สองเท้าหันตรงข้าม / ขัดแย้ง",
     "strokes": 6,
@@ -1312,6 +1448,7 @@ const RADICALS_CATALOG = [
   {
     "num": 137,
     "char": "舟",
+    "emoji": "⛵",
     "pinyin": "zhōu",
     "thai": "เรือพาย / นาวา",
     "strokes": 6,
@@ -1321,6 +1458,7 @@ const RADICALS_CATALOG = [
   {
     "num": 138,
     "char": "艮",
+    "emoji": "🔙",
     "pinyin": "gèn",
     "thai": "ความเด็ดเดี่ยว / หันหลัง",
     "strokes": 6,
@@ -1330,6 +1468,7 @@ const RADICALS_CATALOG = [
   {
     "num": 139,
     "char": "色",
+    "emoji": "🌈",
     "pinyin": "sè",
     "thai": "สีสัน / สีหน้า / ความงาม",
     "strokes": 6,
@@ -1339,6 +1478,7 @@ const RADICALS_CATALOG = [
   {
     "num": 140,
     "char": "草",
+    "emoji": "🍃",
     "pinyin": "cǎo",
     "thai": "หญ้า / พืชสมุนไพร (艹)",
     "strokes": 6,
@@ -1348,6 +1488,7 @@ const RADICALS_CATALOG = [
   {
     "num": 141,
     "char": "虍",
+    "emoji": "🐯",
     "pinyin": "hū",
     "thai": "ลายเสือโคร่ง / เสือ",
     "strokes": 6,
@@ -1357,6 +1498,7 @@ const RADICALS_CATALOG = [
   {
     "num": 142,
     "char": "虫",
+    "emoji": "🐛",
     "pinyin": "chóng",
     "thai": "แมลง / หนอน / สัตว์เลื้อยคลาน",
     "strokes": 6,
@@ -1366,6 +1508,7 @@ const RADICALS_CATALOG = [
   {
     "num": 143,
     "char": "血",
+    "emoji": "🩸",
     "pinyin": "xiě",
     "thai": "โลหิต / เลือด",
     "strokes": 6,
@@ -1375,6 +1518,7 @@ const RADICALS_CATALOG = [
   {
     "num": 144,
     "char": "行",
+    "emoji": "🚦",
     "pinyin": "xíng",
     "thai": "สี่แยกถนน / เดินทาง / ปฏิบัติ",
     "strokes": 6,
@@ -1384,6 +1528,7 @@ const RADICALS_CATALOG = [
   {
     "num": 145,
     "char": "衣",
+    "emoji": "👕",
     "pinyin": "yī",
     "thai": "เสื้อผ้า / เครื่องนุ่งห่ม (衤)",
     "strokes": 6,
@@ -1398,6 +1543,7 @@ const RADICALS_CATALOG = [
   {
     "num": 146,
     "char": "襾",
+    "emoji": "🌇",
     "pinyin": "yà",
     "thai": "ฝาครอบ / ทิศตะวันตก (西/覀)",
     "strokes": 6,
@@ -1407,6 +1553,7 @@ const RADICALS_CATALOG = [
   {
     "num": 147,
     "char": "见",
+    "emoji": "👀",
     "pinyin": "jiàn",
     "thai": "มองเห็น / พบเจอ (见)",
     "strokes": 4,
@@ -1416,6 +1563,7 @@ const RADICALS_CATALOG = [
   {
     "num": 148,
     "char": "角",
+    "emoji": "📐",
     "pinyin": "jiǎo",
     "thai": "เขาสัตว์ / มุม",
     "strokes": 7,
@@ -1425,6 +1573,7 @@ const RADICALS_CATALOG = [
   {
     "num": 149,
     "char": "言",
+    "emoji": "🗣️",
     "pinyin": "yán",
     "thai": "คำพูด / ภาษา / วาจา (讠)",
     "strokes": 7,
@@ -1439,6 +1588,7 @@ const RADICALS_CATALOG = [
   {
     "num": 150,
     "char": "谷",
+    "emoji": "🏔️",
     "pinyin": "gǔ",
     "thai": "หุบเขา / ลำธารในเขา",
     "strokes": 7,
@@ -1448,6 +1598,7 @@ const RADICALS_CATALOG = [
   {
     "num": 151,
     "char": "豆",
+    "emoji": "🫘",
     "pinyin": "dòu",
     "thai": "ถั่ว / ภาชนะบูชาทรงสูง",
     "strokes": 7,
@@ -1457,6 +1608,7 @@ const RADICALS_CATALOG = [
   {
     "num": 152,
     "char": "豕",
+    "emoji": "🐖",
     "pinyin": "shǐ",
     "thai": "หมู / สุกร",
     "strokes": 7,
@@ -1466,6 +1618,7 @@ const RADICALS_CATALOG = [
   {
     "num": 153,
     "char": "豸",
+    "emoji": "🦁",
     "pinyin": "zhì",
     "thai": "สัตว์ป่าไร้เขา / สัตว์กินเนื้อ",
     "strokes": 7,
@@ -1475,6 +1628,7 @@ const RADICALS_CATALOG = [
   {
     "num": 154,
     "char": "贝",
+    "emoji": "🐚",
     "pinyin": "bèi",
     "thai": "เปลือกหอยเบี้ย / เงินตรา (贝)",
     "strokes": 4,
@@ -1484,6 +1638,7 @@ const RADICALS_CATALOG = [
   {
     "num": 155,
     "char": "赤",
+    "emoji": "🔴",
     "pinyin": "chì",
     "thai": "สีแดงชาด / บริสุทธิ์",
     "strokes": 7,
@@ -1493,6 +1648,7 @@ const RADICALS_CATALOG = [
   {
     "num": 156,
     "char": "走",
+    "emoji": "🏃",
     "pinyin": "zǒu",
     "thai": "วิ่ง / เดินทาง (赱)",
     "strokes": 7,
@@ -1502,6 +1658,7 @@ const RADICALS_CATALOG = [
   {
     "num": 157,
     "char": "足",
+    "emoji": "🦶",
     "pinyin": "zú",
     "thai": "เท้า / ขา / เพียงพอ (𧾷)",
     "strokes": 7,
@@ -1516,6 +1673,7 @@ const RADICALS_CATALOG = [
   {
     "num": 158,
     "char": "身",
+    "emoji": "🕴️",
     "pinyin": "shēn",
     "thai": "ร่างกาย / ลำตัว",
     "strokes": 7,
@@ -1525,6 +1683,7 @@ const RADICALS_CATALOG = [
   {
     "num": 159,
     "char": "车",
+    "emoji": "🚗",
     "pinyin": "chē",
     "thai": "รถ / เกวียนล้อหมุน (车)",
     "strokes": 4,
@@ -1534,6 +1693,7 @@ const RADICALS_CATALOG = [
   {
     "num": 160,
     "char": "辛",
+    "emoji": "🌶️",
     "pinyin": "xīn",
     "thai": "รสเผ็ด / ความยากลำบาก",
     "strokes": 7,
@@ -1543,6 +1703,7 @@ const RADICALS_CATALOG = [
   {
     "num": 161,
     "char": "辰",
+    "emoji": "🕐",
     "pinyin": "chén",
     "thai": "เวลาเช้า / มังกรราศี",
     "strokes": 7,
@@ -1552,6 +1713,7 @@ const RADICALS_CATALOG = [
   {
     "num": 162,
     "char": "辵",
+    "emoji": "🛣️",
     "pinyin": "chuò",
     "thai": "ทางเดิน / การสัญจร (辶)",
     "strokes": 7,
@@ -1566,6 +1728,7 @@ const RADICALS_CATALOG = [
   {
     "num": 163,
     "char": "邑",
+    "emoji": "🏙️",
     "pinyin": "yì",
     "thai": "เมือง / ชุมชน (阝ขวา)",
     "strokes": 7,
@@ -1580,6 +1743,7 @@ const RADICALS_CATALOG = [
   {
     "num": 164,
     "char": "酉",
+    "emoji": "🍶",
     "pinyin": "yǒu",
     "thai": "ไหเหล้า / การหมักบ่ม / สุรา",
     "strokes": 7,
@@ -1589,6 +1753,7 @@ const RADICALS_CATALOG = [
   {
     "num": 165,
     "char": "釆",
+    "emoji": "🔍",
     "pinyin": "biàn",
     "thai": "การแยกแยะ / รอยเท้าสัตว์",
     "strokes": 7,
@@ -1598,6 +1763,7 @@ const RADICALS_CATALOG = [
   {
     "num": 166,
     "char": "里",
+    "emoji": "🏘️",
     "pinyin": "lǐ",
     "thai": "หมู่บ้าน / หน่วยระยะทางลี้",
     "strokes": 7,
@@ -1607,6 +1773,7 @@ const RADICALS_CATALOG = [
   {
     "num": 167,
     "char": "金",
+    "emoji": "🪙",
     "pinyin": "jīn",
     "thai": "ทองคำ / โลหะ (钅)",
     "strokes": 8,
@@ -1621,6 +1788,7 @@ const RADICALS_CATALOG = [
   {
     "num": 168,
     "char": "长",
+    "emoji": "🦒",
     "pinyin": "cháng",
     "thai": "ยาว / เติบโต (长)",
     "strokes": 4,
@@ -1630,6 +1798,7 @@ const RADICALS_CATALOG = [
   {
     "num": 169,
     "char": "门",
+    "emoji": "🏯",
     "pinyin": "mén",
     "thai": "ประตูคู่บานใหญ่ (门)",
     "strokes": 3,
@@ -1639,6 +1808,7 @@ const RADICALS_CATALOG = [
   {
     "num": 170,
     "char": "阜",
+    "emoji": "🌄",
     "pinyin": "fù",
     "thai": "เนินเขา / ดินกองสูง (阝ซ้าย)",
     "strokes": 8,
@@ -1653,6 +1823,7 @@ const RADICALS_CATALOG = [
   {
     "num": 171,
     "char": "隶",
+    "emoji": "⛓️",
     "pinyin": "lì",
     "thai": "การเอื้อมจับ / ทาสรับใช้",
     "strokes": 8,
@@ -1662,6 +1833,7 @@ const RADICALS_CATALOG = [
   {
     "num": 172,
     "char": "隹",
+    "emoji": "🐦",
     "pinyin": "zhuī",
     "thai": "นกหางสั้น / ปักษา",
     "strokes": 8,
@@ -1671,6 +1843,7 @@ const RADICALS_CATALOG = [
   {
     "num": 173,
     "char": "雨",
+    "emoji": "🌧️",
     "pinyin": "yǔ",
     "thai": "ฝน / สภาพอากาศฟ้าฝน (⻗)",
     "strokes": 8,
@@ -1680,6 +1853,7 @@ const RADICALS_CATALOG = [
   {
     "num": 174,
     "char": "靑",
+    "emoji": "🟢",
     "pinyin": "qīng",
     "thai": "สีเขียวคราม / วัยเยาว์ (青)",
     "strokes": 8,
@@ -1689,6 +1863,7 @@ const RADICALS_CATALOG = [
   {
     "num": 175,
     "char": "非",
+    "emoji": "❌",
     "pinyin": "fēi",
     "thai": "ปีกนกกางตรงข้าม / ไม่ใช่, ผิด",
     "strokes": 8,
@@ -1698,6 +1873,7 @@ const RADICALS_CATALOG = [
   {
     "num": 176,
     "char": "面",
+    "emoji": "😐",
     "pinyin": "miàn",
     "thai": "ใบหน้า / ผิวหน้า / ด้าน",
     "strokes": 9,
@@ -1707,6 +1883,7 @@ const RADICALS_CATALOG = [
   {
     "num": 177,
     "char": "革",
+    "emoji": "👞",
     "pinyin": "gé",
     "thai": "หนังสัตว์ฟอก / ปฏิรูป",
     "strokes": 9,
@@ -1716,6 +1893,7 @@ const RADICALS_CATALOG = [
   {
     "num": 178,
     "char": "韦",
+    "emoji": "🧥",
     "pinyin": "wéi",
     "thai": "หนังฟอกนุ่ม (韦)",
     "strokes": 4,
@@ -1725,6 +1903,7 @@ const RADICALS_CATALOG = [
   {
     "num": 179,
     "char": "韭",
+    "emoji": "🥬",
     "pinyin": "jiǔ",
     "thai": "ผักกุยช่าย",
     "strokes": 9,
@@ -1734,6 +1913,7 @@ const RADICALS_CATALOG = [
   {
     "num": 180,
     "char": "音",
+    "emoji": "🎵",
     "pinyin": "yīn",
     "thai": "เสียงดนตรี / ทำนอง",
     "strokes": 9,
@@ -1743,6 +1923,7 @@ const RADICALS_CATALOG = [
   {
     "num": 181,
     "char": "页",
+    "emoji": "📄",
     "pinyin": "yè",
     "thai": "ศีรษะ / หน้ากระดาษ (页)",
     "strokes": 6,
@@ -1752,6 +1933,7 @@ const RADICALS_CATALOG = [
   {
     "num": 182,
     "char": "风",
+    "emoji": "🌬️",
     "pinyin": "fēng",
     "thai": "สายลม / ลมพัด (风)",
     "strokes": 4,
@@ -1761,6 +1943,7 @@ const RADICALS_CATALOG = [
   {
     "num": 183,
     "char": "飞",
+    "emoji": "🦅",
     "pinyin": "fēi",
     "thai": "โบยบิน / นกบิน (飞)",
     "strokes": 3,
@@ -1770,6 +1953,7 @@ const RADICALS_CATALOG = [
   {
     "num": 184,
     "char": "食",
+    "emoji": "🥢",
     "pinyin": "shí",
     "thai": "อาหาร / การกิน (饣)",
     "strokes": 9,
@@ -1784,6 +1968,7 @@ const RADICALS_CATALOG = [
   {
     "num": 185,
     "char": "首",
+    "emoji": "👑",
     "pinyin": "shǒu",
     "thai": "ศีรษะ / ผู้นำ / บทแรก",
     "strokes": 9,
@@ -1793,6 +1978,7 @@ const RADICALS_CATALOG = [
   {
     "num": 186,
     "char": "香",
+    "emoji": "🌸",
     "pinyin": "xiāng",
     "thai": "กลิ่นหอม / ข้าวสุกหอม",
     "strokes": 9,
@@ -1802,6 +1988,7 @@ const RADICALS_CATALOG = [
   {
     "num": 187,
     "char": "马",
+    "emoji": "🐎",
     "pinyin": "mǎ",
     "thai": "ม้า / ความรวดเร็ว (马)",
     "strokes": 3,
@@ -1811,6 +1998,7 @@ const RADICALS_CATALOG = [
   {
     "num": 188,
     "char": "骨",
+    "emoji": "🦴",
     "pinyin": "gǔ",
     "thai": "กระดูก / โครงร่าง",
     "strokes": 9,
@@ -1820,6 +2008,7 @@ const RADICALS_CATALOG = [
   {
     "num": 189,
     "char": "高",
+    "emoji": "🗼",
     "pinyin": "gāo",
     "thai": "สูง / หอคอยสูง",
     "strokes": 10,
@@ -1829,6 +2018,7 @@ const RADICALS_CATALOG = [
   {
     "num": 190,
     "char": "髟",
+    "emoji": "💇",
     "pinyin": "biāo",
     "thai": "เส้นผมยาวสลวย",
     "strokes": 10,
@@ -1838,6 +2028,7 @@ const RADICALS_CATALOG = [
   {
     "num": 191,
     "char": "鬥",
+    "emoji": "🥊",
     "pinyin": "dòu",
     "thai": "การต่อสู้ / ประลองกำลัง (鬥)",
     "strokes": 10,
@@ -1847,6 +2038,7 @@ const RADICALS_CATALOG = [
   {
     "num": 192,
     "char": "鬯",
+    "emoji": "🍾",
     "pinyin": "chàng",
     "thai": "สุราเครื่องหอมบูชา",
     "strokes": 10,
@@ -1856,6 +2048,7 @@ const RADICALS_CATALOG = [
   {
     "num": 193,
     "char": "鬲",
+    "emoji": "🍲",
     "pinyin": "lì",
     "thai": "หม้อต้มสามขาโบราณ",
     "strokes": 10,
@@ -1865,6 +2058,7 @@ const RADICALS_CATALOG = [
   {
     "num": 194,
     "char": "鬼",
+    "emoji": "👻",
     "pinyin": "guǐ",
     "thai": "ผี / วิญญาณ / สิ่งลี้ลับ",
     "strokes": 9,
@@ -1874,6 +2068,7 @@ const RADICALS_CATALOG = [
   {
     "num": 195,
     "char": "鱼",
+    "emoji": "🐟",
     "pinyin": "yú",
     "thai": "ปลา / สัตว์น้ำ (鱼)",
     "strokes": 8,
@@ -1883,6 +2078,7 @@ const RADICALS_CATALOG = [
   {
     "num": 196,
     "char": "鸟",
+    "emoji": "🐤",
     "pinyin": "niǎo",
     "thai": "นก / สัตว์ปีก (鸟)",
     "strokes": 5,
@@ -1892,6 +2088,7 @@ const RADICALS_CATALOG = [
   {
     "num": 197,
     "char": "卤",
+    "emoji": "🧂",
     "pinyin": "lǔ",
     "thai": "เกลือสินเธาว์ / ด่าง (卤)",
     "strokes": 7,
@@ -1901,6 +2098,7 @@ const RADICALS_CATALOG = [
   {
     "num": 198,
     "char": "鹿",
+    "emoji": "🦌",
     "pinyin": "lù",
     "thai": "กวางป่า / เขาคู่สง่างาม",
     "strokes": 11,
@@ -1910,6 +2108,7 @@ const RADICALS_CATALOG = [
   {
     "num": 199,
     "char": "麦",
+    "emoji": "🍞",
     "pinyin": "mài",
     "thai": "ข้าวสาลี / ข้าวบาร์เลย์ (麦)",
     "strokes": 7,
@@ -1919,6 +2118,7 @@ const RADICALS_CATALOG = [
   {
     "num": 200,
     "char": "麻",
+    "emoji": "🪢",
     "pinyin": "má",
     "thai": "ต้นปอ / ต้นกัญชา / อาการชา",
     "strokes": 11,
@@ -1928,6 +2128,7 @@ const RADICALS_CATALOG = [
   {
     "num": 201,
     "char": "黄",
+    "emoji": "🟡",
     "pinyin": "huáng",
     "thai": "สีเหลืองทอง (黄)",
     "strokes": 11,
@@ -1937,6 +2138,7 @@ const RADICALS_CATALOG = [
   {
     "num": 202,
     "char": "黍",
+    "emoji": "🌾",
     "pinyin": "shǔ",
     "thai": "ข้าวฟ่างเหนียว",
     "strokes": 12,
@@ -1946,6 +2148,7 @@ const RADICALS_CATALOG = [
   {
     "num": 203,
     "char": "黑",
+    "emoji": "⚫",
     "pinyin": "hēi",
     "thai": "สีดำ / เขม่าควันไฟ",
     "strokes": 12,
@@ -1955,6 +2158,7 @@ const RADICALS_CATALOG = [
   {
     "num": 204,
     "char": "黹",
+    "emoji": "🪡",
     "pinyin": "zhǐ",
     "thai": "การปักผ้า / ลวดลายเย็บ",
     "strokes": 12,
@@ -1964,6 +2168,7 @@ const RADICALS_CATALOG = [
   {
     "num": 205,
     "char": "黾",
+    "emoji": "🐸",
     "pinyin": "mǐn",
     "thai": "คางคก / กบ (黾)",
     "strokes": 8,
@@ -1973,6 +2178,7 @@ const RADICALS_CATALOG = [
   {
     "num": 206,
     "char": "鼎",
+    "emoji": "⚱️",
     "pinyin": "dǐng",
     "thai": "กระถางธูปสามขา / อำนาจรัฐ",
     "strokes": 12,
@@ -1982,6 +2188,7 @@ const RADICALS_CATALOG = [
   {
     "num": 207,
     "char": "鼓",
+    "emoji": "🥁",
     "pinyin": "gǔ",
     "thai": "กลองหนัง / การตีกลองศึก",
     "strokes": 13,
@@ -1991,6 +2198,7 @@ const RADICALS_CATALOG = [
   {
     "num": 208,
     "char": "鼠",
+    "emoji": "🐭",
     "pinyin": "shǔ",
     "thai": "หนู / สัตว์ฟันแทะ",
     "strokes": 13,
@@ -2000,6 +2208,7 @@ const RADICALS_CATALOG = [
   {
     "num": 209,
     "char": "鼻",
+    "emoji": "🤧",
     "pinyin": "bí",
     "thai": "จมูก / การดมกลิ่น",
     "strokes": 14,
@@ -2009,6 +2218,7 @@ const RADICALS_CATALOG = [
   {
     "num": 210,
     "char": "齐",
+    "emoji": "✔️",
     "pinyin": "qí",
     "thai": "เรียบร้อย / สม่ำเสมอ (齐)",
     "strokes": 6,
@@ -2018,6 +2228,7 @@ const RADICALS_CATALOG = [
   {
     "num": 211,
     "char": "齿",
+    "emoji": "😬",
     "pinyin": "chǐ",
     "thai": "ฟัน / ซี่ฟัน (齿)",
     "strokes": 8,
@@ -2027,6 +2238,7 @@ const RADICALS_CATALOG = [
   {
     "num": 212,
     "char": "龙",
+    "emoji": "🐉",
     "pinyin": "lóng",
     "thai": "มังกร / สัตว์มงคลเทพ (龙)",
     "strokes": 5,
@@ -2036,6 +2248,7 @@ const RADICALS_CATALOG = [
   {
     "num": 213,
     "char": "龟",
+    "emoji": "🐢",
     "pinyin": "guī",
     "thai": "เต่า / สัตว์อายุยืน (龟)",
     "strokes": 7,
@@ -2045,6 +2258,7 @@ const RADICALS_CATALOG = [
   {
     "num": 214,
     "char": "龠",
+    "emoji": "🎶",
     "pinyin": "yuè",
     "thai": "ขลุ่ยโบราณสามรู / ท่วงทำนอง",
     "strokes": 17,

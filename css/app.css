@@ -113,12 +113,54 @@ body.dark-theme .desktop-preview-container {
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Fullscreen Mode override */
+/* Fullscreen Mode override. Wider than before (1180px, was 900px) — the
+   split story panel below divides this in half, and 900px made each side
+   cramped; the extra width also reads better once a screen recording gets
+   compressed/resized on YouTube. */
 .app-viewport-wrapper.full-screen-mode {
-  max-width: 900px;
+  max-width: 1180px;
   height: 92vh;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
+}
+
+/* Split View: in fullscreen mode, opening a character's story (the
+   "เรื่องราว" button, or tapping the quick-inspect hanzi) docks the
+   etymology panel beside the mindmap instead of replacing it — you keep
+   the mindmap interaction on screen while reading/recording, rather than
+   navigating away to a separate page. See goToStoryPage() /
+   openStorySplitView() / closeSplitView() in js/app.js. */
+.app-viewport-wrapper.full-screen-mode.split-view-active .app-content-area {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.app-viewport-wrapper.full-screen-mode.split-view-active #section-mindmap.active {
+  flex: 0 0 50%;
+  max-width: 50%;
+  border-right: 1px solid var(--ink-border);
+  transition: flex-basis var(--duration-normal) var(--ease-smooth);
+}
+
+.app-viewport-wrapper.full-screen-mode.split-view-active #section-etymology {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 50%;
+  max-width: 50%;
+  height: 100%;
+  overflow-y: auto;
+  background: var(--bg-parchment);
+  animation: splitPanelIn var(--duration-normal) var(--ease-smooth);
+}
+
+.app-viewport-wrapper.full-screen-mode.split-view-active #section-etymology .etymology-scroll-view {
+  flex: 1;
+}
+
+@keyframes splitPanelIn {
+  from { opacity: 0; transform: translateX(28px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 /* iPhone Dynamic Island / Bezel */
@@ -427,9 +469,12 @@ body.dark-theme .desktop-preview-container {
   display: block;
 }
 
+/* Opacity-only: a translateY here used to nudge the section a few px below
+   the scroll container mid-animation, which flashed the scrollbar in and
+   out (and jumped the content width) every time a tab was switched. */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* Tab Bar Navigation */
@@ -440,7 +485,7 @@ body.dark-theme .desktop-preview-container {
   padding: 8px 12px 16px;
   background: var(--bg-surface);
   border-top: 1px solid var(--ink-border-light);
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 -4px 20px rgba(44, 38, 29, 0.04);
   z-index: 950;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -569,14 +614,14 @@ body.dark-theme .desktop-preview-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 18px rgba(44, 38, 29, 0.12);
   z-index: 150;
   transition: all var(--duration-normal) cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .mindmap-quick-inspect-bar:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 22px rgba(211, 56, 40, 0.2);
+  box-shadow: 0 6px 22px var(--c-vermilion-glow);
   border-color: var(--c-vermilion);
 }
 
@@ -679,9 +724,12 @@ body.dark-theme .desktop-preview-container {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: rgba(230, 81, 0, 0.1);
-  color: #d84315;
-  border: 1px solid rgba(216, 67, 21, 0.25);
+  /* Fallback for a character with no matched six-writings category (未定 /
+     待考, "undetermined") — deliberately neutral so it never reads as a
+     7th classification color alongside the six real ones below. */
+  background: var(--bg-surface-subtle);
+  color: var(--ink-secondary);
+  border: 1px solid var(--ink-border);
   padding: 3px 9px;
   border-radius: var(--radius-pill);
   font-size: 11px;
@@ -701,7 +749,7 @@ body.dark-theme .desktop-preview-container {
 .six-writings-badge.six-writings-compound,
 .type-pill.six-writings-compound {
   background: rgba(126, 59, 106, 0.1);
-  color: #7e3b6a;
+  color: var(--c-plum);
   border: 1px solid rgba(126, 59, 106, 0.3);
 }
 
@@ -749,11 +797,12 @@ body.dark-theme .desktop-preview-container {
 }
 
 .myth-dispeller-banner {
+  position: relative;
   background: rgba(37, 99, 235, 0.05);
   border: 1px dashed rgba(37, 99, 235, 0.35);
   border-left: 3px solid #2563eb;
   border-radius: var(--radius-sm);
-  padding: 10px 14px;
+  padding: 10px 34px 10px 14px;
   margin-bottom: 12px;
 }
 
@@ -774,10 +823,58 @@ body.dark-theme .desktop-preview-container {
   margin: 0;
 }
 
+.myth-dismiss-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(37, 99, 235, 0.12);
+  color: #1d4ed8;
+  border: none;
+  border-radius: 50%;
+  font-size: 10px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background var(--duration-fast);
+}
+
+.myth-dismiss-btn:hover {
+  background: rgba(37, 99, 235, 0.22);
+}
+
+/* Origin Story: subsections give each idea (ancient depiction, modern
+   evolution) its own labeled block instead of one undifferentiated stream
+   of text, so the page reads as short scannable steps. */
+.origin-subsection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.origin-subsection + .origin-subsection {
+  padding-top: 12px;
+  border-top: 1px dashed var(--ink-border-light);
+}
+
+.origin-subsection-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ink-tertiary);
+}
+
 .meat-radical-badge {
-  background: rgba(229, 57, 53, 0.1);
-  color: #c62828;
-  border: 1px solid rgba(198, 40, 40, 0.25);
+  background: var(--c-vermilion-soft);
+  color: var(--c-vermilion);
+  border: 1px solid rgba(211, 56, 40, 0.3);
   padding: 3px 8px;
   border-radius: var(--radius-pill);
   font-size: 11px;
@@ -820,7 +917,7 @@ body.dark-theme .desktop-preview-container {
 }
 
 .ps-char {
-  font-family: var(--font-chinese);
+  font-family: var(--font-hanzi);
   font-size: 20px;
   color: var(--ink-primary);
   line-height: 1.2;
@@ -838,8 +935,8 @@ body.dark-theme .desktop-preview-container {
 }
 
 .traditional-insight-box {
-  background: rgba(92, 107, 192, 0.08);
-  border: 1px solid rgba(92, 107, 192, 0.25);
+  background: var(--c-indigo-soft);
+  border: 1px solid rgba(39, 82, 132, 0.25);
   border-radius: var(--radius-md);
   padding: 10px 12px;
   margin-top: 12px;
@@ -850,7 +947,7 @@ body.dark-theme .desktop-preview-container {
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: #283593;
+  color: var(--c-indigo);
   margin-bottom: 4px;
 }
 
@@ -861,13 +958,16 @@ body.dark-theme .desktop-preview-container {
   margin: 0;
 }
 
+/* Tone sandhi is a pronunciation-guidance concept, same family as the
+   tone chart button — reuses --c-indigo rather than introducing a new
+   accent color for one small badge. */
 .sandhi-pill {
   display: flex;
   flex-direction: column;
   gap: 1px;
-  background: rgba(0, 137, 123, 0.08);
-  border: 1px solid rgba(0, 137, 123, 0.2);
-  border-radius: 4px;
+  background: var(--c-indigo-soft);
+  border: 1px solid rgba(39, 82, 132, 0.25);
+  border-radius: var(--radius-xs);
   padding: 2px 6px;
   margin: 3px 0;
   cursor: help;
@@ -876,12 +976,12 @@ body.dark-theme .desktop-preview-container {
 .sandhi-badge {
   font-size: 11px;
   font-weight: 700;
-  color: #00695c;
+  color: var(--c-indigo);
 }
 
 .sandhi-rule {
   font-size: 9.5px;
-  color: #00796b;
+  color: var(--c-indigo);
 }
 
 /* ============================================================
@@ -918,7 +1018,7 @@ body.dark-theme .desktop-preview-container {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   display: flex;
@@ -938,13 +1038,13 @@ body.dark-theme .desktop-preview-container {
 .settings-modal-card {
   background: var(--bg-surface);
   border: 1px solid var(--ink-border);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-lg);
   width: 90%;
   max-width: 440px;
   max-height: 85vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--shadow-floating);
   overflow: hidden;
   animation: modalPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -1105,7 +1205,7 @@ body.dark-theme .desktop-preview-container {
   inset: 0;
   background-color: var(--ink-border);
   transition: .3s cubic-bezier(0.16, 1, 0.3, 1);
-  border-radius: 24px;
+  border-radius: var(--radius-lg);
 }
 
 .toggle-track:before {
@@ -1118,7 +1218,7 @@ body.dark-theme .desktop-preview-container {
   background-color: white;
   transition: .3s cubic-bezier(0.16, 1, 0.3, 1);
   border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: var(--shadow-sm);
 }
 
 .custom-toggle input:checked + .toggle-track {
@@ -1187,7 +1287,7 @@ body.dark-theme .desktop-preview-container {
   background: var(--c-indigo);
   color: #ffffff;
   border-color: var(--c-indigo);
-  box-shadow: 0 2px 8px rgba(40, 53, 147, 0.25);
+  box-shadow: 0 2px 8px rgba(39, 82, 132, 0.35);
 }
 
 .font-sample-hanzi {
